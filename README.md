@@ -1,5 +1,4 @@
 # OXID Console
-------------------
 
 OXID Console is php console application for OXID Shop. It provides an API for writting various commands.
 
@@ -17,12 +16,10 @@ By default there are following commands included:
 This OXID Console repository has **Migration Handler**, **Module State Fixer** and module_enabled_count() included.
 
 ## Getting started
----------------------
 
 The entry point of console application is `php oxid`. It will execute default command which is `list`. To call a specific command run `php oxid [command]`. If you need help about specific command run `php oxid [command] -h` or `php oxid [command] --help`
 
 ## Defining your own command
-------------------------------
 
 * Commands get autoloaded from `application/commands/` and `[module_path]/commands/` directories. But you can always add or remove commands with `add()` or `remove()` methods of console application
 * You can access console application `$this->getConsoleApplication()` and input object `$this->getInput()` in your command class
@@ -77,7 +74,6 @@ class MyOwnCommand extends oxConsoleCommand
 ```
 
 ## Working with arguments and options
-----------------------------------------
 
 First of all You must know that `-abc` is the same as `-a -b -c` and it is a good practice to have long version of option too, e.g. `-a` is the same as `--all`.
 Console Input provides you with various methods to work with options. There is nothing better than a good example:
@@ -162,7 +158,6 @@ string(4) "tree"
 ```
 
 ## Migrations
---------------
 
 OXID Console project includes migration handling. Lets generate sample migration by running `php oxid g:migration add amount field to demo module`.
 
@@ -230,7 +225,6 @@ It ran our migration query down because on given timestamp we should not have ha
 *Note: It is better to use generator for migration queries creation*
 
 ## Module state fixer
-----------------------
 
 ### Current problem
 
@@ -253,7 +247,6 @@ Those methods can be executed individually because they are public.
 We have provided you with `fix:states` command to work with oxStateFixerModule. Type in `php oxid fix:states --help` for more information.
 
 ## module_enabled_count()
---------------------------
 
 When you want do deactivate module it is sometimes good to clean after your module, e.g. dropping tables or columns created by it. But we can not do this because we do not know how many (sub)shops are using this module, dropping tables or columns should be done only when module gets deactivated on last shop using this.
 
