@@ -216,6 +216,76 @@ Migration finished successfully
 
 It ran our migration query down because on given timestamp we should not have had executed that migration query.
 
+### Example
+
+Here is a quick example of migration query which adds a column to oxuser table
+
+```php
+<?php
+// FILE: 20140414085723_adddemoculumntooxuser.php
+
+class AddDemoCulumnToOxUserMigration extends oxMigrationQuery
+{
+
+    /**
+     * {@inheritdoc}
+     */
+    public function up()
+    {
+        if ( $this->_columnExists( 'oxuser', 'OXDEMO' ) ) {
+            return;
+        }
+
+        $sSql = "ALTER TABLE  `oxuser`
+                 ADD  `OXDEMO`
+                    CHAR( 32 )
+                    CHARACTER SET utf8
+                    COLLATE utf8_general_ci
+                    NULL
+                    DEFAULT NULL
+                    COMMENT  'Demo field for migration'";
+
+        oxDb::getDb()->execute( $sSql );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function down()
+    {
+        if ( !$this->_columnExists( 'oxuser', 'OXDEMO' ) ) {
+            return;
+        }
+
+        oxDb::getDb()->execute( 'ALTER TABLE `oxuser` DROP `OXDEMO`' );
+    }
+
+    /**
+     * Does column exist in specific table?
+     *
+     * @param string $sTable Table name
+     * @param string $sColumn Column name
+     *
+     * @return bool
+     */
+    protected function _columnExists( $sTable, $sColumn )
+    {
+        $oConfig = oxRegistry::getConfig();
+        $sDbName = $oConfig->getConfigParam( 'dbName' );
+        $sSql    = 'SELECT 1
+                    FROM information_schema.COLUMNS
+                    WHERE
+                        TABLE_SCHEMA = ?
+                    AND TABLE_NAME = ?
+                    AND COLUMN_NAME = ?';
+
+        $oDb = oxDb::getDb();
+
+        return (bool) $oDb->getOne( $sSql, array($sDbName, $sTable, $sColumn) );
+    }
+}
+```
+
 ### Migration Query Law
 
 * Filename must follow `YYYYMMDDHHiiss_description.php` format
