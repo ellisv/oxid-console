@@ -196,4 +196,28 @@ abstract class oxMigrationQuery
     {
         return date( 'YmdHis' );
     }
+
+    /**
+     * Column exists in specific table?
+     *
+     * @param string $sTable  Table name
+     * @param string $sColumn Column name
+     *
+     * @return bool
+     */
+    protected static function _columnExists( $sTable, $sColumn )
+    {
+        $oConfig = oxRegistry::getConfig();
+        $sDbName = $oConfig->getConfigParam( 'dbName' );
+        $sSql    = 'SELECT 1
+                    FROM information_schema.COLUMNS
+                    WHERE
+                        TABLE_SCHEMA = ?
+                    AND TABLE_NAME = ?
+                    AND COLUMN_NAME = ?';
+
+        $oDb = oxDb::getDb();
+
+        return (bool) $oDb->getOne( $sSql, array($sDbName, $sTable, $sColumn) );
+    }
 }
