@@ -54,9 +54,14 @@ class ConsoleUpdateCommand extends oxConsoleCommand
     {
         oxRegistry::get( 'oxConsoleUpdateManager' )->run( $oOutput );
 
+        // Executing cache:clear command
+        // TODO: Refactor this place because it looks nasty
         $aCommands = $this->getConsoleApplication()->getLoadedCommands();
         if ( isset( $aCommands['cache:clear'] ) ) {
-            $aCommands['cache:clear']->execute( $oOutput );
+            $oCommand = $aCommands['cache:clear'];
+            $oCommand->setConsoleApplication( $this->getConsoleApplication() );
+            $oCommand->setInput( $this->getInput() );
+            $oCommand->execute( $oOutput );
         }
     }
 }
