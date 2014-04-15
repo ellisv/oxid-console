@@ -37,6 +37,11 @@ class oxConsoleApplication
 {
 
     /**
+     * OXID Console application version
+     */
+    const VERSION = 'v1.1.0';
+
+    /**
      * @var oxConsoleCommand[] Available commands in console
      */
     protected $_aCommands = array();
@@ -91,6 +96,11 @@ class oxConsoleApplication
         $oCommand     = null;
 
         if ( !$sCommandName ) {
+            if ( $oInput->hasOption( array('v', 'version') ) ) {
+                $oOutput->writeLn( 'OXID Console ' . static::VERSION );
+                return;
+            }
+
             $oCommand = $this->getDefaultCommand();
         } elseif ( array_key_exists( $sCommandName, $this->_aCommands ) ) {
             $oCommand = $this->_aCommands[$sCommandName];
