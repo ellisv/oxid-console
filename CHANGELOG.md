@@ -1,7 +1,7 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.0.0...v1.0.1
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.0.1...v1.1.0
 
 * 1.1.0 (2014-04-15)
 
