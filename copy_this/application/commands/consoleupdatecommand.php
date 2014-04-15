@@ -42,7 +42,9 @@ class ConsoleUpdateCommand extends oxConsoleCommand
      */
     public function help( oxIOutput $oOutput )
     {
-        // TODO: Implement help() method.
+        $oOutput->writeLn( 'Usage: console:update' );
+        $oOutput->writeLn();
+        $oOutput->writeLn( 'This command runs an update manager of OXID Console' );
     }
 
     /**
@@ -51,5 +53,10 @@ class ConsoleUpdateCommand extends oxConsoleCommand
     public function execute( oxIOutput $oOutput )
     {
         oxRegistry::get( 'oxConsoleUpdateManager' )->run( $oOutput );
+
+        $aCommands = $this->getConsoleApplication()->getLoadedCommands();
+        if ( isset( $aCommands['cache:clear'] ) ) {
+            $aCommands['cache:clear']->execute( $oOutput );
+        }
     }
 }

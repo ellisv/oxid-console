@@ -27,7 +27,7 @@
  */
 class CacheClearCommand extends oxConsoleCommand
 {
-    
+
     /**
      * {@inheritdoc}
      */

@@ -62,7 +62,7 @@ class oxConsoleUpdateManager
     public function run( oxIOutput $oOutput = null )
     {
         $this->_oOutput = $oOutput;
-        $sUpdatePath    = null;
+        $sUpdatePath = null;
 
         try {
             $sVersion = $this->getLatestVersion();
@@ -76,11 +76,6 @@ class oxConsoleUpdateManager
             $sUpdatePath = $this->_downloadPackage( $sVersion );
             $this->_update( $sUpdatePath );
         } catch ( oxConsoleException $oEx ) {
-
-            if ( $sUpdatePath ) {
-                $this->_removeDirectory( $sUpdatePath );
-            }
-
             if ( null === $oOutput ) {
                 throw $oEx;
             }
@@ -104,11 +99,8 @@ class oxConsoleUpdateManager
      */
     protected function _update( $sUpdatePath )
     {
-        if ( substr( $sUpdatePath, -1 ) != DIRECTORY_SEPARATOR ) {
-            $sUpdatePath .= DIRECTORY_SEPARATOR;
-        }
-
-        $oOutput = $this->getOutput();
+        $sUpdatePath = $this->_appendDirectorySeparator( $sUpdatePath );
+        $oOutput     = $this->getOutput();
         if ( null !== $oOutput ) {
             $oOutput->write( 'Updating OXID Console files' );
         }
@@ -129,8 +121,6 @@ class oxConsoleUpdateManager
             $sBasePath = str_replace( $sCopyPath, OX_BASE_PATH, $oFilePath );
             $this->_replaceFile( (string) $oFilePath, $sBasePath );
         }
-
-        $this->_removeDirectory( $sUpdatePath );
 
         if ( null !== $oOutput ) {
             $oOutput->writeLn( ' [OK]' );
@@ -174,13 +164,9 @@ class oxConsoleUpdateManager
     protected function _downloadPackage( $sVersion )
     {
         $oConfig     = oxRegistry::getConfig();
-        $sCompileDir = $oConfig->getShopConfVar( 'sCompileDir' );
-        if ( substr( $sCompileDir, -1 ) != DIRECTORY_SEPARATOR ) {
-            $sCompileDir .= DIRECTORY_SEPARATOR;
-        }
-
-        $sSavePath = $sCompileDir . uniqid( 'oxid-console' ) . '.zip';
-        $oOutput   = $this->getOutput();
+        $sCompileDir = $this->_appendDirectorySeparator( $oConfig->getShopConfVar( 'sCompileDir' ) );
+        $sSavePath   = $sCompileDir . uniqid( 'oxid-console' ) . '.zip';
+        $oOutput     = $this->getOutput();
 
         if ( null !== $oOutput ) {
             $oOutput->write( 'Downloading update' );
@@ -195,7 +181,6 @@ class oxConsoleUpdateManager
             /** @var oxConsoleException $oEx */
             $oEx = oxNew( 'oxConsoleException' );
             $oEx->setMessage( 'Could not download update package' );
-            @unlink( $sSavePath );
             throw $oEx;
         }
 
@@ -228,7 +213,6 @@ class oxConsoleUpdateManager
             /** @var oxConsoleException $oEx */
             $oEx = oxNew( 'oxConsoleException' );
             $oEx->setMessage( 'Error trying to open archive' );
-            @unlink( $sPath );
             throw $oEx;
         }
 
@@ -237,45 +221,15 @@ class oxConsoleUpdateManager
             /** @var oxConsoleException $oEx */
             $oEx = oxNew( 'oxConsoleException' );
             $oEx->setMessage( 'Error trying to unzip archive' );
-            @unlink( $sPath );
             throw $oEx;
         }
         $oZip->close();
-
-        @unlink( $sPath );
 
         if ( null !== $oOutput ) {
             $oOutput->writeLn( ' [OK]' );
         }
 
         return $sExtractPath . DIRECTORY_SEPARATOR . 'oxid-console-' . substr( $sVersion, 1 );
-    }
-
-    /**
-     * Remove directory
-     *
-     * @param string $sPath
-     */
-    protected function _removeDirectory( $sPath )
-    {
-        if ( !is_dir( $sPath ) ) {
-            return;
-        }
-
-        $oIterator = new RecursiveDirectoryIterator( $sPath, RecursiveDirectoryIterator::SKIP_DOTS );
-        $oFiles    = new RecursiveIteratorIterator( $oIterator, RecursiveIteratorIterator::CHILD_FIRST );
-
-        foreach( $oFiles as $oFile ) {
-            if ( $oFile->getFilename() == '.' || $oFile->getFilename() === '..' ) {
-                continue;
-            }
-
-            $oFile->isDir()
-                ? rmdir( $oFile->getRealPath() )
-                : unlink( $oFile->getRealPath() );
-        }
-
-        rmdir( $sPath );
     }
 
     /**
@@ -331,5 +285,21 @@ class oxConsoleUpdateManager
         }
 
         return $this->_sLatestVersion;
+    }
+
+    /**
+     * Append directory separator to path
+     *
+     * @param string $sPath
+     *
+     * @return string
+     */
+    protected function _appendDirectorySeparator( $sPath )
+    {
+        if ( substr( $sPath, -1 ) != DIRECTORY_SEPARATOR ) {
+            return $sPath . DIRECTORY_SEPARATOR;
+        }
+
+        return $sPath;
     }
 }
