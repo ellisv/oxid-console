@@ -62,20 +62,18 @@ class oxConsoleUpdateManager
     public function run( oxIOutput $oOutput = null )
     {
         $this->_oOutput = $oOutput;
-
-        if ( oxConsoleApplication::VERSION == $this->getLatestVersion() ) {
-            if ( null !== $oOutput ) {
-                $oOutput->writeLn( 'Your console application is up to date' );
-            }
-            return;
-        }
-
-        $sUpdatePath = null;
+        $sUpdatePath    = null;
 
         try {
-            $sVersion    = $this->getLatestVersion();
-            $sUpdatePath = $this->_downloadPackage( $sVersion );
+            $sVersion = $this->getLatestVersion();
+            if ( oxConsoleApplication::VERSION == $this->getLatestVersion() ) {
+                if ( null !== $oOutput ) {
+                    $oOutput->writeLn( 'Your console application is up to date' );
+                }
+                return;
+            }
 
+            $sUpdatePath = $this->_downloadPackage( $sVersion );
             $this->_update( $sUpdatePath );
         } catch ( oxConsoleException $oEx ) {
 
@@ -83,7 +81,7 @@ class oxConsoleUpdateManager
                 $this->_removeDirectory( $sUpdatePath );
             }
 
-            if ( !$oOutput ) {
+            if ( null === $oOutput ) {
                 throw $oEx;
             }
 
