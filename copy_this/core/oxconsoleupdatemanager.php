@@ -154,7 +154,6 @@ class oxConsoleUpdateManager
             return;
         }
 
-        //rename( $sFromPath, $sFromPath . '.bak' );
         $sCopyDir = dirname( $sToPath );
         if ( !is_dir( $sCopyDir ) ) {
             mkdir( $sCopyDir, 0755, true );
