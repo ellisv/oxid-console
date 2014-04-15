@@ -27,7 +27,7 @@
  */
 class CacheClearCommand extends oxConsoleCommand
 {
-
+    
     /**
      * {@inheritdoc}
      */
@@ -60,6 +60,9 @@ class CacheClearCommand extends oxConsoleCommand
     {
         $oInput  = $this->getInput();
         $sTmpDir = $this->_appendDirectorySeparator( oxRegistry::getConfig()->getConfigParam( 'sCompileDir' ) );
+        if ( !is_dir( $sTmpDir ) ) {
+            $oOutput->writeLn( 'Seems that compile directory does not exist' );
+        }
 
         $oOutput->writeLn( 'Clearing OXID cache...' );
 
@@ -89,8 +92,37 @@ class CacheClearCommand extends oxConsoleCommand
                 continue;
             }
 
-            unlink( $sFilePath );
+            is_dir( $sFilePath )
+                ? $this->_removeDirectory( $sFilePath )
+                : unlink( $sFilePath );
         }
+    }
+
+    /**
+     * Remove directory
+     *
+     * @param string $sPath
+     */
+    protected function _removeDirectory( $sPath )
+    {
+        if ( !is_dir( $sPath ) ) {
+            return;
+        }
+
+        $oIterator = new RecursiveDirectoryIterator( $sPath, RecursiveDirectoryIterator::SKIP_DOTS );
+        $oFiles    = new RecursiveIteratorIterator( $oIterator, RecursiveIteratorIterator::CHILD_FIRST );
+
+        foreach( $oFiles as $oFile ) {
+            if ( $oFile->getFilename() == '.' || $oFile->getFilename() === '..' ) {
+                continue;
+            }
+
+            $oFile->isDir()
+                ? rmdir( $oFile->getRealPath() )
+                : unlink( $oFile->getRealPath() );
+        }
+
+        rmdir( $sPath );
     }
 
     /**
