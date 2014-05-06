@@ -215,6 +215,10 @@ class oxConsoleApplication
         $sModulesDir  = $oConfig->getModulesDir();
         $aModulePaths = $oConfig->getConfigParam( 'aModulePaths' );
 
+        if ( !is_array( $aModulePaths ) ) {
+            return;
+        }
+
         foreach ( $aModulePaths as $sModulePath ) {
             $sCommandDir = $sModulesDir . $sModulePath . DIRECTORY_SEPARATOR . 'commands' . DIRECTORY_SEPARATOR;
             $this->_loadCommands( $sCommandDir );
