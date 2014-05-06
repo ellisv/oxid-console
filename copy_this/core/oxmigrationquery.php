@@ -198,6 +198,24 @@ abstract class oxMigrationQuery
     }
 
     /**
+     * Table exists in database?
+     *
+     * @param string $sTable Table name
+     *
+     * @return bool
+     */
+    protected static function _tableExists( $sTable )
+    {
+        $sQuery = "
+            SELECT 1
+            FROM information_schema.tables
+            WHERE table_name = ?
+        ";
+
+        return (bool) oxDb::getDb()->getOne( $sQuery, array($sTable) );
+    }
+
+    /**
      * Column exists in specific table?
      *
      * @param string $sTable  Table name
