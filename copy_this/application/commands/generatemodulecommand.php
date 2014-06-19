@@ -159,7 +159,7 @@ class GenerateModuleCommand extends oxConsoleCommand
         $sPath = dirname( $sFilePath );
 
         if ( !file_exists( $sPath ) ) {
-            mkdir( $sPath );
+            mkdir( $sPath, 0777, true );
         }
     }
 
