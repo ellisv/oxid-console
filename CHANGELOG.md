@@ -1,7 +1,15 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.0...v1.1.1
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.1...v1.1.2
+
+* 1.1.2 (2014-06-19)
+
+    * (de92637) Add recursive flag on mkdir in createMissingFolders() method of generate module command
+    * feature #7 (1b7fa80) Generate translation files with module scaffold
+    * (6b984f2) Update version number to 0.0.1-DEV on module scaffold
+    * (ed9a9ac) Removed unnecessary check for output interface on migration command
+    * bug fix #5 and feature #9 (9306e0e) Implement oxNullOutput for debug ignoring
 
 * 1.1.1 (2014-05-06)
 
