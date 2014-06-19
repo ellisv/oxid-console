@@ -68,7 +68,7 @@ class MigrateCommand extends oxConsoleCommand
 
         $oInput       = $this->getInput();
         $oDebugOutput = $oInput->hasOption( array('n', 'no-debug') )
-            ? null
+            ? oxNew( 'oxNullOutput' )
             : $oOutput;
 
         /** @var oxMigrationHandler $oMigrationHandler */
