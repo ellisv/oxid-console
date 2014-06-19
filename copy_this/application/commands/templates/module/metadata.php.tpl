@@ -19,7 +19,7 @@ $aModule = array(
         'en' => '',
     ),
     'thumbnail'   => 'out/pictures/picture.png',
-    'version'     => '1.0.0',
+    'version'     => '0.0.1-DEV',
     'author'      => '[{$oScaffold->sAuthor}]',
     'url'         => '[{$oScaffold->sUrl}]',
     'email'       => '[{$oScaffold->sEmail}]',

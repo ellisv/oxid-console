@@ -8,10 +8,10 @@
 [{$oScaffold->sVendor}]
 
 ==Shop Version==
-5.1.x/4.7.x
+5.1.x/4.8.x
 
 ==Version==
-1.0.0
+0.0.1-DEV
 
 ==Link==
 [{$oScaffold->sUrl}]
