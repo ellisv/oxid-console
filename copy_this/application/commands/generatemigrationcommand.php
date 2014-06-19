@@ -66,17 +66,9 @@ class GenerateMigrationCommand extends oxConsoleCommand
 
         $sMigrationName = $this->_parseMigrationNameFromInput();
         if ( !$sMigrationName ) {
-
-            if ( $oOutput instanceof oxConsoleOutput ) {
-
-                do {
-                    $sMigrationName = $this->_askForMigrationNameInput();
-                } while ( !$sMigrationName );
-
-            } else {
-                $oOutput->writeLn( 'Please provide short description of what migration will do' );
-                return;
-            }
+            do {
+                $sMigrationName = $this->_askForMigrationNameInput();
+            } while ( !$sMigrationName );
         }
 
         $sMigrationFilePath = $sMigrationsDir . oxMigrationQuery::getCurrentTimestamp() . '_'
@@ -86,7 +78,6 @@ class GenerateMigrationCommand extends oxConsoleCommand
         $oSmarty = oxRegistry::get( 'oxUtilsView' )->getSmarty();
         $oSmarty->assign( 'sMigrationName', $sMigrationName );
         $sContent = $oSmarty->fetch( $sTemplatePath );
-
 
         file_put_contents( $sMigrationFilePath, $sContent );
     }
