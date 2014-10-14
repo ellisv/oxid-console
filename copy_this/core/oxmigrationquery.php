@@ -39,7 +39,7 @@ abstract class oxMigrationQuery
      * First match: timestamp
      * Second match: class name without "migration" appended
      */
-    const REGEXP_FILE = '/(\d{14})_([a-zA-Z]+)\.php$/';
+    const REGEXP_FILE = '/(\d{14})_([a-zA-Z][a-zA-Z0-9]+)\.php$/';
 
     /**
      * @var string Timestamp
