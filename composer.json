@@ -1,0 +1,23 @@
+{
+    "bin": ["oxid"],
+    "name": "ellisv/oxid-console",
+    "description": "OXID Console is php console application for OXID Shop. It provides an API for writting various commands.",
+    "license": "GPL-v3.0",
+    "authors": [
+        {
+            "name": "Eligijus Vitkauskas",
+            "email": "eligijusvitkauskas@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "classmap": ["application/commands", "core"]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "ln -s oxid ../../oxid",
+            "./oxid cache:clear"
+        ]
+    }
+}
