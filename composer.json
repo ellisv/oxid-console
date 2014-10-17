@@ -18,7 +18,7 @@
         "classmap": ["application/commands", "core"]
     },
     "scripts": {
-        "post-autoload-dump": [
+        "post-update-cmd": [
             "ln -sf oxid ../../oxid",
             "./oxid cache:clear"
         ]
