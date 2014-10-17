@@ -18,8 +18,8 @@
         "classmap": ["application/commands", "core"]
     },
     "scripts": {
-        "post-update-cmd": [
-            "cd ../../ && ln -sf modules/oxid-console/oxid .",
+        "post-autoload-dump": [
+            "cd ../../ && ln -sf modules/oxid-console/oxid ."
         ]
     }
 }
