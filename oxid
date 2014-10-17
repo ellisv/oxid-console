@@ -1,31 +1,32 @@
+#!/usr/bin/env php
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
+ * This file is part of OXID Console.
  *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * OXID Console is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * OXID Console is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
- * @version   OXID eShop CE
  */
 
-/**
- * Add custom functions here.
- */
+require_once __DIR__ . '/../../bootstrap.php';
 
-// Premature loading of oxfunctions
-require_once dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'oxfunctions.php';
+// OXID Bug: Smarty gets loaded only with oxUtils class
+// Invoking autoloader to load oxUtils class so Smarty class
+// gets loaded too
+class_exists( 'oxUtils' );
 
 if ( !function_exists( 'module_enabled_count' ) ) {
 
@@ -56,3 +57,7 @@ if ( !function_exists( 'module_enabled_count' ) ) {
         return $iCount;
     }
 }
+
+/** @var oxConsoleApplication $oConsole */
+$oConsole = oxNew( 'oxConsoleApplication' );
+$oConsole->run();
