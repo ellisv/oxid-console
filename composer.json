@@ -19,8 +19,7 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "ln -sf oxid ../../oxid",
-            "./oxid cache:clear"
+            "cd ../../ && ln -sf modules/oxid-console/oxid .",
         ]
     }
 }
