@@ -10,7 +10,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "composer/installers": "~1.0"
+    },
     "autoload": {
         "classmap": ["application/commands", "core"]
     },
