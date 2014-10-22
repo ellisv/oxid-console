@@ -11,7 +11,7 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
     public function __construct()
     {
         parent::__construct();
-        $this->load( '[{$oScaffold->sModuleId}]' );
+        $this->load('[{$oScaffold->sModuleId}]');
     }
 
     /**
@@ -23,7 +23,7 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
      */
     public static function getInstance()
     {
-        return oxRegistry::get( '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module' );
+        return oxRegistry::get('[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module');
     }
 
     /**
@@ -35,8 +35,9 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
     public static function onActivate()
     {
         try {
-            self::_runQueryFromFile( 'install.sql' );
-        } catch ( oxFileException $oEx ) { }
+            self::_runQueryFromFile('install.sql');
+        } catch (oxFileException $oEx) {
+        }
     }
 
     /**
@@ -47,10 +48,11 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
      */
     public static function onDeactivate()
     {
-        if ( function_exists( 'module_enabled_count' ) && module_enabled_count( '[{$oScaffold->sModuleId}]' ) < 2 ) {
+        if (function_exists('module_enabled_count') && module_enabled_count('[{$oScaffold->sModuleId}]') < 2) {
             try {
-                self::_runQueryFromFile( 'uninstall.sql' );
-            } catch ( oxFileException $oEx ) { }
+                self::_runQueryFromFile('uninstall.sql');
+            } catch (oxFileException $oEx) {
+            }
         }
     }
 
@@ -63,18 +65,18 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
      *
      * @throws oxFileException
      */
-    protected static function _runQueryFromFile( $sFilename )
+    protected static function _runQueryFromFile($sFilename)
     {
-        $sContent = static::_getContentFromFile( $sFilename );
+        $sContent = static::_getContentFromFile($sFilename);
         $oDb      = oxDb::getDb();
 
-        foreach ( explode( ';', $sContent ) as $sQuery ) {
-            $sQuery = trim( $sQuery );
-            if ( !$sQuery ) {
+        foreach (explode(';', $sContent) as $sQuery) {
+            $sQuery = trim($sQuery);
+            if (!$sQuery) {
                 continue;
             }
 
-            $oDb->execute( $sQuery );
+            $oDb->execute($sQuery);
         }
     }
 
@@ -92,26 +94,26 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
      * @return string
      * @throws oxFileException
      */
-    protected static function _getContentFromFile( $sFilename )
+    protected static function _getContentFromFile($sFilename)
     {
-        $sFilePath = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . $sFilename;
+        $sFilePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . $sFilename;
 
-        if ( file_exists( $sFilePath . '.tpl' ) ) {
+        if (file_exists($sFilePath . '.tpl')) {
             /** @var Smarty $oSmarty */
-            $oSmarty = oxRegistry::get( 'oxUtilsView' )->getSmarty();
-            $oSmarty->assign( 'oModule', static::getInstance() );
+            $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
+            $oSmarty->assign('oModule', static::getInstance());
 
-            return $oSmarty->fetch( $sFilename . '.tpl' );
+            return $oSmarty->fetch($sFilename . '.tpl');
 
-        } else if ( !file_exists( $sFilePath ) ) {
+        } else if (!file_exists($sFilePath)) {
             /** @var oxFileException $oEx */
-            $oEx = oxNew( 'oxFileException' );
-            $oEx->setFileName( $sFilePath );
-            $oEx->setMessage( 'File does not exist' );
+            $oEx = oxNew('oxFileException');
+            $oEx->setFileName($sFilePath);
+            $oEx->setMessage('File does not exist');
             throw $oEx;
         }
 
-        return file_get_contents( $sFilePath );
+        return file_get_contents($sFilePath);
     }
 
     /**
@@ -124,10 +126,10 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
      *
      * @return bool
      */
-    protected static function _columnExists( $sTable, $sColumn )
+    protected static function _columnExists($sTable, $sColumn)
     {
         $oConfig = oxRegistry::getConfig();
-        $sDbName = $oConfig->getConfigParam( 'dbName' );
+        $sDbName = $oConfig->getConfigParam('dbName');
         $sSql    = "SELECT 1
                     FROM information_schema.COLUMNS
                     WHERE
@@ -137,11 +139,11 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
 
         $oDb = oxDb::getDb();
 
-        return (bool) $oDb->getOne( sprintf(
+        return (bool) $oDb->getOne(sprintf(
             $sSql,
-            $oDb->quote( $sDbName ),
-            $oDb->quote( $sTable ),
-            $oDb->quote( $sColumn )
-        ) );
+            $oDb->quote($sDbName),
+            $oDb->quote($sTable),
+            $oDb->quote($sColumn)
+        ));
     }
 }

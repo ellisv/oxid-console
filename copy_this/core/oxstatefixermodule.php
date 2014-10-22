@@ -35,10 +35,10 @@ class oxStateFixerModule extends oxModule
      *
      * @param oxConfig|null $oConfig If not passed uses default base shop config
      */
-    public function fix( oxConfig $oConfig = null )
+    public function fix(oxConfig $oConfig = null)
     {
-        if ( $oConfig === null ) {
-            $this->setConfig( $oConfig );
+        if ($oConfig === null) {
+            $this->setConfig($oConfig);
         }
 
         $this->fixVersion();
@@ -55,8 +55,8 @@ class oxStateFixerModule extends oxModule
      */
     public function fixVersion()
     {
-        $sVersion = $this->getInfo( 'version' );
-        $this->_addModuleVersion( $sVersion, $this->getId() );
+        $sVersion = $this->getInfo('version');
+        $this->_addModuleVersion($sVersion, $this->getId());
     }
 
     /**
@@ -64,8 +64,8 @@ class oxStateFixerModule extends oxModule
      */
     public function fixExtend()
     {
-        $aExtend = $this->getInfo( 'extend' );
-        $this->_setModuleExtend( $this->getId(), $aExtend );
+        $aExtend = $this->getInfo('extend');
+        $this->_setModuleExtend($this->getId(), $aExtend);
     }
 
     /**
@@ -73,8 +73,8 @@ class oxStateFixerModule extends oxModule
      */
     public function fixFiles()
     {
-        $aFiles = $this->getInfo( 'files' );
-        $this->_addModuleFiles( $aFiles, $this->getId() );
+        $aFiles = $this->getInfo('files');
+        $this->_addModuleFiles($aFiles, $this->getId());
     }
 
     /**
@@ -82,8 +82,8 @@ class oxStateFixerModule extends oxModule
      */
     public function fixTemplates()
     {
-        $aTemplates = $this->getInfo( 'templates' );
-        $this->_addTemplateFiles( $aTemplates, $this->getId() );
+        $aTemplates = $this->getInfo('templates');
+        $this->_addTemplateFiles($aTemplates, $this->getId());
     }
 
     /**
@@ -93,8 +93,8 @@ class oxStateFixerModule extends oxModule
     {
         $this->_deleteModuleBlockEntries();
 
-        $aBlocks = $this->getInfo( 'blocks' );
-        $this->_addTemplateBlocks( $aBlocks, $this->getId() );
+        $aBlocks = $this->getInfo('blocks');
+        $this->_addTemplateBlocks($aBlocks, $this->getId());
     }
 
     /**
@@ -104,12 +104,12 @@ class oxStateFixerModule extends oxModule
      */
     protected function _deleteModuleBlockEntries()
     {
-        $sShopId   = $this->getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         $sModuleId = $this->getId();
-        $oDb       = oxDb::getDb();
+        $oDb = oxDb::getDb();
 
         $sSql = 'DELETE FROM oxtplblocks WHERE oxmodule = %s AND oxshopid = %s';
-        $oDb->execute( sprintf( $sSql, $oDb->quote( $sModuleId ), $oDb->quote( $sShopId ) ) );
+        $oDb->execute(sprintf($sSql, $oDb->quote($sModuleId), $oDb->quote($sShopId)));
     }
 
     /**
@@ -119,8 +119,8 @@ class oxStateFixerModule extends oxModule
     {
         $this->_deleteModuleSettingEntries();
 
-        $aSettings = $this->getInfo( 'settings' );
-        $this->_addModuleSettings( $aSettings, $this->getId() );
+        $aSettings = $this->getInfo('settings');
+        $this->_addModuleSettings($aSettings, $this->getId());
     }
 
     /**
@@ -130,15 +130,15 @@ class oxStateFixerModule extends oxModule
      */
     protected function _deleteModuleSettingEntries()
     {
-        $sShopId   = $this->getConfig()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         $sModuleId = $this->getId();
-        $oDb       = oxDb::getDb();
+        $oDb = oxDb::getDb();
 
         $sSql = 'DELETE FROM oxconfig WHERE oxmodule = %s AND oxshopid = %s';
-        $oDb->execute( sprintf( $sSql, $oDb->quote( 'module' . $sModuleId ), $oDb->quote( $sShopId ) ) );
+        $oDb->execute(sprintf($sSql, $oDb->quote('module' . $sModuleId), $oDb->quote($sShopId)));
 
         $sSql = 'DELETE FROM oxconfigdisplay WHERE oxcfgmodule = %s';
-        $oDb->execute( sprintf( $sSql, $oDb->quote( $sModuleId ) ) );
+        $oDb->execute(sprintf($sSql, $oDb->quote($sModuleId)));
     }
 
     /**
@@ -146,8 +146,8 @@ class oxStateFixerModule extends oxModule
      */
     public function fixEvents()
     {
-        $aEvents = $this->getInfo( 'events' );
-        $this->_addModuleEvents( $aEvents, $this->getId() );
+        $aEvents = $this->getInfo('events');
+        $this->_addModuleEvents($aEvents, $this->getId());
     }
 
     /**
@@ -155,34 +155,34 @@ class oxStateFixerModule extends oxModule
      *
      * @author Alfonsas Cirtautas
      *
-     * @param string $sModuleId     Module ID
-     * @param array  $aModuleExtend Extend data array from metadata
+     * @param string $sModuleId Module ID
+     * @param array $aModuleExtend Extend data array from metadata
      */
-    protected function _setModuleExtend( $sModuleId, $aModuleExtend )
+    protected function _setModuleExtend($sModuleId, $aModuleExtend)
     {
         $aInstalledModules = $this->getAllModules();
-        $sModulePath       = $this->getModulePath( $sModuleId );
+        $sModulePath = $this->getModulePath($sModuleId);
 
         // Remove extended modules by path
-        if ( $sModulePath && is_array( $aInstalledModules ) ) {
-            foreach ( $aInstalledModules as $sClassName => $mModuleName ) {
-                if ( !is_array( $mModuleName ) ) {
+        if ($sModulePath && is_array($aInstalledModules)) {
+            foreach ($aInstalledModules as $sClassName => $mModuleName) {
+                if (!is_array($mModuleName)) {
                     continue;
                 }
 
-                foreach ( $mModuleName as $sKey => $sModuleName ) {
-                    if ( strpos( $sModuleName, $sModulePath . '/' ) === 0 ) {
-                        unset( $aInstalledModules[$sClassName][$sKey] );
+                foreach ($mModuleName as $sKey => $sModuleName) {
+                    if (strpos($sModuleName, $sModulePath . '/') === 0) {
+                        unset($aInstalledModules[$sClassName][$sKey]);
                     }
                 }
             }
         }
 
-        $aModules = $this->mergeModuleArrays( $aInstalledModules, $aModuleExtend );
-        $aModules = $this->buildModuleChains( $aModules );
+        $aModules = $this->mergeModuleArrays($aInstalledModules, $aModuleExtend);
+        $aModules = $this->buildModuleChains($aModules);
 
         $oConfig = $this->getConfig();
-        $oConfig->setConfigParam( 'aModules', $aModules );
-        $oConfig->saveShopConfVar( 'aarr', 'aModules', $aModules );
+        $oConfig->setConfigParam('aModules', $aModules);
+        $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
     }
 }

@@ -63,20 +63,20 @@ abstract class oxMigrationQuery
      */
     public function __construct()
     {
-        $oReflection = new ReflectionClass( $this );
-        $sFilename   = basename( $oReflection->getFileName() );
-        $aMatches    = array();
+        $oReflection = new ReflectionClass($this);
+        $sFilename = basename($oReflection->getFileName());
+        $aMatches = array();
 
-        if ( !preg_match( static::REGEXP_FILE, $sFilename, $aMatches ) ) {
+        if (!preg_match(static::REGEXP_FILE, $sFilename, $aMatches)) {
             /** @var oxMigrationException $oEx */
-            $oEx = oxNew( 'oxMigrationException' );
-            $oEx->setMessage( 'Wrong migration query file name' );
+            $oEx = oxNew('oxMigrationException');
+            $oEx->setMessage('Wrong migration query file name');
             throw $oEx;
         }
 
-        $this->setFilename( $sFilename );
-        $this->setTimestamp( $aMatches[1] );
-        $this->setClassName( $aMatches[2] . 'migration' );
+        $this->setFilename($sFilename);
+        $this->setTimestamp($aMatches[1]);
+        $this->setClassName($aMatches[2] . 'migration');
 
         $this->_validateClassName();
     }
@@ -88,10 +88,10 @@ abstract class oxMigrationQuery
      */
     protected function _validateClassName()
     {
-        if ( strtolower( get_class( $this ) ) != $this->getClassName() ) {
+        if (strtolower(get_class($this)) != $this->getClassName()) {
             /** @var oxMigrationException $oEx */
-            $oEx = oxNew( 'oxMigrationException' );
-            $oEx->setMessage( 'Wrong migration class naming convention. Maybe you forgot to append "Migration"?' );
+            $oEx = oxNew('oxMigrationException');
+            $oEx->setMessage('Wrong migration class naming convention. Maybe you forgot to append "Migration"?');
             throw $oEx;
         }
     }
@@ -113,12 +113,12 @@ abstract class oxMigrationQuery
      *
      * @throws oxMigrationException When wrong timestamp format passed
      */
-    public function setTimestamp( $sTimestamp )
+    public function setTimestamp($sTimestamp)
     {
-        if ( !static::isValidTimestamp( $sTimestamp ) ) {
+        if (!static::isValidTimestamp($sTimestamp)) {
             /** @var oxMigrationException $oEx */
-            $oEx = oxNew( 'oxMigrationException' );
-            $oEx->setMessage( 'Wrong timestamp format passed' );
+            $oEx = oxNew('oxMigrationException');
+            $oEx->setMessage('Wrong timestamp format passed');
             throw $oEx;
         }
 
@@ -140,7 +140,7 @@ abstract class oxMigrationQuery
      *
      * @param string $sFilename
      */
-    public function setFilename( $sFilename )
+    public function setFilename($sFilename)
     {
         $this->_sFilename = $sFilename;
     }
@@ -160,9 +160,9 @@ abstract class oxMigrationQuery
      *
      * @param string $sClassName
      */
-    public function setClassName( $sClassName )
+    public function setClassName($sClassName)
     {
-        $this->_sClassName = strtolower( $sClassName );
+        $this->_sClassName = strtolower($sClassName);
     }
 
     /**
@@ -182,9 +182,9 @@ abstract class oxMigrationQuery
      *
      * @return int
      */
-    public static function isValidTimestamp( $sTimestamp )
+    public static function isValidTimestamp($sTimestamp)
     {
-        return preg_match( static::REGEXP_TIMESTAMP, $sTimestamp );
+        return preg_match(static::REGEXP_TIMESTAMP, $sTimestamp);
     }
 
     /**
@@ -194,7 +194,7 @@ abstract class oxMigrationQuery
      */
     public static function getCurrentTimestamp()
     {
-        return date( 'YmdHis' );
+        return date('YmdHis');
     }
 
     /**
@@ -204,7 +204,7 @@ abstract class oxMigrationQuery
      *
      * @return bool
      */
-    protected static function _tableExists( $sTable )
+    protected static function _tableExists($sTable)
     {
         $sQuery = "
             SELECT 1
@@ -212,22 +212,22 @@ abstract class oxMigrationQuery
             WHERE table_name = ?
         ";
 
-        return (bool) oxDb::getDb()->getOne( $sQuery, array($sTable) );
+        return (bool)oxDb::getDb()->getOne($sQuery, array($sTable));
     }
 
     /**
      * Column exists in specific table?
      *
-     * @param string $sTable  Table name
+     * @param string $sTable Table name
      * @param string $sColumn Column name
      *
      * @return bool
      */
-    protected static function _columnExists( $sTable, $sColumn )
+    protected static function _columnExists($sTable, $sColumn)
     {
         $oConfig = oxRegistry::getConfig();
-        $sDbName = $oConfig->getConfigParam( 'dbName' );
-        $sSql    = 'SELECT 1
+        $sDbName = $oConfig->getConfigParam('dbName');
+        $sSql = 'SELECT 1
                     FROM information_schema.COLUMNS
                     WHERE
                         TABLE_SCHEMA = ?
@@ -236,6 +236,6 @@ abstract class oxMigrationQuery
 
         $oDb = oxDb::getDb();
 
-        return (bool) $oDb->getOne( $sSql, array($sDbName, $sTable, $sColumn) );
+        return (bool)$oDb->getOne($sSql, array($sDbName, $sTable, $sColumn));
     }
 }

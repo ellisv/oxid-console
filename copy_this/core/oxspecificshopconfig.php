@@ -38,7 +38,7 @@ class oxSpecificShopConfig extends oxConfig
      *
      * @param $iShopId
      */
-    public function __construct( $iShopId )
+    public function __construct($iShopId)
     {
         $this->_iShopId = $iShopId;
         $this->init();
@@ -51,12 +51,12 @@ class oxSpecificShopConfig extends oxConfig
      */
     public static function getAll()
     {
-        $aShopIds = oxDb::getDb()->getCol( 'SELECT oxid FROM oxshops' );
+        $aShopIds = oxDb::getDb()->getCol('SELECT oxid FROM oxshops');
         $aConfigs = array();
 
-        foreach ( $aShopIds as $mShopId ) {
+        foreach ($aShopIds as $mShopId) {
             // Note: not using static::get() for avoiding checking of is shop id valid
-            $aConfigs[] = new oxSpecificShopConfig( $mShopId );
+            $aConfigs[] = new oxSpecificShopConfig($mShopId);
         }
 
         return $aConfigs;
@@ -69,17 +69,17 @@ class oxSpecificShopConfig extends oxConfig
      *
      * @return oxSpecificShopConfig|null
      */
-    public static function get( $mShopId )
+    public static function get($mShopId)
     {
         $sSQL = 'SELECT 1 FROM oxshops WHERE oxid = %s';
-        $oDb  = oxDb::getDb();
+        $oDb = oxDb::getDb();
 
-        if ( !$oDb->getOne( sprintf( $sSQL, $oDb->quote( $mShopId ) ) ) ) { // invalid shop id
+        if (!$oDb->getOne(sprintf($sSQL, $oDb->quote($mShopId)))) { // invalid shop id
             // Not using oxConfig::_isValidShopId() because its not static, but YES it should be
             return null;
         }
 
-        return new oxSpecificShopConfig( $mShopId );
+        return new oxSpecificShopConfig($mShopId);
     }
 
     /**
@@ -90,7 +90,7 @@ class oxSpecificShopConfig extends oxConfig
     public function init()
     {
         // Duplicated init protection
-        if ( $this->_blInit ) {
+        if ($this->_blInit) {
             return;
         }
         $this->_blInit = true;
@@ -102,36 +102,36 @@ class oxSpecificShopConfig extends oxConfig
 
         try {
             $sShopID = $this->getShopId();
-            $blConfigLoaded = $this->_loadVarsFromDb( $sShopID );
+            $blConfigLoaded = $this->_loadVarsFromDb($sShopID);
 
             // loading shop config
-            if ( empty( $sShopID ) || !$blConfigLoaded ) {
+            if (empty($sShopID) || !$blConfigLoaded) {
                 /** @var oxConnectionException $oEx */
-                $oEx = oxNew( "oxConnectionException" );
-                $oEx->setMessage( "Unable to load shop config values from database" );
+                $oEx = oxNew("oxConnectionException");
+                $oEx->setMessage("Unable to load shop config values from database");
                 throw $oEx;
             }
 
             // loading theme config options
             $this->_loadVarsFromDb(
-                $sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam( 'sTheme' )
+                $sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme')
             );
 
             // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
-            if ( $this->getConfigParam( 'sCustomTheme' ) ) {
+            if ($this->getConfigParam('sCustomTheme')) {
                 $this->_loadVarsFromDb(
-                    $sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam( 'sCustomTheme' )
+                    $sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme')
                 );
             }
 
             // loading modules config
-            $this->_loadVarsFromDb( $sShopID, null, oxConfig::OXMODULE_MODULE_PREFIX );
+            $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_MODULE_PREFIX);
 
             $aOnlyMainShopVars = array('blMallUsers', 'aSerials', 'IMD', 'IMA', 'IMS');
-            $this->_loadVarsFromDb( $this->getBaseShopId(), $aOnlyMainShopVars );
-        } catch ( oxConnectionException $oEx ) {
+            $this->_loadVarsFromDb($this->getBaseShopId(), $aOnlyMainShopVars);
+        } catch (oxConnectionException $oEx) {
             $oEx->debugOut();
-            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+            oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
         }
     }
 

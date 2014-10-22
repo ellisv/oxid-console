@@ -31,7 +31,7 @@ class oxNullOutput implements oxIOutput
     /**
      * {@inheritdoc}
      */
-    public function write( $sMessage )
+    public function write($sMessage)
     {
         // Doing nothing...
     }
@@ -39,7 +39,7 @@ class oxNullOutput implements oxIOutput
     /**
      * {@inheritdoc}
      */
-    public function writeLn( $sMessage = '' )
+    public function writeLn($sMessage = '')
     {
         // Doing nothing...
     }

@@ -34,48 +34,48 @@ class MigrateCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'migrate' );
-        $this->setDescription( 'Run migration scripts' );
+        $this->setName('migrate');
+        $this->setDescription('Run migration scripts');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: migrate [<timestamp>]' );
+        $oOutput->writeLn('Usage: migrate [<timestamp>]');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'This command runs migration scripts for given timestamp' );
-        $oOutput->writeLn( 'If no timestamp is passed than it assumes timestamp is current time' );
+        $oOutput->writeLn('This command runs migration scripts for given timestamp');
+        $oOutput->writeLn('If no timestamp is passed than it assumes timestamp is current time');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'Available options:' );
-        $oOutput->writeLn( '  -n, --no-debug    No debug output' );
+        $oOutput->writeLn('Available options:');
+        $oOutput->writeLn('  -n, --no-debug    No debug output');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         try {
             $sTimestamp = $this->_parseTimestamp();
-        } catch ( oxConsoleException $oEx ) {
-            $oOutput->writeLn( $oEx->getMessage() );
+        } catch (oxConsoleException $oEx) {
+            $oOutput->writeLn($oEx->getMessage());
             return;
         }
 
-        $oOutput->writeLn( 'Running migration scripts' );
+        $oOutput->writeLn('Running migration scripts');
 
-        $oInput       = $this->getInput();
-        $oDebugOutput = $oInput->hasOption( array('n', 'no-debug') )
-            ? oxNew( 'oxNullOutput' )
+        $oInput = $this->getInput();
+        $oDebugOutput = $oInput->hasOption(array('n', 'no-debug'))
+            ? oxNew('oxNullOutput')
             : $oOutput;
 
         /** @var oxMigrationHandler $oMigrationHandler */
-        $oMigrationHandler = oxRegistry::get( 'oxMigrationHandler' );
-        $oMigrationHandler->run( $sTimestamp, $oDebugOutput );
+        $oMigrationHandler = oxRegistry::get('oxMigrationHandler');
+        $oMigrationHandler->run($sTimestamp, $oDebugOutput);
 
-        $oOutput->writeLn( 'Migration finished successfully' );
+        $oOutput->writeLn('Migration finished successfully');
     }
 
     /**
@@ -89,16 +89,16 @@ class MigrateCommand extends oxConsoleCommand
     {
         $oInput = $this->getInput();
 
-        if ( $sTimestamp = $oInput->getArgument( 1 ) ) {
+        if ($sTimestamp = $oInput->getArgument(1)) {
 
-            if ( !oxMigrationQuery::isValidTimestamp( $sTimestamp ) ) {
+            if (!oxMigrationQuery::isValidTimestamp($sTimestamp)) {
 
-                if ( $sTime = strtotime( $sTimestamp ) ) {
-                    $sTimestamp = date( 'YmdHis', $sTime );
+                if ($sTime = strtotime($sTimestamp)) {
+                    $sTimestamp = date('YmdHis', $sTime);
                 } else {
                     /** @var oxConsoleException $oEx */
-                    $oEx = oxNew( 'oxConsoleException' );
-                    $oEx->setMessage( 'Invalid timestamp format, use YYYYMMDDhhmmss format' );
+                    $oEx = oxNew('oxConsoleException');
+                    $oEx->setMessage('Invalid timestamp format, use YYYYMMDDhhmmss format');
                     throw $oEx;
                 }
             }

@@ -33,46 +33,46 @@ class CacheClearCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'cache:clear' );
-        $this->setDescription( 'Clear OXID cache from tmp folder' );
+        $this->setName('cache:clear');
+        $this->setDescription('Clear OXID cache from tmp folder');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: cache:clear [options]' );
+        $oOutput->writeLn('Usage: cache:clear [options]');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'This command clears out contents of OXID tmp folder' );
-        $oOutput->writeLn( 'It applies following rules:' );
-        $oOutput->writeLn( ' * Does not delete .htaccess' );
-        $oOutput->writeLn( ' * Does not delete smarty directory but its contents by default' );
+        $oOutput->writeLn('This command clears out contents of OXID tmp folder');
+        $oOutput->writeLn('It applies following rules:');
+        $oOutput->writeLn(' * Does not delete .htaccess');
+        $oOutput->writeLn(' * Does not delete smarty directory but its contents by default');
         $oOutput->writeln();
-        $oOutput->writeLn( 'Available options:' );
-        $oOutput->writeLn( '  -s, --smarty     Clears out only smarty cache' );
+        $oOutput->writeLn('Available options:');
+        $oOutput->writeLn('  -s, --smarty     Clears out only smarty cache');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
-        $oInput  = $this->getInput();
-        $sTmpDir = $this->_appendDirectorySeparator( oxRegistry::getConfig()->getConfigParam( 'sCompileDir' ) );
-        if ( !is_dir( $sTmpDir ) ) {
-            $oOutput->writeLn( 'Seems that compile directory does not exist' );
+        $oInput = $this->getInput();
+        $sTmpDir = $this->_appendDirectorySeparator(oxRegistry::getConfig()->getConfigParam('sCompileDir'));
+        if (!is_dir($sTmpDir)) {
+            $oOutput->writeLn('Seems that compile directory does not exist');
         }
 
-        $oOutput->writeLn( 'Clearing OXID cache...' );
+        $oOutput->writeLn('Clearing OXID cache...');
 
-        $this->_clearDirectory( $sTmpDir . 'smarty' );
-        if ( !$oInput->hasOption( array('s', 'smarty') ) ) {
+        $this->_clearDirectory($sTmpDir . 'smarty');
+        if (!$oInput->hasOption(array('s', 'smarty'))) {
             // If there are no options for clearing smarty cache only
-            $this->_clearDirectory( $sTmpDir, array('.htaccess', 'smarty') );
+            $this->_clearDirectory($sTmpDir, array('.htaccess', 'smarty'));
         }
 
-        $oOutput->writeLn( 'Cache cleared successfully' );
+        $oOutput->writeLn('Cache cleared successfully');
     }
 
     /**
@@ -80,21 +80,21 @@ class CacheClearCommand extends oxConsoleCommand
      * are in $aKeep array
      *
      * @param string $sDir
-     * @param array  $aKeep
+     * @param array $aKeep
      */
-    protected function _clearDirectory( $sDir, $aKeep = array() )
+    protected function _clearDirectory($sDir, $aKeep = array())
     {
-        $sDir = $this->_appendDirectorySeparator( $sDir );
+        $sDir = $this->_appendDirectorySeparator($sDir);
 
-        foreach ( glob( $sDir . '*' ) as $sFilePath ) {
-            $sFileName = basename( $sFilePath );
-            if ( in_array( $sFileName, $aKeep ) ) {
+        foreach (glob($sDir . '*') as $sFilePath) {
+            $sFileName = basename($sFilePath);
+            if (in_array($sFileName, $aKeep)) {
                 continue;
             }
 
-            is_dir( $sFilePath )
-                ? $this->_removeDirectory( $sFilePath )
-                : unlink( $sFilePath );
+            is_dir($sFilePath)
+                ? $this->_removeDirectory($sFilePath)
+                : unlink($sFilePath);
         }
     }
 
@@ -103,26 +103,26 @@ class CacheClearCommand extends oxConsoleCommand
      *
      * @param string $sPath
      */
-    protected function _removeDirectory( $sPath )
+    protected function _removeDirectory($sPath)
     {
-        if ( !is_dir( $sPath ) ) {
+        if (!is_dir($sPath)) {
             return;
         }
 
-        $oIterator = new RecursiveDirectoryIterator( $sPath, RecursiveDirectoryIterator::SKIP_DOTS );
-        $oFiles    = new RecursiveIteratorIterator( $oIterator, RecursiveIteratorIterator::CHILD_FIRST );
+        $oIterator = new RecursiveDirectoryIterator($sPath, RecursiveDirectoryIterator::SKIP_DOTS);
+        $oFiles = new RecursiveIteratorIterator($oIterator, RecursiveIteratorIterator::CHILD_FIRST);
 
-        foreach( $oFiles as $oFile ) {
-            if ( $oFile->getFilename() == '.' || $oFile->getFilename() === '..' ) {
+        foreach ($oFiles as $oFile) {
+            if ($oFile->getFilename() == '.' || $oFile->getFilename() === '..') {
                 continue;
             }
 
             $oFile->isDir()
-                ? rmdir( $oFile->getRealPath() )
-                : unlink( $oFile->getRealPath() );
+                ? rmdir($oFile->getRealPath())
+                : unlink($oFile->getRealPath());
         }
 
-        rmdir( $sPath );
+        rmdir($sPath);
     }
 
     /**
@@ -132,9 +132,9 @@ class CacheClearCommand extends oxConsoleCommand
      *
      * @return string
      */
-    protected function _appendDirectorySeparator( $sPath )
+    protected function _appendDirectorySeparator($sPath)
     {
-        if ( substr( $sPath, -1 ) != DIRECTORY_SEPARATOR ) {
+        if (substr($sPath, -1) != DIRECTORY_SEPARATOR) {
             return $sPath . DIRECTORY_SEPARATOR;
         }
 

@@ -39,34 +39,34 @@ class oxConsoleOutput implements oxIOutput
     public function __construct()
     {
         $sStream = 'php://stdout';
-        if ( !$this->_hasStdoutSupport() ) {
+        if (!$this->_hasStdoutSupport()) {
             $sStream = 'php://output';
         }
 
-        $this->_oStream = fopen( $sStream, 'w' );
+        $this->_oStream = fopen($sStream, 'w');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write( $sMessage )
+    public function write($sMessage)
     {
-        if ( !@fwrite( $this->_oStream, $sMessage ) ) {
+        if (!@fwrite($this->_oStream, $sMessage)) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Could not write to output' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Could not write to output');
             throw $oEx;
         }
 
-        fflush( $this->_oStream );
+        fflush($this->_oStream);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function writeLn( $sMessage = '' )
+    public function writeLn($sMessage = '')
     {
-        $this->write( $sMessage . PHP_EOL );
+        $this->write($sMessage . PHP_EOL);
     }
 
     /**
@@ -93,6 +93,6 @@ class oxConsoleOutput implements oxIOutput
      */
     protected function _hasStdoutSupport()
     {
-        return ( 'OS400' != php_uname( 's' ) );
+        return ('OS400' != php_uname('s'));
     }
 }

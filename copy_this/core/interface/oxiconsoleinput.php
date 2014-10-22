@@ -52,7 +52,7 @@ interface oxIConsoleInput
      *
      * @return mixed|null
      */
-    public function getOption( $mOption );
+    public function getOption($mOption);
 
     /**
      * Has option
@@ -61,7 +61,7 @@ interface oxIConsoleInput
      *
      * @return bool
      */
-    public function hasOption( $mOption );
+    public function hasOption($mOption);
 
     /**
      * Get argument at given offset
@@ -70,7 +70,7 @@ interface oxIConsoleInput
      *
      * @return mixed|null
      */
-    public function getArgument( $iOffset );
+    public function getArgument($iOffset);
 
     /**
      * Prompt user for an input
@@ -79,5 +79,5 @@ interface oxIConsoleInput
      *
      * @return string
      */
-    public function prompt( $sTitle = null );
+    public function prompt($sTitle = null);
 }

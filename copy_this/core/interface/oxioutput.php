@@ -31,12 +31,12 @@ interface oxIOutput
      *
      * @param string $sMessage
      */
-    public function write( $sMessage );
+    public function write($sMessage);
 
     /**
      * Write message to an output and append new line
      *
      * @param string $sMessage
      */
-    public function writeLn( $sMessage = '' );
+    public function writeLn($sMessage = '');
 }

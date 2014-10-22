@@ -33,66 +33,66 @@ class ModuleListCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'module:list' );
-        $this->setDescription( 'Outputs module list table' );
+        $this->setName('module:list');
+        $this->setDescription('Outputs module list table');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: module:list [options]' );
+        $oOutput->writeLn('Usage: module:list [options]');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'Outputs module id, module title and if it is active in current shop' );
+        $oOutput->writeLn('Outputs module id, module title and if it is active in current shop');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'Available options:' );
-        $oOutput->writeLn( '  --shop=<shop_id>  Specifies in which shop to fix states' );
+        $oOutput->writeLn('Available options:');
+        $oOutput->writeLn('  --shop=<shop_id>  Specifies in which shop to fix states');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         try {
             $oConfig = $this->_parseShopConfig();
-        } catch ( oxConsoleException $oEx ) {
-            $oOutput->writeLn( $oEx->getMessage() );
+        } catch (oxConsoleException $oEx) {
+            $oOutput->writeLn($oEx->getMessage());
             return;
         }
 
-        $this->_printModulesTable( $this->_getModules( $oConfig ), $oOutput );
+        $this->_printModulesTable($this->_getModules($oConfig), $oOutput);
     }
 
     /**
      * Print modules table
      *
      * @param oxModule[] $aModules
-     * @param oxIOutput  $oOutput
+     * @param oxIOutput $oOutput
      */
-    protected function _printModulesTable( array $aModules, oxIOutput $oOutput )
+    protected function _printModulesTable(array $aModules, oxIOutput $oOutput)
     {
-        $iLang   = oxRegistry::getLang()->getBaseLanguage();
-        $sLine   = str_repeat( '=', 78 );
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
+        $sLine = str_repeat('=', 78);
         $sFormat = '| %30s | %35s | %3s |';
 
-        $oOutput->writeLn( $sLine );
-        $oOutput->writeLn( sprintf( $sFormat, 'ID', 'Title', 'Act' ) );
-        $oOutput->writeLn( $sLine );
+        $oOutput->writeLn($sLine);
+        $oOutput->writeLn(sprintf($sFormat, 'ID', 'Title', 'Act'));
+        $oOutput->writeLn($sLine);
 
-        foreach ( $aModules as $oModule ) {
+        foreach ($aModules as $oModule) {
             $oOutput->writeLn(
                 sprintf(
                     $sFormat,
-                    $oModule->getInfo( 'id' ),
-                    $oModule->getInfo( 'title', $iLang ),
-                    ( $oModule->isActive() ? 'Yes' : 'No' )
+                    $oModule->getInfo('id'),
+                    $oModule->getInfo('title', $iLang),
+                    ($oModule->isActive() ? 'Yes' : 'No')
                 )
             );
         }
 
-        $oOutput->writeLn( $sLine );
+        $oOutput->writeLn($sLine);
     }
 
     /**
@@ -102,16 +102,16 @@ class ModuleListCommand extends oxConsoleCommand
      *
      * @return oxModule[]
      */
-    protected function _getModules( oxConfig $oConfig )
+    protected function _getModules(oxConfig $oConfig)
     {
         $aModules = array();
 
         /** @var oxModule $oModule */
-        $oModule = oxNew( 'oxModule' );
-        $oModule->setConfig( $oConfig );
+        $oModule = oxNew('oxModule');
+        $oModule->setConfig($oConfig);
 
-        foreach ( array_keys( $oModule->getModulePaths() ) as $sModuleId ) {
-            $oModule->load( $sModuleId );
+        foreach (array_keys($oModule->getModulePaths()) as $sModuleId) {
+            $oModule->load($sModuleId);
             $aModules[] = clone $oModule;
         }
 
@@ -128,15 +128,15 @@ class ModuleListCommand extends oxConsoleCommand
     protected function _parseShopConfig()
     {
         $oInput = $this->getInput();
-        if ( $oInput->hasOption( 'shop' ) ) {
-            $mShopId = $oInput->getOption( 'shop' );
-            if ( $oConfig = oxSpecificShopConfig::get( $mShopId ) ) {
+        if ($oInput->hasOption('shop')) {
+            $mShopId = $oInput->getOption('shop');
+            if ($oConfig = oxSpecificShopConfig::get($mShopId)) {
                 return $oConfig;
             }
 
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Shop with given id does not exist' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Shop with given id does not exist');
             throw $oEx;
         }
 

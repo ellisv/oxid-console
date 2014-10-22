@@ -46,10 +46,10 @@ class oxConsoleUpdateManager
      */
     public function __construct()
     {
-        if ( static::$_bCreated ) {
+        if (static::$_bCreated) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Only one instance for oxConsoleUpdateManager allowed' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Only one instance for oxConsoleUpdateManager allowed');
             throw $oEx;
         }
 
@@ -59,34 +59,34 @@ class oxConsoleUpdateManager
     /**
      * Run update
      */
-    public function run( oxIOutput $oOutput = null )
+    public function run(oxIOutput $oOutput = null)
     {
         $this->_oOutput = $oOutput;
         $sUpdatePath = null;
 
         try {
             $sVersion = $this->getLatestVersion();
-            if ( oxConsoleApplication::VERSION == $this->getLatestVersion() ) {
-                if ( null !== $oOutput ) {
-                    $oOutput->writeLn( 'Your console application is up to date' );
+            if (oxConsoleApplication::VERSION == $this->getLatestVersion()) {
+                if (null !== $oOutput) {
+                    $oOutput->writeLn('Your console application is up to date');
                 }
                 return;
             }
 
-            $sUpdatePath = $this->_downloadPackage( $sVersion );
-            $this->_update( $sUpdatePath );
-        } catch ( oxConsoleException $oEx ) {
-            if ( null === $oOutput ) {
+            $sUpdatePath = $this->_downloadPackage($sVersion);
+            $this->_update($sUpdatePath);
+        } catch (oxConsoleException $oEx) {
+            if (null === $oOutput) {
                 throw $oEx;
             }
 
             $oOutput->writeLn();
-            $oOutput->writeLn( $oEx->getMessage() );
+            $oOutput->writeLn($oEx->getMessage());
             return;
         }
 
-        if ( null !== $oOutput ) {
-            $oOutput->writeLn( 'OXID Console updated successfully' );
+        if (null !== $oOutput) {
+            $oOutput->writeLn('OXID Console updated successfully');
         }
     }
 
@@ -97,33 +97,33 @@ class oxConsoleUpdateManager
      *
      * @throws oxConsoleException
      */
-    protected function _update( $sUpdatePath )
+    protected function _update($sUpdatePath)
     {
-        $sUpdatePath = $this->_appendDirectorySeparator( $sUpdatePath );
-        $oOutput     = $this->getOutput();
-        if ( null !== $oOutput ) {
-            $oOutput->write( 'Updating OXID Console files' );
+        $sUpdatePath = $this->_appendDirectorySeparator($sUpdatePath);
+        $oOutput = $this->getOutput();
+        if (null !== $oOutput) {
+            $oOutput->write('Updating OXID Console files');
         }
 
         $sCopyPath = $sUpdatePath . 'copy_this' . DIRECTORY_SEPARATOR;
-        if ( !is_dir( $sCopyPath ) ) {
+        if (!is_dir($sCopyPath)) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'No copy_this folder in update path' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('No copy_this folder in update path');
             throw $oEx;
         }
 
-        $oIterator = new RecursiveDirectoryIterator( $sCopyPath );
-        $oIterator->setFlags( RecursiveDirectoryIterator::SKIP_DOTS );
-        $oAllFiles = new RecursiveIteratorIterator( $oIterator );
+        $oIterator = new RecursiveDirectoryIterator($sCopyPath);
+        $oIterator->setFlags(RecursiveDirectoryIterator::SKIP_DOTS);
+        $oAllFiles = new RecursiveIteratorIterator($oIterator);
 
-        foreach ( $oAllFiles as $oFilePath ) {
-            $sBasePath = str_replace( $sCopyPath, OX_BASE_PATH, $oFilePath );
-            $this->_replaceFile( (string) $oFilePath, $sBasePath );
+        foreach ($oAllFiles as $oFilePath) {
+            $sBasePath = str_replace($sCopyPath, OX_BASE_PATH, $oFilePath);
+            $this->_replaceFile((string)$oFilePath, $sBasePath);
         }
 
-        if ( null !== $oOutput ) {
-            $oOutput->writeLn( ' [OK]' );
+        if (null !== $oOutput) {
+            $oOutput->writeLn(' [OK]');
         }
     }
 
@@ -133,24 +133,24 @@ class oxConsoleUpdateManager
      * @param string $sFromPath
      * @param string $sToPath
      */
-    protected function _replaceFile( $sFromPath, $sToPath )
+    protected function _replaceFile($sFromPath, $sToPath)
     {
         $oOutput = $this->getOutput();
 
-        if ( !is_file( $sFromPath ) ) {
-            if ( $oOutput ) {
-                $oOutput->writeLn( 'Warning! ' . $sFromPath . ' not found - skipping' );
+        if (!is_file($sFromPath)) {
+            if ($oOutput) {
+                $oOutput->writeLn('Warning! ' . $sFromPath . ' not found - skipping');
             }
             return;
         }
 
-        $sCopyDir = dirname( $sToPath );
-        if ( !is_dir( $sCopyDir ) ) {
-            mkdir( $sCopyDir, 0755, true );
+        $sCopyDir = dirname($sToPath);
+        if (!is_dir($sCopyDir)) {
+            mkdir($sCopyDir, 0755, true);
         }
 
-        @unlink( $sToPath );
-        rename( $sFromPath, $sToPath );
+        @unlink($sToPath);
+        rename($sFromPath, $sToPath);
     }
 
     /**
@@ -161,34 +161,34 @@ class oxConsoleUpdateManager
      * @return string Path were packed is saved
      * @throws oxConsoleException
      */
-    protected function _downloadPackage( $sVersion )
+    protected function _downloadPackage($sVersion)
     {
-        $oConfig     = oxRegistry::getConfig();
-        $sCompileDir = $this->_appendDirectorySeparator( $oConfig->getShopConfVar( 'sCompileDir' ) );
-        $sSavePath   = $sCompileDir . uniqid( 'oxid-console' ) . '.zip';
-        $oOutput     = $this->getOutput();
+        $oConfig = oxRegistry::getConfig();
+        $sCompileDir = $this->_appendDirectorySeparator($oConfig->getShopConfVar('sCompileDir'));
+        $sSavePath = $sCompileDir . uniqid('oxid-console') . '.zip';
+        $oOutput = $this->getOutput();
 
-        if ( null !== $oOutput ) {
-            $oOutput->write( 'Downloading update' );
+        if (null !== $oOutput) {
+            $oOutput->write('Downloading update');
         }
 
-        $bResult = (bool) file_put_contents(
+        $bResult = (bool)file_put_contents(
             $sSavePath,
-            fopen( "https://github.com/EllisV/oxid-console/archive/{$sVersion}.zip", 'r' )
+            fopen("https://github.com/EllisV/oxid-console/archive/{$sVersion}.zip", 'r')
         );
 
-        if ( !$bResult ) {
+        if (!$bResult) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Could not download update package' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Could not download update package');
             throw $oEx;
         }
 
-        if ( null !== $oOutput ) {
-            $oOutput->writeLn( ' [OK]' );
+        if (null !== $oOutput) {
+            $oOutput->writeLn(' [OK]');
         }
 
-        return $this->_unzipPackage( $sSavePath, $sVersion );
+        return $this->_unzipPackage($sSavePath, $sVersion);
     }
 
     /**
@@ -200,36 +200,36 @@ class oxConsoleUpdateManager
      * @return string Path to directory
      * @throws oxConsoleException
      */
-    protected function _unzipPackage( $sPath, $sVersion )
+    protected function _unzipPackage($sPath, $sVersion)
     {
-        $oZip    = new ZipArchive();
+        $oZip = new ZipArchive();
         $oOutput = $this->getOutput();
 
-        if ( null !== $oOutput ) {
-            $oOutput->write( 'Unzip update' );
+        if (null !== $oOutput) {
+            $oOutput->write('Unzip update');
         }
 
-        if ( $oZip->open( $sPath ) !== true ) {
+        if ($oZip->open($sPath) !== true) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Error trying to open archive' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Error trying to open archive');
             throw $oEx;
         }
 
-        $sExtractPath = dirname( $sPath );
-        if ( !$oZip->extractTo( $sExtractPath ) ) {
+        $sExtractPath = dirname($sPath);
+        if (!$oZip->extractTo($sExtractPath)) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Error trying to unzip archive' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Error trying to unzip archive');
             throw $oEx;
         }
         $oZip->close();
 
-        if ( null !== $oOutput ) {
-            $oOutput->writeLn( ' [OK]' );
+        if (null !== $oOutput) {
+            $oOutput->writeLn(' [OK]');
         }
 
-        return $sExtractPath . DIRECTORY_SEPARATOR . 'oxid-console-' . substr( $sVersion, 1 );
+        return $sExtractPath . DIRECTORY_SEPARATOR . 'oxid-console-' . substr($sVersion, 1);
     }
 
     /**
@@ -252,36 +252,36 @@ class oxConsoleUpdateManager
      */
     public function getLatestVersion()
     {
-        if ( null === $this->_sLatestVersion ) {
-            $oCurl = curl_init( 'https://api.github.com/repos/EllisV/oxid-console/git/refs/tags' );
-            curl_setopt( $oCurl, CURLOPT_USERAGENT, 'OXID-Console-Version-Checker' );
-            curl_setopt( $oCurl, CURLOPT_RETURNTRANSFER, true );
-            $sResponse = curl_exec( $oCurl );
+        if (null === $this->_sLatestVersion) {
+            $oCurl = curl_init('https://api.github.com/repos/EllisV/oxid-console/git/refs/tags');
+            curl_setopt($oCurl, CURLOPT_USERAGENT, 'OXID-Console-Version-Checker');
+            curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
+            $sResponse = curl_exec($oCurl);
 
-            if ( curl_errno( $oCurl ) || !$sResponse ) {
+            if (curl_errno($oCurl) || !$sResponse) {
                 /** @var oxConsoleException $oEx */
-                $oEx = oxNew( 'oxConsoleException' );
-                $oEx->setMessage( 'Can not get a response from server' );
+                $oEx = oxNew('oxConsoleException');
+                $oEx->setMessage('Can not get a response from server');
                 throw $oEx;
             }
 
-            $aResponse = json_decode( $sResponse );
-            if ( !is_array( $aResponse ) ) {
+            $aResponse = json_decode($sResponse);
+            if (!is_array($aResponse)) {
                 /** @var oxConsoleException $oEx */
-                $oEx = oxNew( 'oxConsoleException' );
-                $oEx->setMessage( 'Wrong response format from server' );
+                $oEx = oxNew('oxConsoleException');
+                $oEx->setMessage('Wrong response format from server');
                 throw $oEx;
             }
 
-            $oLatestEntry = array_pop( $aResponse );
-            if ( !isset( $oLatestEntry->ref ) ) {
+            $oLatestEntry = array_pop($aResponse);
+            if (!isset($oLatestEntry->ref)) {
                 /** @var oxConsoleException $oEx */
-                $oEx = oxNew( 'oxConsoleException' );
-                $oEx->setMessage( 'No reference key were found' );
+                $oEx = oxNew('oxConsoleException');
+                $oEx->setMessage('No reference key were found');
                 throw $oEx;
             }
 
-            $this->_sLatestVersion = substr( $oLatestEntry->ref, 10 );
+            $this->_sLatestVersion = substr($oLatestEntry->ref, 10);
         }
 
         return $this->_sLatestVersion;
@@ -294,9 +294,9 @@ class oxConsoleUpdateManager
      *
      * @return string
      */
-    protected function _appendDirectorySeparator( $sPath )
+    protected function _appendDirectorySeparator($sPath)
     {
-        if ( substr( $sPath, -1 ) != DIRECTORY_SEPARATOR ) {
+        if (substr($sPath, -1) != DIRECTORY_SEPARATOR) {
             return $sPath . DIRECTORY_SEPARATOR;
         }
 

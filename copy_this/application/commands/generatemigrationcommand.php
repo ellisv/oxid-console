@@ -35,8 +35,8 @@ class GenerateMigrationCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'g:migration' );
-        $this->setDescription( 'Generate new migration file' );
+        $this->setName('g:migration');
+        $this->setDescription('Generate new migration file');
     }
 
     /**
@@ -44,14 +44,14 @@ class GenerateMigrationCommand extends oxConsoleCommand
      *
      * @param oxIOutput $oOutput
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: g:migration <word> [<second_word>...]' );
+        $oOutput->writeLn('Usage: g:migration <word> [<second_word>...]');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'Generates blank migration class.' );
-        $oOutput->writeLn( 'Migration name depends on words you have written.' );
+        $oOutput->writeLn('Generates blank migration class.');
+        $oOutput->writeLn('Migration name depends on words you have written.');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'If no words were passed you will be asked to input them' );
+        $oOutput->writeLn('If no words were passed you will be asked to input them');
     }
 
     /**
@@ -59,27 +59,27 @@ class GenerateMigrationCommand extends oxConsoleCommand
      *
      * @param oxIOutput $oOutput
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         $sMigrationsDir = OX_BASE_PATH . 'migration' . DIRECTORY_SEPARATOR;
-        $sTemplatePath  = $this->_getTemplatePath();
+        $sTemplatePath = $this->_getTemplatePath();
 
         $sMigrationName = $this->_parseMigrationNameFromInput();
-        if ( !$sMigrationName ) {
+        if (!$sMigrationName) {
             do {
                 $sMigrationName = $this->_askForMigrationNameInput();
-            } while ( !$sMigrationName );
+            } while (!$sMigrationName);
         }
 
         $sMigrationFilePath = $sMigrationsDir . oxMigrationQuery::getCurrentTimestamp() . '_'
-                              . strtolower( $sMigrationName ) . '.php';
+            . strtolower($sMigrationName) . '.php';
 
         /** @var Smarty $oSmarty */
-        $oSmarty = oxRegistry::get( 'oxUtilsView' )->getSmarty();
-        $oSmarty->assign( 'sMigrationName', $sMigrationName );
-        $sContent = $oSmarty->fetch( $sTemplatePath );
+        $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
+        $oSmarty->assign('sMigrationName', $sMigrationName);
+        $sContent = $oSmarty->fetch($sTemplatePath);
 
-        file_put_contents( $sMigrationFilePath, $sContent );
+        file_put_contents($sMigrationFilePath, $sContent);
     }
 
     /**
@@ -101,10 +101,10 @@ class GenerateMigrationCommand extends oxConsoleCommand
      */
     protected function _askForMigrationNameInput()
     {
-        $oInput  = $this->getInput();
-        $aTokens = explode( ' ', $oInput->prompt( 'Enter short description' ) );
+        $oInput = $this->getInput();
+        $aTokens = explode(' ', $oInput->prompt('Enter short description'));
 
-        return $this->_buildMigrationName( $aTokens );
+        return $this->_buildMigrationName($aTokens);
     }
 
     /**
@@ -117,9 +117,9 @@ class GenerateMigrationCommand extends oxConsoleCommand
         $oInput = $this->getInput();
 
         $aTokens = $oInput->getArguments();
-        array_shift( $aTokens ); // strip out command name
+        array_shift($aTokens); // strip out command name
 
-        return $this->_buildMigrationName( $aTokens );
+        return $this->_buildMigrationName($aTokens);
     }
 
     /**
@@ -129,17 +129,17 @@ class GenerateMigrationCommand extends oxConsoleCommand
      *
      * @return string
      */
-    protected function _buildMigrationName( array $aTokens )
+    protected function _buildMigrationName(array $aTokens)
     {
         $sMigrationName = '';
 
-        foreach ( $aTokens as $sToken ) {
+        foreach ($aTokens as $sToken) {
 
-            if ( !$sToken ) {
+            if (!$sToken) {
                 continue;
             }
 
-            $sMigrationName .= ucfirst( $sToken );
+            $sMigrationName .= ucfirst($sToken);
         }
 
         return $sMigrationName;
