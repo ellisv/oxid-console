@@ -47,29 +47,29 @@ class MyOwnCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'my:own' );
-        $this->setDescription( 'Demo command for learning' );
+        $this->setName('my:own');
+        $this->setDescription('Demo command for learning');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'This is my help output' );
+        $oOutput->writeLn('This is my help output');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
-        $oInput->hasOption( array( 'demo', 'd' ) ) {
-            $oOutput->writeLn( 'You typed in --demo or -d also' );
+        $oInput->hasOption(array('demo', 'd')) {
+            $oOutput->writeLn('You typed in --demo or -d also');
         }
 
-        $oOutput->writeLn( 'My demo command finished' );
+        $oOutput->writeLn('My demo command finished');
     }
 }
 ```
@@ -97,14 +97,14 @@ class MyOwnCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'my:own' );
-        $this->setDescription( 'Demo command for learning' );
+        $this->setName('my:own');
+        $this->setDescription('Demo command for learning');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
         // TODO: Implement help() method
     }
@@ -112,20 +112,20 @@ class MyOwnCommand extends oxConsoleCommand
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
 
-        var_dump( $oInput->hasOption( array( 'a', 'all' ) ) );
-        var_dump( $oInput->hasOption( 'b' ) );
-        var_dump( $oInput->hasOption( 'not-valid' ) );
+        var_dump($oInput->hasOption(array('a', 'all')));
+        var_dump($oInput->hasOption('b'));
+        var_dump($oInput->hasOption('not-valid'));
 
-        var_dump( $oInput->getOption( 'word' ) );
+        var_dump($oInput->getOption('word'));
 
-        var_dump( $oInput->getOptions() );
-        var_dump( $oInput->getArguments() );
+        var_dump($oInput->getOptions());
+        var_dump($oInput->getArguments());
 
-        var_dump( $oInput->getArgument( 2 ) );
+        var_dump($oInput->getArgument(2));
     }
 }
 ```
@@ -233,7 +233,7 @@ class AddDemoCulumnToOxUserMigration extends oxMigrationQuery
      */
     public function up()
     {
-        if ( $this->_columnExists( 'oxuser', 'OXDEMO' ) ) {
+        if ($this->_columnExists('oxuser', 'OXDEMO')) {
             return;
         }
 
@@ -246,7 +246,7 @@ class AddDemoCulumnToOxUserMigration extends oxMigrationQuery
                     DEFAULT NULL
                     COMMENT  'Demo field for migration'";
 
-        oxDb::getDb()->execute( $sSql );
+        oxDb::getDb()->execute($sSql);
     }
 
     /**
@@ -254,11 +254,11 @@ class AddDemoCulumnToOxUserMigration extends oxMigrationQuery
      */
     public function down()
     {
-        if ( !$this->_columnExists( 'oxuser', 'OXDEMO' ) ) {
+        if (!$this->_columnExists('oxuser', 'OXDEMO')) {
             return;
         }
 
-        oxDb::getDb()->execute( 'ALTER TABLE `oxuser` DROP `OXDEMO`' );
+        oxDb::getDb()->execute('ALTER TABLE `oxuser` DROP `OXDEMO`');
     }
 }
 ```
