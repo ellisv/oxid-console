@@ -74,21 +74,24 @@ class FixStatesCommand extends oxConsoleCommand
             return;
         }
 
-        /** @var oxStateFixerModule $oStateFixerModule */
-        $oStateFixerModule = oxNew('oxStateFixerModule');
+        /** @var oxModuleStateFixer $oModuleStateFixer */
+        $oModuleStateFixer = oxRegistry::get('oxModuleStateFixer');
+
+        /** @var oxModule $oModule */
+        $oModule = oxNew('oxModule');
 
         foreach ($aShopConfigs as $oConfig) {
 
             $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
 
             foreach ($aModuleIds as $sModuleId) {
-                if (!$oStateFixerModule->load($sModuleId)) {
+                if (!$oModule->load($sModuleId)) {
                     $oDebugOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
                     continue;
                 }
 
                 $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
-                $oStateFixerModule->fix($oConfig);
+                $oModuleStateFixer->fix($oModule, $oConfig);
             }
 
             $oDebugOutput->writeLn();
