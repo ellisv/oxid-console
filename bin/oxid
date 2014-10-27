@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of the OXID Console package.
+ *
+ * (c) Eligijus Vitkauskas <eligijusvitkauskas@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+set_time_limit(0);
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+use EllisV\Oxid\Console\Application;
+
+$app = new Application();
+$app->run();
