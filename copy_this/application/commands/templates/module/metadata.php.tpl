@@ -10,14 +10,8 @@ $sMetadataVersion = '1.1';
  */
 $aModule = array(
     'id'          => '[{$oScaffold->sModuleId}]',
-    'title'       => array(
-        'de' => '[TR - [{$oScaffold->sModuleTitle}]]',
-        'en' => '[{$oScaffold->sModuleTitle}]',
-    ),
-    'description' => array(
-        'de' => '',
-        'en' => '',
-    ),
+    'title'       => '[{$oScaffold->sModuleTitle}]',
+    'description' => '',
     'thumbnail'   => 'out/pictures/picture.png',
     'version'     => '0.0.1-DEV',
     'author'      => '[{$oScaffold->sAuthor}]',
@@ -27,7 +21,7 @@ $aModule = array(
         // '<oxclass>'   => '<vendor/module/path_to_file>',
     ),
     'files'       => array(
-        '[{$oScaffold->sVendor}][{$oScaffold->sModuleName|lower}]module' => '[{if $oScaffold->sVendor}][{$oScaffold->sVendor}]/[{/if}][{$oScaffold->sModuleName|lower}]/core/[{$oScaffold->sVendor}][{$oScaffold->sModuleName|lower}]module.php',
+        '[{$oScaffold->sVendor}][{$oScaffold->sModuleName|lower}]events' => '[{if $oScaffold->sVendor}][{$oScaffold->sVendor}]/[{/if}][{$oScaffold->sModuleName|lower}]/core/[{$oScaffold->sVendor}][{$oScaffold->sModuleName|lower}]events.php',
     ),
     'templates'   => array(
         // '<template.tpl>' => '<vendor/module/path_to_template.tpl>',
@@ -41,7 +35,7 @@ $aModule = array(
     ),
     'settings'    => array(),
     'events'      => array(
-        'onActivate'   => '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module::onActivate',
-        'onDeactivate' => '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module::onDeactivate',
+        'onActivate'   => '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Events::onActivate',
+        'onDeactivate' => '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Events::onDeactivate',
     ),
 );
