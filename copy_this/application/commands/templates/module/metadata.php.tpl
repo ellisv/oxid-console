@@ -10,7 +10,7 @@ $sMetadataVersion = '1.1';
  */
 $aModule = array(
     'id'          => '[{$oScaffold->sModuleId}]',
-    'title'       => '[{$oScaffold->sModuleTitle}]',
+    'title'       => '[{$oScaffold->sVendor|upper}] :: [{$oScaffold->sModuleTitle}]',
     'description' => '',
     'thumbnail'   => 'out/pictures/picture.png',
     'version'     => '0.0.1-DEV',
