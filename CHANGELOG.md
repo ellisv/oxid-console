@@ -1,7 +1,10 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.2...v1.1.3
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.3...v1.1.4
+
+* 1.1.4 (2014-10-27)
+    * (af63d2c) Deprecate console:update command
 
 * 1.1.3 (2014-10-22)
     * (be06157) Modify source code to new OXID standards
