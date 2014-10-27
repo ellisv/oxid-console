@@ -48,11 +48,9 @@ class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Module extends oxModule
      */
     public static function onDeactivate()
     {
-        if (function_exists('module_enabled_count') && module_enabled_count('[{$oScaffold->sModuleId}]') < 2) {
-            try {
-                self::_runQueryFromFile('uninstall.sql');
-            } catch (oxFileException $oEx) {
-            }
+        try {
+            self::_runQueryFromFile('uninstall.sql');
+        } catch (oxFileException $oEx) {
         }
     }
 
