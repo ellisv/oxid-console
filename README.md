@@ -5,7 +5,6 @@ OXID Console is php console application for OXID Shop. It provides an API for wr
 By default there are following commands included:
 
 * `cache:clear` - Clear OXID cache from tmp folder
-* `console:update` - Update your console application
 * `db:update` - Updates database views
 * `fix:states` - Fixes modules metadata states
 * `g:migration` - Generate new migration file
