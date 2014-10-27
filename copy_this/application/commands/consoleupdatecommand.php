@@ -34,7 +34,7 @@ class ConsoleUpdateCommand extends oxConsoleCommand
     public function configure()
     {
         $this->setName('console:update');
-        $this->setDescription('Update your console application');
+        $this->setDescription('Update your console application. DEPRECATED.');
     }
 
     /**
@@ -42,9 +42,7 @@ class ConsoleUpdateCommand extends oxConsoleCommand
      */
     public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn('Usage: console:update');
-        $oOutput->writeLn();
-        $oOutput->writeLn('This command runs an update manager of OXID Console');
+        $oOutput->writeLn('Console update command is deprecated');
     }
 
     /**
@@ -52,16 +50,6 @@ class ConsoleUpdateCommand extends oxConsoleCommand
      */
     public function execute(oxIOutput $oOutput)
     {
-        oxRegistry::get('oxConsoleUpdateManager')->run($oOutput);
-
-        // Executing cache:clear command
-        // TODO: Refactor this place because it looks nasty
-        $aCommands = $this->getConsoleApplication()->getLoadedCommands();
-        if (isset($aCommands['cache:clear'])) {
-            $oCommand = $aCommands['cache:clear'];
-            $oCommand->setConsoleApplication($this->getConsoleApplication());
-            $oCommand->setInput($this->getInput());
-            $oCommand->execute($oOutput);
-        }
+        $oOutput->writeLn('Console update command is deprecated');
     }
 }
