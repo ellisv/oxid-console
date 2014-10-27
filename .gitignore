@@ -1,2 +1,6 @@
 # Ignoring PHPStorm IDE folder
 .idea/
+
+# Composer specific ignores
+/vendor
+composer.phar
