@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -57,6 +57,11 @@ class oxMigrationHandler
      */
     protected $_aQueries = array();
 
+	/**
+	 * @var oxDb
+	 */
+	protected $_oDb;
+
     /**
      * Constructor.
      *
@@ -64,60 +69,47 @@ class oxMigrationHandler
      */
     public function __construct()
     {
-        if (static::$_oCreated) {
+		if ( static::$_oCreated ) {
             /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Only one instance for oxMigrationHandler allowed');
+            $oEx = oxNew( 'oxMigrationException' );
+            $oEx->setMessage( 'Only one instance for oxMigrationHandler allowed' );
             throw $oEx;
         }
 
         static::$_oCreated = true;
 
-        $this->_sCacheFilePath = OX_BASE_PATH . 'cache' . DIRECTORY_SEPARATOR . 'migrations.cache';
-        $this->_sMigrationQueriesDir = OX_BASE_PATH . 'migration' . DIRECTORY_SEPARATOR;
+		$createSql = "CREATE TABLE IF NOT EXISTS `oxmigrationstatus` (
+						  `OXID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+						  `version` varchar(255) NOT NULL UNIQUE,
+						  `executed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores the migrationstatus';
+						";
 
-        if (is_file($this->_sCacheFilePath)) {
-            $this->_aExecutedQueryNames = unserialize(file_get_contents($this->_sCacheFilePath));
-        }
+		$this->_oDB = oxDb::getDb();
+		$this->_oDB->execute($createSql);
+
+		$this->_aExecutedQueryNames = $this->_oDB->getAssoc("SELECT * FROM oxmigrationstatus");
+		$this->_sMigrationQueriesDir = OX_BASE_PATH . 'migration' . DIRECTORY_SEPARATOR;
 
         $this->_buildMigrationQueries();
     }
 
     /**
-     * Destructor.
-     *
-     * Flushes down cache to file
-     */
-    public function __destruct()
-    {
-        $hFile = fopen($this->_sCacheFilePath, 'w');
-        if (!$hFile) {
-            /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Could not open migration handler cache file');
-            throw $oEx;
-        }
-
-        fwrite($hFile, serialize($this->_aExecutedQueryNames));
-        fclose($hFile);
-    }
-
-    /**
      * Run migration
      *
-     * @param string|null $sTimestamp
+     * @param string|null    $sTimestamp
      * @param oxIOutput|null $oOutput
      */
-    public function run($sTimestamp = null, oxIOutput $oOutput = null)
+    public function run( $sTimestamp = null, oxIOutput $oOutput = null )
     {
-        if (null === $sTimestamp) {
+        if ( null === $sTimestamp ) {
             $sTimestamp = oxMigrationQuery::getCurrentTimestamp();
         }
 
-        foreach ($this->getQueries() as $oQuery) {
+        foreach ( $this->getQueries() as $oQuery ) {
             $oQuery->getTimestamp() < $sTimestamp
-                ? $this->_goUp($oQuery, $oOutput)
-                : $this->_goDown($oQuery, $oOutput);
+                ? $this->_goUp( $oQuery, $oOutput )
+                : $this->_goDown( $oQuery, $oOutput );
         }
     }
 
@@ -125,15 +117,15 @@ class oxMigrationHandler
      * Migrate query up
      *
      * @param oxMigrationQuery $oQuery
-     * @param oxIOutput|null $oOutput
+     * @param oxIOutput|null   $oOutput
      */
-    protected function _goUp(oxMigrationQuery $oQuery, oxIOutput $oOutput = null)
+    protected function _goUp( oxMigrationQuery $oQuery, oxIOutput $oOutput = null )
     {
-        if ($this->isExecuted($oQuery)) {
+        if ( $this->isExecuted( $oQuery ) ) {
             return;
         }
 
-        if ($oOutput) {
+        if ( $oOutput ) {
             $oOutput->writeLn(
                 sprintf(
                     '[DEBUG] Migrating up %s %s',
@@ -143,22 +135,22 @@ class oxMigrationHandler
         }
 
         $oQuery->up();
-        $this->setExecuted($oQuery);
+        $this->setExecuted( $oQuery );
     }
 
     /**
      * Migrate query down
      *
      * @param oxMigrationQuery $oQuery
-     * @param oxIOutput|null $oOutput
+     * @param oxIOutput|null   $oOutput
      */
-    protected function _goDown(oxMigrationQuery $oQuery, oxIOutput $oOutput = null)
+    protected function _goDown( oxMigrationQuery $oQuery, oxIOutput $oOutput = null )
     {
-        if (!$this->isExecuted($oQuery)) {
+        if ( !$this->isExecuted( $oQuery ) ) {
             return;
         }
 
-        if ($oOutput) {
+        if ( $oOutput ) {
             $oOutput->writeLn(
                 sprintf(
                     '[DEBUG] Migrating down %s %s',
@@ -168,7 +160,7 @@ class oxMigrationHandler
         }
 
         $oQuery->down();
-        $this->setUnexecuted($oQuery);
+        $this->setUnexecuted( $oQuery );
     }
 
     /**
@@ -178,9 +170,16 @@ class oxMigrationHandler
      *
      * @return bool
      */
-    public function isExecuted(oxMigrationQuery $oQuery)
+    public function isExecuted( oxMigrationQuery $oQuery )
     {
-        return in_array($oQuery->getFilename(), $this->_aExecutedQueryNames);
+
+        foreach ($this->_aExecutedQueryNames as $executedQuery) {
+			if ($oQuery->getFilename() == $executedQuery[0]) {
+				return true;
+			}
+		}
+
+		return false;
     }
 
     /**
@@ -188,13 +187,11 @@ class oxMigrationHandler
      *
      * @param oxMigrationQuery $oQuery
      */
-    public function setExecuted(oxMigrationQuery $oQuery)
+    public function setExecuted( oxMigrationQuery $oQuery )
     {
-        if ($this->isExecuted($oQuery)) {
-            return;
-        }
 
-        $this->_aExecutedQueryNames[] = $oQuery->getFilename();
+		$sSQL = sprintf("REPLACE INTO oxmigrationstatus SET version = '%s'", $oQuery->getFilename());
+		$this->_oDB->execute($sSQL);
     }
 
     /**
@@ -202,11 +199,10 @@ class oxMigrationHandler
      *
      * @param oxMigrationQuery $oQuery
      */
-    public function setUnexecuted(oxMigrationQuery $oQuery)
+    public function setUnexecuted( oxMigrationQuery $oQuery )
     {
-        if (($mKey = array_search($oQuery->getFilename(), $this->_aExecutedQueryNames)) !== false) {
-            unset($this->_aExecutedQueryNames[$mKey]);
-        }
+		$sSQL = sprintf("DELETE FROM oxmigrationstatus WHERE version = '%s'", $oQuery->getFilename());
+		$this->_oDB->execute($sSQL);
     }
 
     /**
@@ -214,23 +210,23 @@ class oxMigrationHandler
      */
     protected function _buildMigrationQueries()
     {
-        if (!is_dir($this->_sMigrationQueriesDir)) {
+        if ( !is_dir( $this->_sMigrationQueriesDir ) ) {
             return;
         }
 
-        $oDirectory = new RecursiveDirectoryIterator($this->_sMigrationQueriesDir);
-        $oFlattened = new RecursiveIteratorIterator($oDirectory);
+        $oDirectory = new RecursiveDirectoryIterator( $this->_sMigrationQueriesDir );
+        $oFlattened = new RecursiveIteratorIterator( $oDirectory );
 
-        $aFiles = new RegexIterator($oFlattened, oxMigrationQuery::REGEXP_FILE);
-        foreach ($aFiles as $sFilePath) {
+        $aFiles = new RegexIterator( $oFlattened, oxMigrationQuery::REGEXP_FILE );
+        foreach ( $aFiles as $sFilePath ) {
             require_once $sFilePath;
 
-            $sClassName = $this->_getClassNameFromFilePath($sFilePath);
+            $sClassName = $this->_getClassNameFromFilePath( $sFilePath );
 
             /** @var oxMigrationQuery $oQuery */
-            $oQuery = oxNew($sClassName);
+            $oQuery = oxNew( $sClassName );
 
-            $this->addQuery($oQuery);
+            $this->addQuery( $oQuery );
         }
     }
 
@@ -242,15 +238,15 @@ class oxMigrationHandler
      * @throws oxMigrationException
      * @return string Class name in lower case most cases
      */
-    protected function _getClassNameFromFilePath($sFilePath)
+    protected function _getClassNameFromFilePath( $sFilePath )
     {
-        $sFileName = basename($sFilePath);
-        $aMatches = array();
+        $sFileName = basename( $sFilePath );
+        $aMatches  = array();
 
-        if (!preg_match(oxMigrationQuery::REGEXP_FILE, $sFileName, $aMatches)) {
+        if ( !preg_match( oxMigrationQuery::REGEXP_FILE, $sFileName, $aMatches ) ) {
             /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Could not extract class name from file name');
+            $oEx = oxNew( 'oxMigrationException' );
+            $oEx->setMessage( 'Could not extract class name from file name' );
             throw $oEx;
         }
 
@@ -262,7 +258,7 @@ class oxMigrationHandler
      *
      * @param oxMigrationQuery[] $aQueries
      */
-    public function setQueries(array $aQueries)
+    public function setQueries( array $aQueries )
     {
         $this->_aQueries = $aQueries;
     }
@@ -274,7 +270,8 @@ class oxMigrationHandler
      */
     public function getQueries()
     {
-        return $this->_aQueries;
+        ksort($this->_aQueries);
+		return $this->_aQueries;
     }
 
     /**
@@ -282,9 +279,9 @@ class oxMigrationHandler
      *
      * @param oxMigrationQuery $oQuery
      */
-    public function addQuery(oxMigrationQuery $oQuery)
+    public function addQuery( oxMigrationQuery $oQuery )
     {
-        $this->_aQueries[] = $oQuery;
+        $this->_aQueries[$oQuery->getTimestamp()] = $oQuery;
     }
 
     /**
@@ -292,7 +289,7 @@ class oxMigrationHandler
      *
      * @param array $aExecutedQueryNames
      */
-    public function setExecutedQueryNames(array $aExecutedQueryNames)
+    public function setExecutedQueryNames( array $aExecutedQueryNames )
     {
         $this->_aExecutedQueryNames = $aExecutedQueryNames;
     }
