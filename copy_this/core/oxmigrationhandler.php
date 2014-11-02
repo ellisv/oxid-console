@@ -58,11 +58,6 @@ class oxMigrationHandler
     protected $_aQueries = array();
 
     /**
-     * @var oxDb
-     */
-    protected $_oDb;
-
-    /**
      * Constructor.
      *
      * Loads migration queries cache and builds migration queries objects
@@ -78,17 +73,18 @@ class oxMigrationHandler
 
         static::$_oCreated = true;
 
-        $createSql = "CREATE TABLE IF NOT EXISTS `oxmigrationstatus` (
-						  `OXID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-						  `version` varchar(255) NOT NULL UNIQUE,
-						  `executed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores the migrationstatus';
-						";
+        $createSql = '
+            CREATE TABLE IF NOT EXISTS `oxmigrationstatus` (
+                `OXID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                `version` varchar(255) NOT NULL UNIQUE,
+                `executed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=\'Stores the migrationstatus\';
+        ';
 
-        $this->_oDB = oxDb::getDb();
-        $this->_oDB->execute($createSql);
+        $oDb = oxDb::getDb();
+        $oDb->execute($createSql);
 
-        $this->_aExecutedQueryNames = $this->_oDB->getAssoc("SELECT * FROM oxmigrationstatus");
+        $this->_aExecutedQueryNames = $oDb->getAssoc('SELECT * FROM oxmigrationstatus');
         $this->_sMigrationQueriesDir = OX_BASE_PATH . 'migration' . DIRECTORY_SEPARATOR;
 
         $this->_buildMigrationQueries();
@@ -200,8 +196,8 @@ class oxMigrationHandler
     public function setExecuted(oxMigrationQuery $oQuery)
     {
 
-        $sSQL = sprintf("REPLACE INTO oxmigrationstatus SET version = '%s'", $oQuery->getFilename());
-        $this->_oDB->execute($sSQL);
+        $sSQL = 'REPLACE INTO oxmigrationstatus SET version = ?';
+        oxDb::getDb()->execute($sSQL, array($oQuery->getFilename()));
     }
 
     /**
@@ -211,8 +207,8 @@ class oxMigrationHandler
      */
     public function setUnexecuted(oxMigrationQuery $oQuery)
     {
-        $sSQL = sprintf("DELETE FROM oxmigrationstatus WHERE version = '%s'", $oQuery->getFilename());
-        $this->_oDB->execute($sSQL);
+        $sSQL = 'DELETE FROM oxmigrationstatus WHERE version = ?';
+        oxDb::getDb()->execute($sSQL, array($oQuery->getFilename()));
     }
 
     /**
