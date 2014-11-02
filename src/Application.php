@@ -12,6 +12,7 @@
 namespace EllisV\Oxid\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * The console application that handles the commands
@@ -28,5 +29,20 @@ class Application extends BaseApplication
     public function __construct()
     {
         parent::__construct('OXID Console', self::VERSION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDefaultInputDefinition()
+    {
+        $definition = parent::getDefaultInputDefinition();
+        $definition->addOption(new InputOption(
+            '--working-dir', '-d',
+            InputOption::VALUE_REQUIRED,
+            'If specified, use the given directory as working directory'
+        ));
+
+        return $definition;
     }
 }
