@@ -11,7 +11,6 @@ By default there are following commands included:
 * `g:module` - Generate new module scaffold
 * `list` - *(default)* List of all available commands
 * `migrate` - Run migration scripts
-* `module:list` - Outputs module list table
 
 This OXID Console repository has **Migration Handler** and **Module State Fixer** included.
 
