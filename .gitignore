@@ -4,3 +4,4 @@
 # Composer specific ignores
 /vendor
 composer.phar
+/composer.lock
