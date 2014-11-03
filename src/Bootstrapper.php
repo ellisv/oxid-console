@@ -42,8 +42,15 @@ class Bootstrapper
      */
     public function bootstrap($directory)
     {
-        // TODO: Implement bootstrap() method
+        $requiredFiles = array(
+            $directory . '/bootstrap.php',
+            $directory . '/config.inc.php'
+        );
 
-        throw new \RuntimeException('OXID is not found in current working directory');
+        if (!$this->filesystem->exists($requiredFiles)) {
+            throw new \RuntimeException('OXID is not found in current working directory');
+        }
+
+        require_once $directory . '/bootstrap.php';
     }
 }

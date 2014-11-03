@@ -24,6 +24,10 @@ class BootstrapperTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $filesystem->expects($this->any())
+            ->method('exists')
+            ->will($this->returnValue(false));
+
         $bootstrapper = new Bootstrapper($filesystem);
         $bootstrapper->bootstrap('');
     }
