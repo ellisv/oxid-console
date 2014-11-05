@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EllisV\Oxid\Console;
+namespace EllisV\Oxid\Console\Bootstrapper;
 
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -26,29 +26,39 @@ class Bootstrapper
     private $filesystem;
 
     /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
      * Constructor.
      *
      * @param Filesystem $filesystem
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, ResolverInterface $resolver)
     {
         $this->filesystem = $filesystem;
+        $this->resolver = $resolver;
     }
 
     /**
      * Bootstrap OXID
      *
      * @param string $directory Directory where OXID is stored
+     *
+     * @throws BootstrapperException
      */
     public function bootstrap($directory)
     {
+        $directory = $this->resolver->resolve($directory);
+
         $requiredFiles = array(
             $directory . '/bootstrap.php',
             $directory . '/config.inc.php'
         );
 
         if (!$this->filesystem->exists($requiredFiles)) {
-            throw new \RuntimeException('OXID is not found in current working directory');
+            throw new BootstrapperException('OXID is not found in current working directory');
         }
 
         require_once $directory . '/bootstrap.php';
