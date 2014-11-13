@@ -5,6 +5,7 @@ To get the diff between two versions, go to https://github.com/EllisV/oxid-conso
 
 * 1.2.0 (2014-11-14)
     * cleanup
+    * added composer file
 
 * 1.1.4 (2014-10-27)
     * (af63d2c) Deprecate console:update command

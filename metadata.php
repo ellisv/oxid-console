@@ -20,7 +20,6 @@
  * @copyright (C) OXID eSales AG 2003-2014
  */
 
-
 /**
  * Metadata version
  */
@@ -33,7 +32,7 @@ $aModule = array(
     'id'           => 'oeconsole',
     'title'        => 'OXID-Console (CLI Interface for OXID eShop)',
     'description'  => 'OXID-Console module to give you a console interface to manage your shop',
-    'version'      => '1.1.4',
+    'version'      => '1.2.0',
     'author'       => 'OXID eSales AG',
     'url'          => 'http://www.oxid-esales.com',
     'email'        => 'info@oxid-esales.com',
