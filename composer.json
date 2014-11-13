@@ -27,5 +27,9 @@
     },
     "bin": [
         "oxid"
-    ]
+    ],
+    "extra": {
+        "installer-name": "oe/oeconsole"
+    }
 }
+
