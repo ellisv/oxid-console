@@ -39,7 +39,7 @@ class oxConsoleApplication
     /**
      * OXID Console application version
      */
-    const VERSION = 'v1.1.4';
+    const VERSION = 'v1.2.0';
 
     /**
      * @var oxConsoleCommand[] Available commands in console
@@ -60,7 +60,6 @@ class oxConsoleApplication
      */
     public function __construct($sDefaultCommandName = 'list')
     {
-        $this->_loadCoreCommands();
         $this->_loadModulesCommands();
 
         if (isset($this->_aCommands[$sDefaultCommandName])) {
@@ -191,17 +190,6 @@ class oxConsoleApplication
     public function remove($sCommandName)
     {
         unset($this->_aCommands[$sCommandName]);
-    }
-
-    /**
-     * Load core console application commands
-     *
-     * Loads all command files from application/commands directory
-     */
-    protected function _loadCoreCommands()
-    {
-        $sDirectory = OX_BASE_PATH . 'application' . DIRECTORY_SEPARATOR . 'commands' . DIRECTORY_SEPARATOR;
-        $this->_loadCommands($sDirectory);
     }
 
     /**
