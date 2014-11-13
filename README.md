@@ -14,15 +14,37 @@ By default there are following commands included:
 * `migrate` - Run migration scripts
 * `module:list` - Outputs module list table
 
-This OXID Console repository has **Migration Handler**, **Module State Fixer** and module_enabled_count() included.
+This OXID Console repository has **Migration Handler** and **Module State Fixer**.
 
 ## Getting started
+
+### Install
+
+Install using composer with the following `composer.json`
+
+```javascript
+{
+    "name": "name",
+    "require": {
+        "seidemannweb-florian/oxid-console": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/seidemannweb-florian/oxid-console.git"
+        }
+    ]
+}
+
+```
+
+### Usage
 
 The entry point of console application is `php oxid`. It will execute default command which is `list`. To call a specific command run `php oxid [command]`. If you need help about specific command run `php oxid [command] -h` or `php oxid [command] --help`
 
 ## Defining your own command
 
-* Commands get autoloaded from `application/commands/` and `[module_path]/commands/` directories. But you can always add or remove commands with `add()` or `remove()` methods of console application
+* Commands get autoloaded from `[module_path]/commands/` directories. But you can always add or remove commands with `add()` or `remove()` methods of console application
 * You can access console application `$this->getConsoleApplication()` and input object `$this->getInput()` in your command class
 * Command filename must follow `[your_command]command.php` format
 * Class name must be the same as filename, e.g. CacheClearCommand.php
@@ -292,9 +314,3 @@ oxStateFixerModule which is extension of oxModule has method `fix()` which will 
 Those methods can be executed individually because they are public.
 
 We have provided you with `fix:states` command to work with oxStateFixerModule. Type in `php oxid fix:states --help` for more information.
-
-## module_enabled_count()
-
-When you want do deactivate module it is sometimes good to clean after your module, e.g. dropping tables or columns created by it. But we can not do this because we do not know how many (sub)shops are using this module, dropping tables or columns should be done only when module gets deactivated on last shop using this.
-
-We provided you with `module_enabled_count()` function to get number of shops where your given module is activated.
