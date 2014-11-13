@@ -11,7 +11,7 @@
     "license": "MIT",
     "config": {
         "bin-dir": "bin"
-    }
+    },
     "authors": [{
         "name": "Eligijus Vitkauskas",
         "email": "eligijusvitkauskas@gmail.com",
