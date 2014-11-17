@@ -186,7 +186,7 @@ class AddAmountFieldToDemoModuleMigration extends oxMigrationQuery
 }
 ```
 
-Migration handler can run migrations with your given timestamp *(if no timestamp provided than it assumes timestamp as current timestamp)*. Inside it saves *(in generated `cache/migrations.cache` file)* which migration queries were executed and knows which migration queries go up or go down.
+Migration handler can run migrations with your given timestamp *(if no timestamp provided than it assumes timestamp as current timestamp)*. Inside it saves which migration queries were executed and knows which migration queries go up or go down.
 
 Once we generated this file we run `php oxid migrate`
 

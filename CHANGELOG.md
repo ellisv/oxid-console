@@ -1,7 +1,15 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.3...v1.1.4
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.4...v1.2.0
+
+* 1.2.0 (2014-11-17)
+    * Migration status are stored in database right now
+    * (aab4e32) Dropping module_enabled_count() feature
+    * (bce0279) Use events class for generated modules
+    * (fc02b9f) Modify the behavior of fixing module states
+    * (96cb16f) Remove console:update command in favor of deprecation
+    * (456706f) Remove module:list command
 
 * 1.1.4 (2014-10-27)
     * (af63d2c) Deprecate console:update command
