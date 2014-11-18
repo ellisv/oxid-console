@@ -40,6 +40,12 @@ class oxModuleStateFixer extends oxModuleInstaller
 
         $sModuleId = $oModule->getId();
 
+        $this->_deleteBlock($sModuleId);
+        $this->_deleteTemplateFiles($sModuleId);
+        $this->_deleteModuleFiles($sModuleId);
+        $this->_deleteModuleEvents($sModuleId);
+        $this->_deleteModuleVersions($sModuleId);
+
         $this->_addExtensions($oModule);
 
         $this->_addTemplateBlocks($oModule->getInfo("blocks"), $sModuleId);
