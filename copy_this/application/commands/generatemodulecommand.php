@@ -189,7 +189,7 @@ class GenerateModuleCommand extends oxConsoleCommand
     protected function _buildScaffold(oxIOutput $oOutput)
     {
         $oScaffold = new stdClass();
-        $oScaffold->sVendor = strtolower($this->_getUserInput('Vendor', true));
+        $oScaffold->sVendor = strtolower($this->_getUserInput('Vendor Prefix', true));
 
         $blFirstRequest = true;
 
@@ -201,7 +201,7 @@ class GenerateModuleCommand extends oxConsoleCommand
                 $blFirstRequest = false;
             }
 
-            $oScaffold->sModuleTitle = $this->_getUserInput('Title');
+            $oScaffold->sModuleTitle = $this->_getUserInput('Module Title');
             $oScaffold->sModuleName = str_replace(' ', '', ucwords($oScaffold->sModuleTitle));
             $oScaffold->sModuleId = $oScaffold->sVendor . strtolower($oScaffold->sModuleName);
 
