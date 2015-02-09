@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -46,34 +46,34 @@ class GenerateModuleCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'g:module' );
-        $this->setDescription( 'Generate new module scaffold' );
+        $this->setName('g:module');
+        $this->setDescription('Generate new module scaffold');
 
-        $this->_oSmarty       = oxRegistry::get( 'oxUtilsView' )->getSmarty();
-        $this->_sModuleDir    = OX_BASE_PATH . 'modules' . DIRECTORY_SEPARATOR;
+        $this->_oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
+        $this->_sModuleDir = OX_BASE_PATH . 'modules' . DIRECTORY_SEPARATOR;
         $this->_sTemplatesDir = __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR
-                                . 'module' . DIRECTORY_SEPARATOR;
+            . 'module' . DIRECTORY_SEPARATOR;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: g:module' );
+        $oOutput->writeLn('Usage: g:module');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'This command is used for generating module scaffold' );
+        $oOutput->writeLn('This command is used for generating module scaffold');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
-        $oScaffold = $this->_buildScaffold( $oOutput );
-        $this->_generateModule( $oScaffold );
+        $oScaffold = $this->_buildScaffold($oOutput);
+        $this->_generateModule($oScaffold);
 
-        $oOutput->writeLn( 'Module generated successfully' );
+        $oOutput->writeLn('Module generated successfully');
     }
 
     /**
@@ -81,19 +81,19 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @param object $oScaffold
      */
-    protected function _generateModule( $oScaffold )
+    protected function _generateModule($oScaffold)
     {
         $oSmarty = $this->_getSmarty();
-        $oSmarty->assign( 'oScaffold', $oScaffold );
+        $oSmarty->assign('oScaffold', $oScaffold);
 
-        if ( $oScaffold->sVendor ) {
-            $this->_generateVendorDir( $oScaffold->sVendor );
+        if ($oScaffold->sVendor) {
+            $this->_generateVendorDir($oScaffold->sVendor);
         }
 
-        $sModuleDir = $this->_getModuleDir( $oScaffold->sVendor, $oScaffold->sModuleName );
+        $sModuleDir = $this->_getModuleDir($oScaffold->sVendor, $oScaffold->sModuleName);
         $this->_copyAndParseDir(
             $this->_sTemplatesDir, $sModuleDir, array(
-                '_prefix_' => strtolower( $oScaffold->sVendor . $oScaffold->sModuleName )
+                '_prefix_' => strtolower($oScaffold->sVendor . $oScaffold->sModuleName)
             )
         );
     }
@@ -102,28 +102,28 @@ class GenerateModuleCommand extends oxConsoleCommand
      * Copies files from directory, parses all files and puts
      * parsed content to another directory
      *
-     * @param string $sFrom    Directory from
-     * @param string $sTo      Directory to
-     * @param array  $aNameMap What should be changed in file name?
+     * @param string $sFrom Directory from
+     * @param string $sTo Directory to
+     * @param array $aNameMap What should be changed in file name?
      */
-    protected function _copyAndParseDir( $sFrom, $sTo, array $aNameMap = array() )
+    protected function _copyAndParseDir($sFrom, $sTo, array $aNameMap = array())
     {
         $oFileInfos = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator( $sFrom, RecursiveDirectoryIterator::SKIP_DOTS )
+            new RecursiveDirectoryIterator($sFrom, RecursiveDirectoryIterator::SKIP_DOTS)
         );
 
-        if ( !file_exists( $sTo ) ) {
-            mkdir( $sTo );
+        if (!file_exists($sTo)) {
+            mkdir($sTo);
         }
 
-        foreach ( $oFileInfos as $oFileInfo ) {
-            $sFilePath = (string) $oFileInfo;
-            $aReplace  = array(
-                'search'  => array_merge( array($sFrom), array_keys( $aNameMap ) ),
-                'replace' => array_merge( array($sTo), array_values( $aNameMap ) )
+        foreach ($oFileInfos as $oFileInfo) {
+            $sFilePath = (string)$oFileInfo;
+            $aReplace = array(
+                'search' => array_merge(array($sFrom), array_keys($aNameMap)),
+                'replace' => array_merge(array($sTo), array_values($aNameMap))
             );
-            $sNewPath  = str_replace( $aReplace['search'], $aReplace['replace'], $sFilePath );
-            $this->_copyAndParseFile( $sFilePath, $sNewPath );
+            $sNewPath = str_replace($aReplace['search'], $aReplace['replace'], $sFilePath);
+            $this->_copyAndParseFile($sFilePath, $sNewPath);
         }
     }
 
@@ -134,19 +134,19 @@ class GenerateModuleCommand extends oxConsoleCommand
      * @param $sFrom
      * @param $sTo
      */
-    protected function _copyAndParseFile( $sFrom, $sTo )
+    protected function _copyAndParseFile($sFrom, $sTo)
     {
-        $this->_createMissingFolders( $sTo );
+        $this->_createMissingFolders($sTo);
 
-        $sTo = preg_replace( '/\.tpl$/', '', $sTo );
-        if ( preg_match( '/\.tpl$/', $sFrom ) ) {
-            $oSmarty  = $this->_getSmarty();
-            $sContent = $oSmarty->fetch( $sFrom );
+        $sTo = preg_replace('/\.tpl$/', '', $sTo);
+        if (preg_match('/\.tpl$/', $sFrom)) {
+            $oSmarty = $this->_getSmarty();
+            $sContent = $oSmarty->fetch($sFrom);
         } else {
-            $sContent = file_get_contents( $sFrom );
+            $sContent = file_get_contents($sFrom);
         }
 
-        file_put_contents( $sTo, $sContent );
+        file_put_contents($sTo, $sContent);
     }
 
     /**
@@ -154,12 +154,12 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @param string $sFilePath
      */
-    protected function _createMissingFolders( $sFilePath )
+    protected function _createMissingFolders($sFilePath)
     {
-        $sPath = dirname( $sFilePath );
+        $sPath = dirname($sFilePath);
 
-        if ( !file_exists( $sPath ) ) {
-            mkdir( $sPath );
+        if (!file_exists($sPath)) {
+            mkdir($sPath, 0777, true);
         }
     }
 
@@ -168,14 +168,14 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @param string $sVendor
      */
-    protected function _generateVendorDir( $sVendor )
+    protected function _generateVendorDir($sVendor)
     {
         $sVendorDir = $this->_sModuleDir . $sVendor . DIRECTORY_SEPARATOR;
-        if ( !file_exists( $sVendorDir ) ) {
-            mkdir( $sVendorDir );
+        if (!file_exists($sVendorDir)) {
+            mkdir($sVendorDir);
 
             // Generate vendor metadata file
-            file_put_contents( $sVendorDir . 'vendormetadata.php', '<?php' );
+            file_put_contents($sVendorDir . 'vendormetadata.php', '<?php');
         }
     }
 
@@ -186,32 +186,32 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @return stdClass
      */
-    protected function _buildScaffold( oxIOutput $oOutput )
+    protected function _buildScaffold(oxIOutput $oOutput)
     {
-        $oScaffold          = new stdClass();
-        $oScaffold->sVendor = strtolower( $this->_getUserInput( 'Vendor', true ) );
+        $oScaffold = new stdClass();
+        $oScaffold->sVendor = strtolower($this->_getUserInput('Vendor Prefix', true));
 
         $blFirstRequest = true;
 
         do {
 
-            if ( !$blFirstRequest ) {
-                $oOutput->writeLn( 'Module path or id is taken with given title' );
+            if (!$blFirstRequest) {
+                $oOutput->writeLn('Module path or id is taken with given title');
             } else {
                 $blFirstRequest = false;
             }
 
-            $oScaffold->sModuleTitle = $this->_getUserInput( 'Title' );
-            $oScaffold->sModuleName  = str_replace( ' ', '', ucwords( $oScaffold->sModuleTitle ) );
-            $oScaffold->sModuleId    = $oScaffold->sVendor . strtolower( $oScaffold->sModuleName );
+            $oScaffold->sModuleTitle = $this->_getUserInput('Module Title');
+            $oScaffold->sModuleName = str_replace(' ', '', ucwords($oScaffold->sModuleTitle));
+            $oScaffold->sModuleId = $oScaffold->sVendor . strtolower($oScaffold->sModuleName);
 
-        } while ( !$this->_modulePathAvailable( $oScaffold->sVendor, $oScaffold->sModuleName )
-                  || !$this->_moduleIdAvailable( $oScaffold->sModuleId ) );
+        } while (!$this->_modulePathAvailable($oScaffold->sVendor, $oScaffold->sModuleName)
+            || !$this->_moduleIdAvailable($oScaffold->sModuleId));
 
-        $oScaffold->sModuleDir = $this->_getModuleDir( $oScaffold->sVendor, $oScaffold->sModuleName );
-        $oScaffold->sAuthor    = $this->_getUserInput( 'Author', true );
-        $oScaffold->sUrl       = $this->_getUserInput( 'Url', true );
-        $oScaffold->sEmail     = $this->_getUserInput( 'Email', true );
+        $oScaffold->sModuleDir = $this->_getModuleDir($oScaffold->sVendor, $oScaffold->sModuleName);
+        $oScaffold->sAuthor = $this->_getUserInput('Author', true);
+        $oScaffold->sUrl = $this->_getUserInput('Url', true);
+        $oScaffold->sEmail = $this->_getUserInput('Email', true);
 
         return $oScaffold;
     }
@@ -224,14 +224,14 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @return string
      */
-    protected function _getModuleDir( $sVendor, $sModuleName )
+    protected function _getModuleDir($sVendor, $sModuleName)
     {
         $sModuleDir = $this->_sModuleDir;
-        if ( $sVendor ) {
-            $sModuleDir .= strtolower( $sVendor ) . DIRECTORY_SEPARATOR;
+        if ($sVendor) {
+            $sModuleDir .= strtolower($sVendor) . DIRECTORY_SEPARATOR;
         }
 
-        return $sModuleDir . strtolower( $sModuleName ) . DIRECTORY_SEPARATOR;
+        return $sModuleDir . strtolower($sModuleName) . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -242,9 +242,9 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @return bool
      */
-    protected function _modulePathAvailable( $sVendor, $sModuleName )
+    protected function _modulePathAvailable($sVendor, $sModuleName)
     {
-        return !is_dir( $this->_getModuleDir( $sVendor, $sModuleName ) );
+        return !is_dir($this->_getModuleDir($sVendor, $sModuleName));
     }
 
     /**
@@ -254,25 +254,25 @@ class GenerateModuleCommand extends oxConsoleCommand
      *
      * @return bool
      */
-    protected function _moduleIdAvailable( $sModuleId )
+    protected function _moduleIdAvailable($sModuleId)
     {
-        return !array_key_exists( $sModuleId, oxRegistry::getConfig()->getConfigParam( 'aModulePaths' ) );
+        return !array_key_exists($sModuleId, oxRegistry::getConfig()->getConfigParam('aModulePaths'));
     }
 
     /**
      * Get user input
      *
      * @param string $sText
-     * @param bool   $bAllowEmpty
+     * @param bool $bAllowEmpty
      *
      * @return string
      */
-    protected function _getUserInput( $sText, $bAllowEmpty = false )
+    protected function _getUserInput($sText, $bAllowEmpty = false)
     {
         do {
-            $sTitle = $sText . ( $bAllowEmpty ? '' : ' *' );
-            $sInput = $this->getInput()->prompt( $sTitle );
-        } while ( !$bAllowEmpty && !$sInput );
+            $sTitle = $sText . ($bAllowEmpty ? '' : ' *');
+            $sInput = $this->getInput()->prompt($sTitle);
+        } while (!$bAllowEmpty && !$sInput);
 
         return $sInput;
     }

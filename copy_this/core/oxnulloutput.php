@@ -21,22 +21,26 @@
  */
 
 /**
- * Output interface implemented by any output class
+ * Null output
+ *
+ * It is very useful for ignoring command output
  */
-interface oxIOutput
+class oxNullOutput implements oxIOutput
 {
 
     /**
-     * Write message to an output
-     *
-     * @param string $sMessage
+     * {@inheritdoc}
      */
-    public function write($sMessage);
+    public function write($sMessage)
+    {
+        // Doing nothing...
+    }
 
     /**
-     * Write message to an output and append new line
-     *
-     * @param string $sMessage
+     * {@inheritdoc}
      */
-    public function writeLn($sMessage = '');
+    public function writeLn($sMessage = '')
+    {
+        // Doing nothing...
+    }
 }

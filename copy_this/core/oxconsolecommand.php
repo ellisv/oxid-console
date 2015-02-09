@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -59,10 +59,10 @@ abstract class oxConsoleCommand
     {
         $this->configure();
 
-        if ( !$this->getName() ) {
+        if (!$this->getName()) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Command must have a name.' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Command must have a name.');
             throw $oEx;
         }
     }
@@ -81,21 +81,21 @@ abstract class oxConsoleCommand
      *
      * @param oxIOutput $oOutput
      */
-    abstract public function help( oxIOutput $oOutput );
+    abstract public function help(oxIOutput $oOutput);
 
     /**
      * Execute current command
      *
      * @param oxIOutput $oOutput
      */
-    abstract public function execute( oxIOutput $oOutput );
+    abstract public function execute(oxIOutput $oOutput);
 
     /**
      * Set current console command name
      *
      * @param string $sName
      */
-    public function setName( $sName )
+    public function setName($sName)
     {
         $this->_sName = $sName;
     }
@@ -115,7 +115,7 @@ abstract class oxConsoleCommand
      *
      * @param string $sDescription
      */
-    public function setDescription( $sDescription )
+    public function setDescription($sDescription)
     {
         $this->_sDescription = $sDescription;
     }
@@ -135,7 +135,7 @@ abstract class oxConsoleCommand
      *
      * @param oxConsoleApplication $oConsoleApplication
      */
-    public function setConsoleApplication( oxConsoleApplication $oConsoleApplication )
+    public function setConsoleApplication(oxConsoleApplication $oConsoleApplication)
     {
         $this->_oConsoleApplication = $oConsoleApplication;
     }
@@ -145,7 +145,7 @@ abstract class oxConsoleCommand
      *
      * @param oxIConsoleInput $oInput
      */
-    public function setInput( oxIConsoleInput $oInput )
+    public function setInput(oxIConsoleInput $oInput)
     {
         $this->_oInput = $oInput;
     }

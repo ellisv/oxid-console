@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -33,38 +33,38 @@ class DatabaseUpdateCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'db:update' );
-        $this->setDescription( 'Updates database views' );
+        $this->setName('db:update');
+        $this->setDescription('Updates database views');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: db:update' );
+        $oOutput->writeLn('Usage: db:update');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'Updates OXID shop database views' );
+        $oOutput->writeLn('Updates OXID shop database views');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'If there are some changes in database schema it is always a good' );
-        $oOutput->writeLn( 'idea to run database update command' );
+        $oOutput->writeLn('If there are some changes in database schema it is always a good');
+        $oOutput->writeLn('idea to run database update command');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Updating database views' );
+        $oOutput->writeLn('Updating database views');
 
         /** @var oxDbMetaDataHandler $oDbHandler */
-        $oDbHandler = oxNew( 'oxDbMetaDataHandler' );
+        $oDbHandler = oxNew('oxDbMetaDataHandler');
 
-        if ( !$oDbHandler->updateViews() ) {
-            $oOutput->writeLn( '[ERROR] Could not update database views' );
+        if (!$oDbHandler->updateViews()) {
+            $oOutput->writeLn('[ERROR] Could not update database views');
             return;
         }
 
-        $oOutput->writeLn( 'Database views updated successfully' );
+        $oOutput->writeLn('Database views updated successfully');
     }
 }

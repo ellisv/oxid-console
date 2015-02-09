@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -39,34 +39,34 @@ class oxConsoleOutput implements oxIOutput
     public function __construct()
     {
         $sStream = 'php://stdout';
-        if ( !$this->_hasStdoutSupport() ) {
+        if (!$this->_hasStdoutSupport()) {
             $sStream = 'php://output';
         }
 
-        $this->_oStream = fopen( $sStream, 'w' );
+        $this->_oStream = fopen($sStream, 'w');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write( $sMessage )
+    public function write($sMessage)
     {
-        if ( !@fwrite( $this->_oStream, $sMessage ) ) {
+        if (!@fwrite($this->_oStream, $sMessage)) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( 'Could not write to output' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage('Could not write to output');
             throw $oEx;
         }
 
-        fflush( $this->_oStream );
+        fflush($this->_oStream);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function writeLn( $sMessage = '' )
+    public function writeLn($sMessage = '')
     {
-        $this->write( $sMessage . PHP_EOL );
+        $this->write($sMessage . PHP_EOL);
     }
 
     /**
@@ -93,6 +93,6 @@ class oxConsoleOutput implements oxIOutput
      */
     protected function _hasStdoutSupport()
     {
-        return ( 'OS400' != php_uname( 's' ) );
+        return ('OS400' != php_uname('s'));
     }
 }

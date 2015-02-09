@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -37,6 +37,11 @@ class oxConsoleApplication
 {
 
     /**
+     * OXID Console application version
+     */
+    const VERSION = 'v1.2.0';
+
+    /**
      * @var oxConsoleCommand[] Available commands in console
      */
     protected $_aCommands = array();
@@ -53,17 +58,17 @@ class oxConsoleApplication
      *
      * @param string $sDefaultCommandName Default command name
      */
-    public function __construct( $sDefaultCommandName = 'list' )
+    public function __construct($sDefaultCommandName = 'list')
     {
         $this->_loadCoreCommands();
         $this->_loadModulesCommands();
 
-        if ( isset( $this->_aCommands[$sDefaultCommandName] ) ) {
-            $this->setDefaultCommand( $this->_aCommands[$sDefaultCommandName] );
+        if (isset($this->_aCommands[$sDefaultCommandName])) {
+            $this->setDefaultCommand($this->_aCommands[$sDefaultCommandName]);
         }
 
         // Sorting commands in ascending order
-        ksort( $this->_aCommands );
+        ksort($this->_aCommands);
     }
 
     /**
@@ -73,40 +78,45 @@ class oxConsoleApplication
      * oxIConsoleInput::getFirstArgument is a command name of which to execute
      *
      * @param oxIConsoleInput $oInput
-     * @param oxIOutput       $oOutput
+     * @param oxIOutput $oOutput
      */
-    public function run( oxIConsoleInput $oInput = null, oxIOutput $oOutput = null )
+    public function run(oxIConsoleInput $oInput = null, oxIOutput $oOutput = null)
     {
-        if ( $oInput === null ) {
+        if ($oInput === null) {
             /** @var oxArgvInput $oInput */
-            $oInput = oxNew( 'oxArgvInput' );
+            $oInput = oxNew('oxArgvInput');
         }
 
-        if ( $oOutput === null ) {
+        if ($oOutput === null) {
             /** @var oxConsoleOutput $oOutput */
-            $oOutput = oxNew( 'oxConsoleOutput' );
+            $oOutput = oxNew('oxConsoleOutput');
         }
 
         $sCommandName = $oInput->getFirstArgument();
-        $oCommand     = null;
+        $oCommand = null;
 
-        if ( !$sCommandName ) {
+        if (!$sCommandName) {
+            if ($oInput->hasOption(array('v', 'version'))) {
+                $oOutput->writeLn('OXID Console ' . static::VERSION);
+                return;
+            }
+
             $oCommand = $this->getDefaultCommand();
-        } elseif ( array_key_exists( $sCommandName, $this->_aCommands ) ) {
+        } elseif (array_key_exists($sCommandName, $this->_aCommands)) {
             $oCommand = $this->_aCommands[$sCommandName];
         }
 
-        if ( $oCommand === null ) {
-            $oOutput->writeLn( 'Could not find command: ' . $sCommandName );
+        if ($oCommand === null) {
+            $oOutput->writeLn('Could not find command: ' . $sCommandName);
 
             return;
         }
 
-        $this->_setupCommand( $oCommand, $oInput );
+        $this->_setupCommand($oCommand, $oInput);
 
-        $oInput->hasOption( array('help', 'h') )
-            ? $oCommand->help( $oOutput )
-            : $oCommand->execute( $oOutput );
+        $oInput->hasOption(array('help', 'h'))
+            ? $oCommand->help($oOutput)
+            : $oCommand->execute($oOutput);
 
         $oOutput->writeLn();
     }
@@ -115,12 +125,12 @@ class oxConsoleApplication
      * Set up given command
      *
      * @param oxConsoleCommand $oCommand
-     * @param oxIConsoleInput  $oInput
+     * @param oxIConsoleInput $oInput
      */
-    protected function _setupCommand( oxConsoleCommand $oCommand, oxIConsoleInput $oInput )
+    protected function _setupCommand(oxConsoleCommand $oCommand, oxIConsoleInput $oInput)
     {
-        $oCommand->setInput( $oInput );
-        $oCommand->setConsoleApplication( $this );
+        $oCommand->setInput($oInput);
+        $oCommand->setConsoleApplication($this);
     }
 
     /**
@@ -138,7 +148,7 @@ class oxConsoleApplication
      *
      * @param oxConsoleCommand $oCommand
      */
-    public function setDefaultCommand( oxConsoleCommand $oCommand )
+    public function setDefaultCommand(oxConsoleCommand $oCommand)
     {
         $this->_oDefaultCommand = $oCommand;
     }
@@ -160,13 +170,13 @@ class oxConsoleApplication
      *
      * @throws oxConsoleException If was already defined
      */
-    public function add( oxConsoleCommand $oCommand )
+    public function add(oxConsoleCommand $oCommand)
     {
         $sCommandName = $oCommand->getName();
-        if ( array_key_exists( $sCommandName, $this->_aCommands ) ) {
+        if (array_key_exists($sCommandName, $this->_aCommands)) {
             /** @var oxConsoleException $oEx */
-            $oEx = oxNew( 'oxConsoleException' );
-            $oEx->setMessage( $sCommandName . ' has more then one definition' );
+            $oEx = oxNew('oxConsoleException');
+            $oEx->setMessage($sCommandName . ' has more then one definition');
             throw $oEx;
         }
 
@@ -178,9 +188,9 @@ class oxConsoleApplication
      *
      * @param string $sCommandName
      */
-    public function remove( $sCommandName )
+    public function remove($sCommandName)
     {
-        unset( $this->_aCommands[$sCommandName] );
+        unset($this->_aCommands[$sCommandName]);
     }
 
     /**
@@ -191,7 +201,7 @@ class oxConsoleApplication
     protected function _loadCoreCommands()
     {
         $sDirectory = OX_BASE_PATH . 'application' . DIRECTORY_SEPARATOR . 'commands' . DIRECTORY_SEPARATOR;
-        $this->_loadCommands( $sDirectory );
+        $this->_loadCommands($sDirectory);
     }
 
     /**
@@ -201,13 +211,17 @@ class oxConsoleApplication
      */
     protected function _loadModulesCommands()
     {
-        $oConfig      = oxRegistry::getConfig();
-        $sModulesDir  = $oConfig->getModulesDir();
-        $aModulePaths = $oConfig->getConfigParam( 'aModulePaths' );
+        $oConfig = oxRegistry::getConfig();
+        $sModulesDir = $oConfig->getModulesDir();
+        $aModulePaths = $oConfig->getConfigParam('aModulePaths');
 
-        foreach ( $aModulePaths as $sModulePath ) {
+        if (!is_array($aModulePaths)) {
+            return;
+        }
+
+        foreach ($aModulePaths as $sModulePath) {
             $sCommandDir = $sModulesDir . $sModulePath . DIRECTORY_SEPARATOR . 'commands' . DIRECTORY_SEPARATOR;
-            $this->_loadCommands( $sCommandDir );
+            $this->_loadCommands($sCommandDir);
         }
     }
 
@@ -222,24 +236,24 @@ class oxConsoleApplication
      *
      * @param string $sDirectory
      */
-    protected function _loadCommands( $sDirectory )
+    protected function _loadCommands($sDirectory)
     {
-        if ( !is_dir( $sDirectory ) ) {
+        if (!is_dir($sDirectory)) {
             return;
         }
 
-        $oDirectory = new RecursiveDirectoryIterator( $sDirectory );
-        $oFlattened = new RecursiveIteratorIterator( $oDirectory );
+        $oDirectory = new RecursiveDirectoryIterator($sDirectory);
+        $oFlattened = new RecursiveIteratorIterator($oDirectory);
 
-        $aFiles = new RegexIterator( $oFlattened, '/.*command\.php$/' );
-        foreach ( $aFiles as $sFilePath ) {
+        $aFiles = new RegexIterator($oFlattened, '/.*command\.php$/');
+        foreach ($aFiles as $sFilePath) {
             require_once $sFilePath;
 
-            $sClassName = substr( basename( $sFilePath ), 0, -4 );
+            $sClassName = substr(basename($sFilePath), 0, -4);
 
             /** @var oxConsoleCommand $oCommand */
-            $oCommand = oxNew( $sClassName );
-            $this->add( $oCommand );
+            $oCommand = oxNew($sClassName);
+            $this->add($oCommand);
         }
     }
 }

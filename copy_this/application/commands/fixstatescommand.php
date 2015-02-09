@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -36,68 +36,68 @@ class FixStatesCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'fix:states' );
-        $this->setDescription( 'Fixes modules metadata states' );
+        $this->setName('fix:states');
+        $this->setDescription('Fixes modules metadata states');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $oOutput->writeLn( 'Usage: fix:states [options] <module_id> [<other_module_id>...]' );
+        $oOutput->writeLn('Usage: fix:states [options] <module_id> [<other_module_id>...]');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'This command fixes information stored in database of modules' );
+        $oOutput->writeLn('This command fixes information stored in database of modules');
         $oOutput->writeln();
-        $oOutput->writeLn( 'Available options:' );
-        $oOutput->writeLn( '  -a, --all         Passes all modules' );
-        $oOutput->writeLn( '  -b, --base-shop   Fix only on base shop' );
-        $oOutput->writeLn( '  --shop=<shop_id>  Specifies in which shop to fix states' );
-        $oOutput->writeLn( '  -n, --no-debug    No debug output' );
+        $oOutput->writeLn('Available options:');
+        $oOutput->writeLn('  -a, --all         Passes all modules');
+        $oOutput->writeLn('  -b, --base-shop   Fix only on base shop');
+        $oOutput->writeLn('  --shop=<shop_id>  Specifies in which shop to fix states');
+        $oOutput->writeLn('  -n, --no-debug    No debug output');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
-        $bDebug = !$oInput->hasOption( array('n', 'no-debug') );
+        $oDebugOutput = $oInput->hasOption(array('n', 'no-debug'))
+            ? oxNew('oxNullOutput')
+            : $oOutput;
 
         try {
-            $aModuleIds   = $this->_parseModuleIds();
+            $aModuleIds = $this->_parseModuleIds();
             $aShopConfigs = $this->_parseShopConfigs();
-        } catch ( oxInputException $oEx ) {
-            $oOutput->writeLn( $oEx->getMessage() );
+        } catch (oxInputException $oEx) {
+            $oOutput->writeLn($oEx->getMessage());
             return;
         }
 
-        /** @var oxStateFixerModule $oStateFixerModule */
-        $oStateFixerModule = oxNew( 'oxStateFixerModule' );
+        /** @var oxModuleStateFixer $oModuleStateFixer */
+        $oModuleStateFixer = oxRegistry::get('oxModuleStateFixer');
 
-        foreach ( $aShopConfigs as $oConfig ) {
+        /** @var oxModule $oModule */
+        $oModule = oxNew('oxModule');
 
-            if ( $bDebug ) {
-                $oOutput->writeLn( '[DEBUG] Working on shop id ' . $oConfig->getShopId() );
-            }
+        foreach ($aShopConfigs as $oConfig) {
 
-            foreach ( $aModuleIds as $sModuleId ) {
-                if ( !$oStateFixerModule->load( $sModuleId ) ) {
-                    $oOutput->writeLn( "[DEBUG] {$sModuleId} does not exist - skipping" );
+            $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
+
+            foreach ($aModuleIds as $sModuleId) {
+                if (!$oModule->load($sModuleId)) {
+                    $oDebugOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
                     continue;
                 }
 
-                if ( $bDebug ) {
-                    $oOutput->writeLn( "[DEBUG] Fixing {$sModuleId} module" );
-                }
-
-                $oStateFixerModule->fix( $oConfig );
+                $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
+                $oModuleStateFixer->fix($oModule, $oConfig);
             }
 
-            $oOutput->writeLn();
+            $oDebugOutput->writeLn();
         }
 
-        $oOutput->writeLn( 'Fixed module states successfully' );
+        $oOutput->writeLn('Fixed module states successfully');
     }
 
     /**
@@ -111,29 +111,29 @@ class FixStatesCommand extends oxConsoleCommand
     {
         $oInput = $this->getInput();
 
-        if ( $oInput->hasOption( array('a', 'all') ) ) {
+        if ($oInput->hasOption(array('a', 'all'))) {
             return $this->_getAvailableModuleIds();
         }
 
-        if ( count( $oInput->getArguments() ) < 2 ) { // Note: first argument is command name
+        if (count($oInput->getArguments()) < 2) { // Note: first argument is command name
             /** @var oxInputException $oEx */
-            $oEx = oxNew( 'oxInputException' );
-            $oEx->setMessage( 'Please specify at least one module if as argument or use --all (-a) option' );
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage('Please specify at least one module if as argument or use --all (-a) option');
             throw $oEx;
         }
 
         $aModuleIds = $oInput->getArguments();
-        array_shift( $aModuleIds ); // Getting rid of command name argument
+        array_shift($aModuleIds); // Getting rid of command name argument
 
         $aAvailableModuleIds = $this->_getAvailableModuleIds();
 
         // Checking if all provided module ids exist
-        foreach ( $aModuleIds as $sModuleId ) {
+        foreach ($aModuleIds as $sModuleId) {
 
-            if ( !in_array( $sModuleId, $aAvailableModuleIds ) ) {
+            if (!in_array($sModuleId, $aAvailableModuleIds)) {
                 /** @var oxInputException $oEx */
-                $oEx = oxNew( 'oxInputException' );
-                $oEx->setMessage( "{$sModuleId} module does not exist" );
+                $oEx = oxNew('oxInputException');
+                $oEx->setMessage("{$sModuleId} module does not exist");
                 throw $oEx;
             }
         }
@@ -152,26 +152,26 @@ class FixStatesCommand extends oxConsoleCommand
     {
         $oInput = $this->getInput();
 
-        if ( $oInput->hasOption( array('b', 'base-shop') ) ) {
+        if ($oInput->hasOption(array('b', 'base-shop'))) {
             return array(oxRegistry::getConfig());
         }
 
-        if ( $mShopId = $oInput->getOption( 'shop' ) ) {
+        if ($mShopId = $oInput->getOption('shop')) {
 
-            if ( is_bool( $mShopId ) ) { // No value for option were passed
+            if (is_bool($mShopId)) { // No value for option were passed
                 /** @var oxInputException $oEx */
-                $oEx = oxNew( 'oxInputException' );
-                $oEx->setMessage( 'Please specify shop id in option following this format --shop=<shop_id>' );
+                $oEx = oxNew('oxInputException');
+                $oEx->setMessage('Please specify shop id in option following this format --shop=<shop_id>');
                 throw $oEx;
             }
 
-            if ( $oConfig = oxSpecificShopConfig::get( $mShopId ) ) {
+            if ($oConfig = oxSpecificShopConfig::get($mShopId)) {
                 return array($oConfig);
             }
 
             /** @var oxInputException $oEx */
-            $oEx = oxNew( 'oxInputException' );
-            $oEx->setMessage( 'Shop id does not exist' );
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage('Shop id does not exist');
             throw $oEx;
         }
 
@@ -185,12 +185,12 @@ class FixStatesCommand extends oxConsoleCommand
      */
     protected function _getAvailableModuleIds()
     {
-        if ( $this->_aAvailableModuleIds === null ) {
-            $oConfig                    = oxRegistry::getConfig();
-            $this->_aAvailableModuleIds = array_keys( $oConfig->getConfigParam( 'aModulePaths' ) );
+        if ($this->_aAvailableModuleIds === null) {
+            $oConfig = oxRegistry::getConfig();
+            $this->_aAvailableModuleIds = array_keys($oConfig->getConfigParam('aModulePaths'));
 
             // Protection for passing incorrect type of data
-            if ( !is_array( $this->_aAvailableModuleIds ) ) {
+            if (!is_array($this->_aAvailableModuleIds)) {
                 $this->_aAvailableModuleIds = array();
             }
         }

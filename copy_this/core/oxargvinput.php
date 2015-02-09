@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -46,16 +46,16 @@ class oxArgvInput implements oxIConsoleInput
      *
      * @param array $aArgv
      */
-    public function __construct( array $aArgv = null )
+    public function __construct(array $aArgv = null)
     {
-        if ( null === $aArgv ) {
+        if (null === $aArgv) {
             $aArgv = $_SERVER['argv'];
         }
 
         // stripping application name
-        array_shift( $aArgv );
+        array_shift($aArgv);
 
-        $this->_parseTokens( $aArgv );
+        $this->_parseTokens($aArgv);
     }
 
     /**
@@ -63,7 +63,7 @@ class oxArgvInput implements oxIConsoleInput
      */
     public function getFirstArgument()
     {
-        return $this->getArgument( 0 );
+        return $this->getArgument(0);
     }
 
     /**
@@ -85,14 +85,14 @@ class oxArgvInput implements oxIConsoleInput
     /**
      * {@inheritdoc}
      */
-    public function getOption( $mOption )
+    public function getOption($mOption)
     {
-        if ( !is_array( $mOption ) ) {
+        if (!is_array($mOption)) {
             $mOption = array($mOption);
         }
 
-        foreach ( $mOption as $sOptionName ) {
-            if ( isset( $this->_aOptions[$sOptionName] ) ) {
+        foreach ($mOption as $sOptionName) {
+            if (isset($this->_aOptions[$sOptionName])) {
                 return $this->_aOptions[$sOptionName];
             }
         }
@@ -103,14 +103,14 @@ class oxArgvInput implements oxIConsoleInput
     /**
      * {@inheritdoc}
      */
-    public function hasOption( $mOption )
+    public function hasOption($mOption)
     {
-        if ( !is_array( $mOption ) ) {
+        if (!is_array($mOption)) {
             $mOption = array($mOption);
         }
 
-        foreach ( $mOption as $sOptionName ) {
-            if ( array_key_exists( $sOptionName, $this->_aOptions ) ) {
+        foreach ($mOption as $sOptionName) {
+            if (array_key_exists($sOptionName, $this->_aOptions)) {
                 return true;
             }
         }
@@ -121,9 +121,9 @@ class oxArgvInput implements oxIConsoleInput
     /**
      * {@inheritdoc}
      */
-    public function getArgument( $iOffset )
+    public function getArgument($iOffset)
     {
-        if ( isset( $this->_aArguments[$iOffset] ) ) {
+        if (isset($this->_aArguments[$iOffset])) {
             return $this->_aArguments[$iOffset];
         }
 
@@ -133,15 +133,15 @@ class oxArgvInput implements oxIConsoleInput
     /**
      * {@inheritdoc}
      */
-    public function prompt( $sTitle = null )
+    public function prompt($sTitle = null)
     {
         $oOutput = $this->_getConsoleOutput();
 
-        if ( null !== $sTitle ) {
-            $oOutput->write( $sTitle . ': ' );
+        if (null !== $sTitle) {
+            $oOutput->write($sTitle . ': ');
         }
 
-        return trim( fgets( $oOutput->getStream() ) );
+        return trim(fgets($oOutput->getStream()));
     }
 
     /**
@@ -149,16 +149,16 @@ class oxArgvInput implements oxIConsoleInput
      *
      * @param string[] $aTokens
      */
-    protected function _parseTokens( array $aTokens )
+    protected function _parseTokens(array $aTokens)
     {
-        foreach ( $aTokens as $sToken ) {
+        foreach ($aTokens as $sToken) {
 
-            if ( '--' === substr( $sToken, 0, 2 ) ) {
-                $this->_parseLongOption( $sToken );
-            } else if ( $sToken && '-' == $sToken[0] ) {
-                $this->_parseShortOption( $sToken );
+            if ('--' === substr($sToken, 0, 2)) {
+                $this->_parseLongOption($sToken);
+            } else if ($sToken && '-' == $sToken[0]) {
+                $this->_parseShortOption($sToken);
             } else {
-                $this->_parseArgument( $sToken );
+                $this->_parseArgument($sToken);
             }
         }
     }
@@ -168,15 +168,15 @@ class oxArgvInput implements oxIConsoleInput
      *
      * @param $sToken
      */
-    protected function _parseLongOption( $sToken )
+    protected function _parseLongOption($sToken)
     {
-        $sOptionLine = substr( $sToken, 2 );
-        if ( !$sOptionLine ) {
+        $sOptionLine = substr($sToken, 2);
+        if (!$sOptionLine) {
             return;
         }
 
-        $aOption = explode( '=', $sOptionLine, 2 );
-        if ( !isset( $aOption[1] ) ) {
+        $aOption = explode('=', $sOptionLine, 2);
+        if (!isset($aOption[1])) {
             $aOption[1] = true;
         }
 
@@ -188,14 +188,14 @@ class oxArgvInput implements oxIConsoleInput
      *
      * @param $sToken
      */
-    protected function _parseShortOption( $sToken )
+    protected function _parseShortOption($sToken)
     {
-        $sOptionLine = substr( $sToken, 1 );
-        if ( !$sOptionLine ) {
+        $sOptionLine = substr($sToken, 1);
+        if (!$sOptionLine) {
             return;
         }
 
-        foreach ( str_split( $sOptionLine ) as $sOption ) {
+        foreach (str_split($sOptionLine) as $sOption) {
             $this->_aOptions[$sOption] = true;
         }
     }
@@ -205,9 +205,9 @@ class oxArgvInput implements oxIConsoleInput
      *
      * @param $sToken
      */
-    protected function _parseArgument( $sToken )
+    protected function _parseArgument($sToken)
     {
-        if ( $sToken ) {
+        if ($sToken) {
             $this->_aArguments[] = $sToken;
         }
     }
@@ -219,8 +219,8 @@ class oxArgvInput implements oxIConsoleInput
      */
     protected function _getConsoleOutput()
     {
-        if ( null === $this->_oConsoleOutput ) {
-            $this->_oConsoleOutput = oxNew( 'oxConsoleOutput' );
+        if (null === $this->_oConsoleOutput) {
+            $this->_oConsoleOutput = oxNew('oxConsoleOutput');
         }
 
         return $this->_oConsoleOutput;

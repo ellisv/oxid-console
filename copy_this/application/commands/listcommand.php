@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
  * @link      http://www.oxid-esales.com
@@ -33,38 +33,38 @@ class ListCommand extends oxConsoleCommand
      */
     public function configure()
     {
-        $this->setName( 'list' );
-        $this->setDescription( 'List of all available commands' );
+        $this->setName('list');
+        $this->setDescription('List of all available commands');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function help( oxIOutput $oOutput )
+    public function help(oxIOutput $oOutput)
     {
-        $this->execute( $oOutput );
+        $this->execute($oOutput);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute( oxIOutput $oOutput )
+    public function execute(oxIOutput $oOutput)
     {
         $aCommands = $this->getConsoleApplication()
             ->getLoadedCommands();
 
-        $oOutput->writeLn( 'OXID Shop console' );
+        $oOutput->writeLn('OXID Shop console');
         $oOutput->writeLn();
-        $oOutput->writeLn( 'Available commands:' );
+        $oOutput->writeLn('Available commands:');
 
-        $iOffset = max( array_map( 'strlen', array_keys( $aCommands ) ) ) + 2;
+        $iOffset = max(array_map('strlen', array_keys($aCommands))) + 2;
 
-        foreach ( $aCommands as $oCommand ) {
-            $sName              = $oCommand->getName();
-            $sDescription       = $oCommand->getDescription();
-            $iDescriptionOffset = $iOffset - strlen( $sName );
+        foreach ($aCommands as $oCommand) {
+            $sName = $oCommand->getName();
+            $sDescription = $oCommand->getDescription();
+            $iDescriptionOffset = $iOffset - strlen($sName);
 
-            $oOutput->writeLn( sprintf( "  %s %{$iDescriptionOffset}s # %s", $sName, ' ', $sDescription ) );
+            $oOutput->writeLn(sprintf("  %s %{$iDescriptionOffset}s # %s", $sName, ' ', $sDescription));
         }
     }
 }
