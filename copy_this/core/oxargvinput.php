@@ -3,6 +3,10 @@
 /*
  * This file is part of the OXID Console package.
  *
+ * This file is based on Symfony\Component\Console\Input\ArgvInput.
+ * Changes were made under copyright by Eligijus Vitkauskas for use with
+ * special behaviour in OXID Console.
+ *
  * (c) Eligijus Vitkauskas <eligijusvitkauskas@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -10,7 +14,11 @@
  */
 
 /**
- * Argv Input
+ * Argv Input, based on Symfony\Component\Console\Input\ArgvInput
+ *
+ * @author  Fabien Potencier <fabien@symfony.com>
+ * @link    https://github.com/symfony/Console/blob/v2.6.0/Input/ArgvInput.php
+ * @license https://github.com/symfony/Console/blob/v2.6.0/LICENSE
  */
 class oxArgvInput implements oxIConsoleInput
 {

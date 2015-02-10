@@ -3,6 +3,10 @@
 /*
  * This file is part of the OXID Console package.
  *
+ * This file is based on Symfony\Component\Console\Output\ConsoleOutput.
+ * Changes were made under copyright by Eligijus Vitkauskas for use with
+ * special behaviour in OXID Console.
+ *
  * (c) Eligijus Vitkauskas <eligijusvitkauskas@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -10,7 +14,11 @@
  */
 
 /**
- * Console output
+ * Console output, based on Symfony\Component\Console\Output\ConsoleOutput
+ *
+ * @author  Fabien Potencier <fabien@symfony.com>
+ * @link    https://github.com/symfony/Console/blob/v2.6.0/Output/ConsoleOutput.php
+ * @license https://github.com/symfony/Console/blob/v2.6.0/LICENSE
  */
 class oxConsoleOutput implements oxIOutput
 {
@@ -24,8 +32,9 @@ class oxConsoleOutput implements oxIOutput
      *
      * Opens up output stream
      *
-     * @author Fabien Potencier <fabien@symfony.com>
-     * @link   https://github.com/symfony/Console/blob/v2.6.0/Output/ConsoleOutput.php#L44
+     * @author  Fabien Potencier <fabien@symfony.com>
+     * @link    https://github.com/symfony/Console/blob/v2.6.0/Output/ConsoleOutput.php#L44
+     * @license https://github.com/symfony/Console/blob/v2.6.0/LICENSE
      */
     public function __construct()
     {
@@ -80,6 +89,7 @@ class oxConsoleOutput implements oxIOutput
      *
      * @author Fabien Potencier <fabien@symfony.com>
      * @link   https://github.com/symfony/Console/blob/v2.6.0/Output/ConsoleOutput.php#L109
+     * @license https://github.com/symfony/Console/blob/v2.6.0/LICENSE
      *
      * @return boolean
      */
