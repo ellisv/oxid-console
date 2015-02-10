@@ -16,12 +16,15 @@
  * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    OXID Professional services
+ * @author    Fabien Potencier <fabien@symfony.com>
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  */
 
 /**
  * Argv Input
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 class oxArgvInput implements oxIConsoleInput
 {
