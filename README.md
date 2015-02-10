@@ -298,3 +298,7 @@ We have provided you with `fix:states` command to work with oxStateFixerModule. 
 When you want do deactivate module it is sometimes good to clean after your module, e.g. dropping tables or columns created by it. But we can not do this because we do not know how many (sub)shops are using this module, dropping tables or columns should be done only when module gets deactivated on last shop using this.
 
 We provided you with `module_enabled_count()` function to get number of shops where your given module is activated.
+
+## Credits
+
+This project was inspired by [Symfony/Console](https://github.com/symfony/Console) component.
