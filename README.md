@@ -280,3 +280,7 @@ When you change information of module in metadata you need to reactivate the mod
 oxModuleStateFixer which is an extension of oxModuleInstaller has method `fix()` which will fix all the states.
 
 We have provided you with `fix:states` command to work with oxModuleStateFixer. Type in `php oxid fix:states --help` for more information.
+
+## Credits
+
+This project was inspired by [Symfony/Console](https://github.com/symfony/Console) component.
