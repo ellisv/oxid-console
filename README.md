@@ -14,6 +14,13 @@ By default there are following commands included:
 
 This OXID Console repository has **Migration Handler** and **Module State Fixer** included.
 
+## Which version to get?
+
+| OXID Version     | OXID Console version | Source Code link | Download link |
+|------------------|----------------------|------------------|---------------|
+| <4.9.0, <5.2.0   | 1.1.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.1) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.1.zip) |
+| =>4.9.0, =>5.2.0 | 1.2.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.2) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.2.zip) |
+
 ## Getting started
 
 The entry point of console application is `php oxid`. It will execute default command which is `list`. To call a specific command run `php oxid [command]`. If you need help about specific command run `php oxid [command] -h` or `php oxid [command] --help`
