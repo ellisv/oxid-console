@@ -15,6 +15,9 @@ To get the diff between two versions, go to https://github.com/EllisV/oxid-conso
     * (96cb16f) Remove console:update command in favor of deprecation
     * (456706f) Remove module:list command
 
+* 1.1.5 (2015-02-10)
+    * Change LICENSE to MIT and modify file headers
+
 * 1.1.4 (2014-10-27)
     * (af63d2c) Deprecate console:update command
 
