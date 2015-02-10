@@ -1,7 +1,11 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.4...v1.2.0
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.0...v1.2.1
+
+* 1.2.1 (2015-02-10)
+    * Changed LICENSE to MIT and modified file headers
+    * (ca40799) Better input description for g:module command
 
 * 1.2.0 (2014-11-17)
     * Migration status are stored in database right now
