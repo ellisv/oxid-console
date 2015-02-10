@@ -3,6 +3,9 @@
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.3...v1.1.4
 
+* 1.1.5 (2015-02-10)
+    * Change LICENSE to MIT and modify file headers
+
 * 1.1.4 (2014-10-27)
     * (af63d2c) Deprecate console:update command
 
