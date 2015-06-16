@@ -23,7 +23,7 @@ class oxModuleStateFixer extends oxModuleInstaller
      */
     public function fix(oxModule $oModule, oxConfig $oConfig = null)
     {
-        if ($oConfig === null) {
+        if ($oConfig !== null) {
             $this->setConfig($oConfig);
         }
 
