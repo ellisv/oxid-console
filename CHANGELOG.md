@@ -3,6 +3,9 @@
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.3...v1.1.4
 
+* 1.1.6 (2015-06-17)
+    * (9c7a142) Bugfix for fix:states not working for all shops
+
 * 1.1.5 (2015-02-10)
     * Change LICENSE to MIT and modify file headers
 
