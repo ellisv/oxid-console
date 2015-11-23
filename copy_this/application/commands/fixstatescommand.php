@@ -75,7 +75,7 @@ class FixStatesCommand extends oxConsoleCommand
 
             foreach ($aModuleIds as $sModuleId) {
                 if (!$oModule->load($sModuleId)) {
-                    $oDebugOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
+                    $oDebugOutput->writeLn("[DEBUG] {$sModuleId} can not be loaded - skipping");
                     continue;
                 }
 
@@ -174,6 +174,12 @@ class FixStatesCommand extends oxConsoleCommand
      */
     protected function _getAvailableModuleIds()
     {
+        // reloading modules from path because else new modules are not not listed within aModulePaths
+        $oxModuleList = oxNew('oxModuleList');
+        $oxModuleList->getModulesFromDir(oxRegistry::getConfig()->getModulesDir());
+        $aModules = $oxModuleList->getList();
+        // end reloading modules (the new modules are now listed in aModulePaths (for shop 1 only)
+
         if ($this->_aAvailableModuleIds === null) {
             $oConfig = oxRegistry::getConfig();
             $this->_aAvailableModuleIds = array_keys($oConfig->getConfigParam('aModulePaths'));

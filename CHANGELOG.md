@@ -3,6 +3,14 @@
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.1...v1.2.2
 
+* 1.2.3 (2015-11-23)
+    * oxoutput object for migrations
+      clearcache command with support for backendcaches (e.g. memcached) 
+      clearcache command more verbose about directory
+      bump version number
+      oxdbmigrationquery.php as base for database migrations
+      fixstates command can now fix new modules
+
 * 1.2.2 (2015-06-07)
     * (c49ecb0) Bugfix for fix:states not working for all shops
 

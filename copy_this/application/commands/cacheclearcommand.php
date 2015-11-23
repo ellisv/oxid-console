@@ -48,12 +48,20 @@ class CacheClearCommand extends oxConsoleCommand
     public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
+
+        $oOutput->writeLn('Clearing OXID db and backend cache..');
+        /** @var oxCache $oCache */
+        $oCache = oxNew('oxcache');
+        $oCache->reset(false);
+        $oOutput->writeLn('Oxid Cache cleared successfully');
+
+
         $sTmpDir = $this->_appendDirectorySeparator(oxRegistry::getConfig()->getConfigParam('sCompileDir'));
         if (!is_dir($sTmpDir)) {
             $oOutput->writeLn('Seems that compile directory does not exist');
         }
 
-        $oOutput->writeLn('Clearing OXID cache...');
+        $oOutput->writeLn("Clearing OXID File cache ($sTmpDir)...");
 
         $this->_clearDirectory($sTmpDir . 'smarty');
         if (!$oInput->hasOption(array('s', 'smarty'))) {
@@ -61,7 +69,8 @@ class CacheClearCommand extends oxConsoleCommand
             $this->_clearDirectory($sTmpDir, array('.htaccess', 'smarty'));
         }
 
-        $oOutput->writeLn('Cache cleared successfully');
+        $oOutput->writeLn('File Cache cleared successfully');
+
     }
 
     /**
