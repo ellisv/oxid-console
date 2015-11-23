@@ -22,7 +22,7 @@
 
 
 /**
- * Class OxpsConfigImportCommandBase
+ * Class ModuleActivateCommand
  */
 class ModuleActivateCommand extends oxConsoleCommand
 {
@@ -58,8 +58,6 @@ class ModuleActivateCommand extends oxConsoleCommand
     public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
-        /** @var oxModuleStateFixer $oModuleStateFixer */
-        $oModuleInstaller = oxRegistry::get('oxModuleInstaller');
 
         $sModuleId = $oInput->getArgument(1);
 
@@ -71,6 +69,18 @@ class ModuleActivateCommand extends oxConsoleCommand
 
         if ($oInput->hasOption(array('s', 'shop'))) {
             $sShopId = $oInput->getOption(array('s', 'shop'));
+        }
+
+        $this->activateModule($sModuleId, $sShopId, $oOutput);
+    }
+
+
+    public function activateModule($sModuleId, $sShopId, $oOutput)
+    {
+        /** @var oxModuleInstaller $oModuleInstaller */
+        $oModuleInstaller = oxRegistry::get('oxModuleInstaller');
+
+        if ($sShopId) {
             $oConfig = oxSpecificShopConfig::get($sShopId);
             $oModuleInstaller->setConfig($oConfig);
         }
@@ -79,13 +89,20 @@ class ModuleActivateCommand extends oxConsoleCommand
         $oxModuleList->getModulesFromDir(oxRegistry::getConfig()->getModulesDir());
         $aModules = $oxModuleList->getList();
 
+        /** @var oxModule $oModule */
+
         $oModule = $aModules[$sModuleId];
         if ($oModule == null) {
             $oOutput->writeLn("$sModuleId not found. choose from:");
             $oOutput->writeLn(join("\n", array_keys($aModules)));
+
             return;
         }
-        $oModuleInstaller->activate($oModule);
-    }
 
+        if ($oModule->isActive()) {
+            $oOutput->writeLn("$sModuleId already active");
+        } else {
+            $oModuleInstaller->activate($oModule);
+        }
+    }
 }
