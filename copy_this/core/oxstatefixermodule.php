@@ -172,17 +172,27 @@ class oxStateFixerModule extends oxModule
 
                 foreach ($mModuleName as $sKey => $sModuleName) {
                     if (strpos($sModuleName, $sModulePath . '/') === 0) {
-                        unset($aInstalledModules[$sClassName][$sKey]);
+                        $sExtension = $aInstalledModules[$sClassName][$sKey];
+                        //remove the extension from the shop config
+						//if it is not listed in the module anymore
+                        if( ! in_array($sExtension,$aModuleExtend) ) {
+                            unset($aInstalledModules[$sClassName][$sKey]);
+                        }
                     }
                 }
             }
         }
 
         $aModules = $this->mergeModuleArrays($aInstalledModules, $aModuleExtend);
-        $aModules = $this->buildModuleChains($aModules);
 
-        $oConfig = $this->getConfig();
-        $oConfig->setConfigParam('aModules', $aModules);
-        $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
+        if($aInstalledModules == $aModules) {
+            //if nothing changed do not write the configuration
+        }else {
+            $aModules = $this->buildModuleChains($aModules);
+
+            $oConfig = $this->getConfig();
+            $oConfig->setConfigParam('aModules', $aModules);
+            $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
+        }
     }
 }
