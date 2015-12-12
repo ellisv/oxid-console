@@ -77,7 +77,15 @@ class FixStatesCommand extends oxConsoleCommand
                 }
 
                 $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
-                $oStateFixerModule->fix($oConfig);
+
+                $oStateFixerModule->setConfig($oConfig);
+                $oStateFixerModule->fixVersion();
+                $oStateFixerModule->fixExtendGently();
+                $oStateFixerModule->fixFiles();
+                $oStateFixerModule->fixTemplates();
+                $oStateFixerModule->fixBlocks();
+                $oStateFixerModule->fixSettings();
+                $oStateFixerModule->fixEvents();
             }
 
             $oDebugOutput->writeLn();

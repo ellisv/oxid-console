@@ -1,23 +1,12 @@
 <?php
-/**
- * This file is part of OXID Console.
+
+/*
+ * This file is part of the OXID Console package.
  *
- * OXID Console is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (c) Eligijus Vitkauskas <eligijusvitkauskas@gmail.com>
  *
- * OXID Console is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID Console.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author    OXID Professional services
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -28,12 +17,19 @@
  */
 class oxStateFixerModule extends oxModule
 {
-
     /**
-     * Fix module states task runs version, extend, files, templates, blocks,
-     * settings and events information fix tasks
+     * Fix module states task.
      *
-     * @param oxConfig|null $oConfig If not passed uses default base shop config
+     * Runs version, extend, files, templates, blocks, settings and events
+     * information fix tasks.
+     *
+     * NOTE: This method is no longer used in fix:states command from v1.1.7
+     * to v1.2.0. Instead this logic has been transitioned to fix:states
+     * command itself. Commands are not overwritable so it makes easier to
+     * release patches with changes on them without breaking backwards
+     * compatibility.
+     *
+     * @param oxConfig|null $oConfig If not passed uses default base shop config.
      */
     public function fix(oxConfig $oConfig = null)
     {
@@ -66,6 +62,18 @@ class oxStateFixerModule extends oxModule
     {
         $aExtend = $this->getInfo('extend');
         $this->_setModuleExtend($this->getId(), $aExtend);
+    }
+
+    /**
+     * Fix extends without removing used entries.
+     *
+     * This method is only available from v1.1.7 to v1.2.0 to not break
+     * backwards compatibility in a patch.
+     */
+    public function fixExtendGently()
+    {
+        $aExtend = $this->getInfo('extend');
+        $this->_setModuleExtendGently($this->getId(), $aExtend);
     }
 
     /**
@@ -155,15 +163,15 @@ class oxStateFixerModule extends oxModule
      *
      * @author Alfonsas Cirtautas
      *
-     * @param string $sModuleId Module ID
-     * @param array $aModuleExtend Extend data array from metadata
+     * @param string $sModuleId     Module ID.
+     * @param array  $aModuleExtend Extend data array from metadata.
      */
     protected function _setModuleExtend($sModuleId, $aModuleExtend)
     {
         $aInstalledModules = $this->getAllModules();
         $sModulePath = $this->getModulePath($sModuleId);
 
-        // Remove extended modules by path
+        // Remove extended modules by path.
         if ($sModulePath && is_array($aInstalledModules)) {
             foreach ($aInstalledModules as $sClassName => $mModuleName) {
                 if (!is_array($mModuleName)) {
@@ -172,12 +180,58 @@ class oxStateFixerModule extends oxModule
 
                 foreach ($mModuleName as $sKey => $sModuleName) {
                     if (strpos($sModuleName, $sModulePath . '/') === 0) {
-                        $sExtension = $aInstalledModules[$sClassName][$sKey];
-                        //remove the extension from the shop config
-						//if it is not listed in the module anymore
-                        if( ! in_array($sExtension,$aModuleExtend) ) {
-                            unset($aInstalledModules[$sClassName][$sKey]);
-                        }
+                        unset($aInstalledModules[$sClassName][$sKey]);
+                    }
+                }
+            }
+        }
+
+        $aModules = $this->mergeModuleArrays($aInstalledModules, $aModuleExtend);
+        $aModules = $this->buildModuleChains($aModules);
+
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('aModules', $aModules);
+        $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
+    }
+
+    /**
+     * Set template extend to database gently.
+     *
+     * This is a copy of _setModuleExtend() method with a patch of not removing
+     * entries if they are still being used and saving data if something has
+     * changed.
+     *
+     * A copy was necessary because we want to avoid backwards compatibility
+     * break in a patch. This is only available from v1.1.7 to v1.2.0.
+     *
+     * @author Alfonsas Cirtautas
+     * @author Keywan Ghadami
+     *
+     * @param string $sModuleId     Module ID.
+     * @param array  $aModuleExtend Extend data array from metadata.
+     */
+    protected function _setModuleExtendGently($sModuleId, $aModuleExtend)
+    {
+        $aInstalledModules = $this->getAllModules();
+        $sModulePath = $this->getModulePath($sModuleId);
+
+        // Remove extended modules by path.
+        if ($sModulePath && is_array($aInstalledModules)) {
+            foreach ($aInstalledModules as $sClassName => $mModuleName) {
+                if (!is_array($mModuleName)) {
+                    continue;
+                }
+
+                foreach ($mModuleName as $sKey => $sModuleName) {
+                    if (strpos($sModuleName, $sModulePath . '/') !== 0) {
+                        continue;
+                    }
+
+                    $sExtension = $aInstalledModules[$sClassName][$sKey];
+                    if (!in_array($sExtension, $aModuleExtend)) {
+                        // Remove the extension from the shop config
+                        // if it is not listed in the module anymore.
+                        unset($aInstalledModules[$sClassName][$sKey]);
                     }
                 }
             }
@@ -185,12 +239,10 @@ class oxStateFixerModule extends oxModule
 
         $aModules = $this->mergeModuleArrays($aInstalledModules, $aModuleExtend);
 
-        if($aInstalledModules == $aModules) {
-            //if nothing changed do not write the configuration
-        }else {
+        if ($aInstalledModules != $aModules) {
             $aModules = $this->buildModuleChains($aModules);
+            $oConfig  = $this->getConfig();
 
-            $oConfig = $this->getConfig();
             $oConfig->setConfigParam('aModules', $aModules);
             $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
         }
