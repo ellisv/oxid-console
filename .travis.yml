@@ -1,5 +1,9 @@
 language: php
 
+cache:
+  directories:
+    - vendor
+
 env:
   global:
     - MYSQL_DATABASE_NAME=oxid
