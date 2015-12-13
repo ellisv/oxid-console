@@ -27,4 +27,5 @@ before_script:
   - scripts/link
 
 script:
+  - find copy_this -name "*.php" -print0 | xargs -0 -n1 php -l
   - vendor/bin/phpunit
