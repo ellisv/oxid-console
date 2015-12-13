@@ -3,8 +3,8 @@
 set -e
 PROJECTPATH=$(cd $(dirname $0)/..; pwd -P);
 
-echo "Linking copy_this/oxid to oxid/oxid"
-ln -sf "$PROJECTPATH/copy_this/oxid" oxid/oxid
+echo "Copying copy_this/oxid to oxid/oxid"
+cp -f copy_this/oxid oxid/oxid
 
 if [[ ! -L oxid/application/commands ]]; then
     echo "Linking copy_this/application/commands to oxid/application/commands"
