@@ -46,6 +46,13 @@ abstract class oxMigrationQuery
     protected $_sClassName;
 
     /**
+     * @var oxIOutput output object
+     */
+    protected $_oOutput;
+
+
+
+    /**
      * Constructor
      *
      * Extracts timestamp from filename of migration query
@@ -66,8 +73,13 @@ abstract class oxMigrationQuery
         $this->setFilename($sFilename);
         $this->setTimestamp($aMatches[1]);
         $this->setClassName($aMatches[2] . 'migration');
-
+        $this->setOutput(oxNew('oxNullOutput'));
         $this->_validateClassName();
+    }
+
+    public function setOutput(oxIOutput $oOutput)
+    {
+        $this->_oOutput = $oOutput;
     }
 
     /**
