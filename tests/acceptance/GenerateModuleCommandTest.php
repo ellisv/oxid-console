@@ -2,7 +2,7 @@
 
 class GenerateModuleCommandTest extends AcceptanceTestCase
 {
-    public function testGenerate()
+    public function testExecute()
     {
         $moduleDir = OX_BASE_PATH . 'modules';
         $testModuleDir = $moduleDir . '/eli/test';
