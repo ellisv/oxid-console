@@ -2,12 +2,12 @@
 
 class AcceptanceTestCase extends PHPUnit_Framework_TestCase
 {
-    protected function runConsole($line = '')
+    protected static function runConsole($line = '')
     {
-        return shell_exec($this->getExecutablePath() . ' ' . $line);
+        return shell_exec(static::getExecutablePath() . ' ' . $line);
     }
 
-    protected function getExecutablePath()
+    protected static function getExecutablePath()
     {
         return __DIR__ . '/../oxid/oxid';
     }
