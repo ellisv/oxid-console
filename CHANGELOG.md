@@ -1,7 +1,15 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.1...v1.2.2
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.2...v1.2.3
+
+* 1.2.3 (2015-12-14)
+    * (9fe1282) Bugfix for oxid executable not being able to be called from other directories
+    * (1272eee) Read prompt from STDIN
+    * (b7073f0) Output generated migration filename
+    * (42d0c09) Bugfix for fix:states not recognising newly created modules
+    * (b6ddb5b) Remove redundant type protection within fix:states
+    * (c3a0e3a) Clear oxCache if available via cache:clear command
 
 * 1.2.2 (2015-06-07)
     * (c49ecb0) Bugfix for fix:states not working for all shops
