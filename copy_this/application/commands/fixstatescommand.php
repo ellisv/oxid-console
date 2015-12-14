@@ -183,11 +183,6 @@ class FixStatesCommand extends oxConsoleCommand
             oxNew('oxModuleList')->getModulesFromDir($oConfig->getModulesDir());
 
             $this->_aAvailableModuleIds = array_keys($oConfig->getConfigParam('aModulePaths'));
-
-            // Protection for passing incorrect type of data
-            if (!is_array($this->_aAvailableModuleIds)) {
-                $this->_aAvailableModuleIds = array();
-            }
         }
 
         return $this->_aAvailableModuleIds;
