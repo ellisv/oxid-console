@@ -60,8 +60,8 @@ class GenerateMigrationCommand extends oxConsoleCommand
             } while (!$sMigrationName);
         }
 
-        $sMigrationFilePath = $sMigrationsDir . oxMigrationQuery::getCurrentTimestamp() . '_'
-            . strtolower($sMigrationName) . '.php';
+        $sMigrationFileName = oxMigrationQuery::getCurrentTimestamp() . '_' . strtolower($sMigrationName) . '.php';
+        $sMigrationFilePath = $sMigrationsDir . $sMigrationFileName;
 
         /** @var Smarty $oSmarty */
         $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
@@ -69,6 +69,8 @@ class GenerateMigrationCommand extends oxConsoleCommand
         $sContent = $oSmarty->fetch($sTemplatePath);
 
         file_put_contents($sMigrationFilePath, $sContent);
+
+        $oOutput->writeLn("Sucessfully generated $sMigrationFileName");
     }
 
     /**
