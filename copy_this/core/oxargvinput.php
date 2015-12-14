@@ -141,7 +141,7 @@ class oxArgvInput implements oxIConsoleInput
             $oOutput->write($sTitle . ': ');
         }
 
-        return trim(fgets($oOutput->getStream()));
+        return trim(fgets(STDIN));
     }
 
     /**
