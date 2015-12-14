@@ -176,6 +176,12 @@ class FixStatesCommand extends oxConsoleCommand
     {
         if ($this->_aAvailableModuleIds === null) {
             $oConfig = oxRegistry::getConfig();
+
+            // We are calling getModulesFromDir() because we want to refresh
+            // the list of available modules. This is a workaround for OXID
+            // bug.
+            oxNew('oxModuleList')->getModulesFromDir($oConfig->getModulesDir());
+
             $this->_aAvailableModuleIds = array_keys($oConfig->getConfigParam('aModulePaths'));
 
             // Protection for passing incorrect type of data
