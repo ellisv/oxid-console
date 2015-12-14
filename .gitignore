@@ -1,2 +1,5 @@
-# Ignoring PHPStorm IDE folder
 .idea/
+.tmp/
+/oxid/
+/vendor/
+/composer.lock

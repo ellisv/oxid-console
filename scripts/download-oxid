@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+cd $(dirname $0)/..
+
+# =============================================================================
+# Check if all necessary variables are set
+# =============================================================================
+
+if [[ -z $OXID_VERSION ]]; then
+    echo "OXID_VERSION has not been specified"
+    exit 1
+fi
+
+# =============================================================================
+# Download and and put oxid environment in place
+# =============================================================================
+
+rm -rf .tmp/ && mkdir .tmp
+cd .tmp
+wget https://github.com/OXID-eSales/oxideshop_ce/archive/v$OXID_VERSION.zip
+unzip v$OXID_VERSION.zip
+mv oxideshop_ce-$OXID_VERSION/source ../oxid
+cd ..
+rm -rf .tmp/

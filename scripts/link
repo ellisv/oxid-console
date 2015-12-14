@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+PROJECTPATH=$(cd $(dirname $0)/..; pwd -P);
+
+echo "Copying copy_this/oxid to oxid/oxid"
+cp -f copy_this/oxid oxid/oxid
+chmod +x oxid/oxid
+
+if [[ ! -L oxid/application/commands ]]; then
+    echo "Linking copy_this/application/commands to oxid/application/commands"
+    ln -sf "$PROJECTPATH/copy_this/application/commands" oxid/application/commands
+fi
+
+mkdir -p oxid/migration
+mkdir -p oxid/cache
+
+for path in $(find copy_this/core/**); do
+    if [[ -f "$path" ]]; then
+        echo "Linking $path to oxid/${path#copy_this/}"
+        ln -sf "$PROJECTPATH/$path" "oxid/${path#copy_this/}"
+    fi
+done

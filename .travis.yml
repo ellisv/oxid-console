@@ -1,0 +1,37 @@
+language: php
+
+sudo: false
+
+cache:
+  directories:
+    - vendor
+
+env:
+  global:
+    - MYSQL_DATABASE_NAME=oxid
+    - MYSQL_USER=travis
+  matrix:
+    - OXID_VERSION=4.8.0
+    - OXID_VERSION=4.8.9
+
+php:
+  - 5.3
+  - 5.6
+
+services:
+  - mysql
+
+before_install:
+  - composer self-update
+
+install:
+  - scripts/download-oxid
+  - composer install --no-interaction --prefer-dist
+
+before_script:
+  - scripts/prepare-oxid
+  - scripts/link
+
+script:
+  - find copy_this -name "*.php" -print0 | xargs -0 -n1 php -l
+  - vendor/bin/phpunit
