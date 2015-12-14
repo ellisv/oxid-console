@@ -88,15 +88,4 @@ class GenerateModuleCommandTest extends AcceptanceTestCase
         sleep(0.5);
         fwrite($pipe, $answer . PHP_EOL);
     }
-
-    private static function removeDirectory($dir)
-    {
-        foreach (glob("{$dir}/*") as $file) {
-            is_dir($file)
-                ? static::removeDirectory($file)
-                : unlink($file);
-        }
-
-        rmdir($dir);
-    }
 }
