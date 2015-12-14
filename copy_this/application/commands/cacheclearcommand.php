@@ -39,7 +39,9 @@ class CacheClearCommand extends oxConsoleCommand
         $oOutput->writeLn(' * Does not delete smarty directory but its contents by default');
         $oOutput->writeln();
         $oOutput->writeLn('Available options:');
-        $oOutput->writeLn('  -s, --smarty     Clears out only smarty cache');
+        $oOutput->writeLn('  -s, --smarty   Clears out smarty cache');
+        $oOutput->writeLn('  -f, --files    Clears out files cache');
+        $oOutput->writeLn('  -o, --oxcache  Clears out oxCache (EE versions)');
     }
 
     /**
@@ -48,16 +50,24 @@ class CacheClearCommand extends oxConsoleCommand
     public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
+        $blAll = !$oInput->hasOption(array('s', 'smarty', 'f', 'files', 'o', 'oxcache'));
         $sTmpDir = $this->_appendDirectorySeparator(oxRegistry::getConfig()->getConfigParam('sCompileDir'));
         if (!is_dir($sTmpDir)) {
             $oOutput->writeLn('Seems that compile directory does not exist');
+            return;
         }
 
         $oOutput->writeLn('Clearing OXID cache...');
 
-        $this->_clearDirectory($sTmpDir . 'smarty');
-        if (!$oInput->hasOption(array('s', 'smarty'))) {
-            // If there are no options for clearing smarty cache only
+        if (($blAll || $oInput->hasOption(array('o', 'oxcache'))) && class_exists('oxCache')) {
+            oxRegistry::get('oxCache')->reset(false);
+        }
+
+        if ($blAll || $oInput->hasOption(array('s', 'smarty'))) {
+            $this->_clearDirectory($sTmpDir . 'smarty');
+        }
+
+        if ($blAll || $oInput->hasOption(array('f', 'files'))) {
             $this->_clearDirectory($sTmpDir, array('.htaccess', 'smarty'));
         }
 
