@@ -17,10 +17,10 @@
  *  - [module_path]/commands
  *
  * Sample usage:
- *      $oMyInput = oxNew( 'myConsoleInput' );
- *      $oConsole = oxNew( 'oxConsoleApplication' );
- *      $oConsole->add( oxNew( 'myCustomCommand' ) );
- *      $oConsole->run( $oMyInput );
+ *      $oMyInput = oxNew('myConsoleInput');
+ *      $oConsole = oxNew('oxConsoleApplication');
+ *      $oConsole->add(oxNew('myCustomCommand'));
+ *      $oConsole->run($oMyInput);
  */
 class oxConsoleApplication
 {
@@ -28,7 +28,7 @@ class oxConsoleApplication
     /**
      * OXID Console application version
      */
-    const VERSION = 'v1.1.6';
+    const VERSION = 'v1.1.7';
 
     /**
      * @var oxConsoleCommand[] Available commands in console

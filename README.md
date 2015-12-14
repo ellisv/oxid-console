@@ -1,5 +1,7 @@
 # OXID Console
 
+[![Build Status](https://travis-ci.org/EllisV/oxid-console.svg)](https://travis-ci.org/EllisV/oxid-console)
+
 OXID Console is php console application for OXID Shop. It provides an API for writting various commands.
 
 By default there are following commands included:
@@ -15,6 +17,19 @@ By default there are following commands included:
 * `module:list` - Outputs module list table
 
 This OXID Console repository has **Migration Handler**, **Module State Fixer** and module_enabled_count() included.
+
+## Which version to get?
+
+| OXID Version     | OXID Console version | Source Code link | Download link |
+|------------------|----------------------|------------------|---------------|
+| <4.9.0, <5.2.0   | 1.1.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.1) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.1.zip) |
+| =>4.9.0, =>5.2.0 | 1.2.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.2) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.2.zip) |
+
+## Installation
+
+This package is following a structure which OXID introduced with their update packages.
+* Copy contents of `copy_this` to your OXID eShop project
+* Check the difference between your OXID eShop files and files which are in `changed_full` and update files according to the difference
 
 ## Getting started
 
