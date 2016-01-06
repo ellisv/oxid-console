@@ -273,7 +273,9 @@ class oxMigrationHandler
      */
     public function addQuery(oxMigrationQuery $oQuery)
     {
-        $this->_aQueries[] = $oQuery;
+        $this->_aQueries[$oQuery->getTimestamp()] = $oQuery;
+
+        ksort($this->_aQueries);
     }
 
     /**
