@@ -16,11 +16,6 @@ class FixStatesCommand extends oxConsoleCommand
 {
 
     /**
-     * @var array|null Available module ids
-     */
-    protected $_aAvailableModuleIds = null;
-
-    /**
      * {@inheritdoc}
      */
     public function configure()
@@ -56,7 +51,6 @@ class FixStatesCommand extends oxConsoleCommand
             : $oOutput;
 
         try {
-            $aModuleIds = $this->_parseModuleIds();
             $aShopConfigs = $this->_parseShopConfigs();
         } catch (oxInputException $oEx) {
             $oOutput->writeLn($oEx->getMessage());
@@ -67,8 +61,15 @@ class FixStatesCommand extends oxConsoleCommand
         $oStateFixerModule = oxNew('oxStateFixerModule');
 
         foreach ($aShopConfigs as $oConfig) {
-
-            $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
+            try {
+                $aModuleIds = $this->_parseModuleIds($oConfig);
+            } catch (oxInputException $oEx) {
+                $oOutput->writeLn($oEx->getMessage());
+                return;
+            }
+            $sShopId = $oConfig->getShopId();
+            $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $sShopId);
+            $oStateFixerModule->setConfig($oConfig);
 
             foreach ($aModuleIds as $sModuleId) {
                 if (!$oStateFixerModule->load($sModuleId)) {
@@ -78,7 +79,6 @@ class FixStatesCommand extends oxConsoleCommand
 
                 $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
 
-                $oStateFixerModule->setConfig($oConfig);
                 $oStateFixerModule->fixVersion();
                 $oStateFixerModule->fixExtendGently();
                 $oStateFixerModule->fixFiles();
@@ -101,12 +101,12 @@ class FixStatesCommand extends oxConsoleCommand
      *
      * @throws oxInputException
      */
-    protected function _parseModuleIds()
+    protected function _parseModuleIds($oConfig)
     {
         $oInput = $this->getInput();
 
         if ($oInput->hasOption(array('a', 'all'))) {
-            return $this->_getAvailableModuleIds();
+            return $this->_getAvailableModuleIds($oConfig);
         }
 
         if (count($oInput->getArguments()) < 2) { // Note: first argument is command name
@@ -119,7 +119,7 @@ class FixStatesCommand extends oxConsoleCommand
         $aModuleIds = $oInput->getArguments();
         array_shift($aModuleIds); // Getting rid of command name argument
 
-        $aAvailableModuleIds = $this->_getAvailableModuleIds();
+        $aAvailableModuleIds = $this->_getAvailableModuleIds($oConfig);
 
         // Checking if all provided module ids exist
         foreach ($aModuleIds as $sModuleId) {
@@ -177,19 +177,15 @@ class FixStatesCommand extends oxConsoleCommand
      *
      * @return array
      */
-    protected function _getAvailableModuleIds()
+    protected function _getAvailableModuleIds($oConfig)
     {
-        if ($this->_aAvailableModuleIds === null) {
-            $oConfig = oxRegistry::getConfig();
+        // We are calling getModulesFromDir() because we want to refresh
+        // the list of available modules. This is a workaround for OXID
+        // bug.
+        $oModuleList = oxNew('oxModuleList');
+        $oModuleList->setConfig($oConfig);
+        $oModuleList->getModulesFromDir($oConfig->getModulesDir());
 
-            // We are calling getModulesFromDir() because we want to refresh
-            // the list of available modules. This is a workaround for OXID
-            // bug.
-            oxNew('oxModuleList')->getModulesFromDir($oConfig->getModulesDir());
-
-            $this->_aAvailableModuleIds = array_keys($oConfig->getConfigParam('aModulePaths'));
-        }
-
-        return $this->_aAvailableModuleIds;
+        return array_keys($oConfig->getConfigParam('aModulePaths'));
     }
 }
