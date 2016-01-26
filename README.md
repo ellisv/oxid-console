@@ -38,7 +38,7 @@ The entry point of console application is `php oxid`. It will execute default co
 * Commands get autoloaded from `application/commands/` and `[module_path]/commands/` directories. But you can always add or remove commands with `add()` or `remove()` methods of console application
 * You can access console application `$this->getConsoleApplication()` and input object `$this->getInput()` in your command class
 * Command filename must follow `[your_command]command.php` format
-* Class name must be the same as filename, e.g. CacheClearCommand.php
+* Class name must be the same as filename, e.g. CacheClearCommand
 * Class must extend oxConsoleCommand abstract class
 * You must set name of your command on configure() method
 
