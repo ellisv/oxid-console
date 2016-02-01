@@ -65,7 +65,7 @@ class GenerateModuleCommandTest extends AcceptanceTestCase
         static::fillPrompt($pipes[0], 'https://johndoe.io/');
         static::fillPrompt($pipes[0], 'johndoe@gmail.com');
         fclose($pipes[0]);
-        stream_get_contents($pipes[1]);
+        var_dump(stream_get_contents($pipes[1]));
         fclose($pipes[1]);
 
         proc_close($process);
