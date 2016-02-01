@@ -183,7 +183,7 @@ class oxConsoleApplication
      */
     protected function _loadDefaultCommands()
     {
-        $aDefaultCommands = [
+        $aDefaultCommands = array(
             new CacheClearCommand(),
             new DatabaseUpdateCommand(),
             new FixStatesCommand(),
@@ -191,7 +191,7 @@ class oxConsoleApplication
             new GenerateModuleCommand(),
             new ListCommand(),
             new MigrateCommand(),
-        ];
+        );
 
         foreach ($aDefaultCommands as $oDefaultCommand) {
             $this->add($oDefaultCommand);
