@@ -37,5 +37,5 @@ before_script:
   - scripts/prepare-oxid
 
 script:
-  - find copy_this -name "*.php" -print0 | xargs -0 -n1 php -l
+  - find src -name "*.php" -print0 | xargs -0 -n1 php -l
   - vendor/bin/phpunit
