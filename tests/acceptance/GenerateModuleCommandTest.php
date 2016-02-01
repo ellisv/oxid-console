@@ -53,6 +53,7 @@ class GenerateModuleCommandTest extends AcceptanceTestCase
             array('pipe', 'w')
         );
 
+        chdir(OX_BASE_PATH);
         $process = proc_open(static::getExecutablePath() . ' g:module', $descriptorspec, $pipes);
         if (!is_resource($process)) {
             throw new Exception('Could not open console command');
