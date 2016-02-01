@@ -3,9 +3,4 @@
 set -e
 PROJECTPATH=$(cd $(dirname $0)/..; pwd -P);
 
-if [[ ! -L oxid/application/commands ]]; then
-    echo "Linking copy_this/application/commands to oxid/application/commands"
-    ln -sf "$PROJECTPATH/copy_this/application/commands" oxid/application/commands
-fi
-
 mkdir -p oxid/migration

@@ -49,6 +49,7 @@ class oxConsoleApplication
      */
     public function __construct($sDefaultCommandName = 'list')
     {
+        $this->_loadDefaultCommands();
         $this->_loadCoreCommands();
         $this->_loadModulesCommands();
 
@@ -175,6 +176,26 @@ class oxConsoleApplication
     public function remove($sCommandName)
     {
         unset($this->_aCommands[$sCommandName]);
+    }
+
+    /**
+     * Load default commands shipped with OXID console.
+     */
+    protected function _loadDefaultCommands()
+    {
+        $aDefaultCommands = [
+            new CacheClearCommand(),
+            new DatabaseUpdateCommand(),
+            new FixStatesCommand(),
+            new GenerateMigrationCommand(),
+            new GenerateModuleCommand(),
+            new ListCommand(),
+            new MigrateCommand(),
+        ];
+
+        foreach ($aDefaultCommands as $oDefaultCommand) {
+            $this->add($oDefaultCommand);
+        }
     }
 
     /**
