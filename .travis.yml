@@ -35,7 +35,6 @@ install:
 
 before_script:
   - scripts/prepare-oxid
-  - scripts/link
 
 script:
   - find copy_this -name "*.php" -print0 | xargs -0 -n1 php -l

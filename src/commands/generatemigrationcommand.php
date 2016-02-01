@@ -51,6 +51,10 @@ class GenerateMigrationCommand extends oxConsoleCommand
     public function execute(oxIOutput $oOutput)
     {
         $sMigrationsDir = OX_BASE_PATH . 'migration' . DIRECTORY_SEPARATOR;
+        if (!is_dir($sMigrationsDir)) {
+            mkdir($sMigrationsDir);
+        }
+
         $sTemplatePath = $this->_getTemplatePath();
 
         $sMigrationName = $this->_parseMigrationNameFromInput();
@@ -69,6 +73,20 @@ class GenerateMigrationCommand extends oxConsoleCommand
         $sContent = $oSmarty->fetch($sTemplatePath);
 
         file_put_contents($sMigrationFilePath, $sContent);
+
+        if (!file_exists($sMigrationsDir . '.htaccess')) {
+            $sContent = <<<EOL
+# disabling file access
+<FilesMatch .*>
+order allow,deny
+deny from all
+</FilesMatch>
+
+Options -Indexes
+EOL;
+
+            file_put_contents($sMigrationsDir . '.htaccess', $sContent);
+        }
 
         $oOutput->writeLn("Sucessfully generated $sMigrationFileName");
     }

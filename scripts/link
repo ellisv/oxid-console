@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-PROJECTPATH=$(cd $(dirname $0)/..; pwd -P);
-
-mkdir -p oxid/migration
