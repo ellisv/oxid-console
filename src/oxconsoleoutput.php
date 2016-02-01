@@ -52,10 +52,7 @@ class oxConsoleOutput implements oxIOutput
     public function write($sMessage)
     {
         if (!@fwrite($this->_oStream, $sMessage)) {
-            /** @var oxConsoleException $oEx */
-            $oEx = oxNew('oxConsoleException');
-            $oEx->setMessage('Could not write to output');
-            throw $oEx;
+            throw new oxConsoleException('Could not write to output');
         }
 
         fflush($this->_oStream);

@@ -52,7 +52,7 @@ class FixStatesCommand extends oxConsoleCommand
     {
         $oInput = $this->getInput();
         $oDebugOutput = $oInput->hasOption(array('n', 'no-debug'))
-            ? oxNew('oxNullOutput')
+            ? new oxNullOutput()
             : $oOutput;
 
         try {
@@ -63,8 +63,7 @@ class FixStatesCommand extends oxConsoleCommand
             return;
         }
 
-        /** @var oxModuleStateFixer $oModuleStateFixer */
-        $oModuleStateFixer = oxRegistry::get('oxModuleStateFixer');
+        $oModuleStateFixer = new oxModuleStateFixer();
 
         /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');

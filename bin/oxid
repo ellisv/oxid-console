@@ -25,5 +25,5 @@ require_once getcwd() . '/bootstrap.php';
 // gets loaded too
 class_exists('oxUtils');
 
-$console = oxNew('oxConsoleApplication');
+$console = new oxConsoleApplication;
 $console->run();

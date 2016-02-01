@@ -49,10 +49,7 @@ abstract class oxConsoleCommand
         $this->configure();
 
         if (!$this->getName()) {
-            /** @var oxConsoleException $oEx */
-            $oEx = oxNew('oxConsoleException');
-            $oEx->setMessage('Command must have a name.');
-            throw $oEx;
+            throw new oxConsoleException('Command must have a name.');
         }
     }
 

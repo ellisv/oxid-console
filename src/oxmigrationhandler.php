@@ -54,10 +54,7 @@ class oxMigrationHandler
     public function __construct()
     {
         if (static::$_oCreated) {
-            /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Only one instance for oxMigrationHandler allowed');
-            throw $oEx;
+            throw new oxMigrationException('Only one instance for oxMigrationHandler allowed');
         }
 
         static::$_oCreated = true;
@@ -223,7 +220,7 @@ class oxMigrationHandler
             $sClassName = $this->_getClassNameFromFilePath($sFilePath);
 
             /** @var oxMigrationQuery $oQuery */
-            $oQuery = oxNew($sClassName);
+            $oQuery = new $sClassName();
 
             $this->addQuery($oQuery);
         }
@@ -245,10 +242,7 @@ class oxMigrationHandler
         $aMatches = array();
 
         if (!preg_match(oxMigrationQuery::REGEXP_FILE, $sFileName, $aMatches)) {
-            /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Could not extract class name from file name');
-            throw $oEx;
+            throw new oxMigrationException('Could not extract class name from file name');
         }
 
         return $aMatches[2] . 'migration';

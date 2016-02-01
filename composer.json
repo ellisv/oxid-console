@@ -2,5 +2,8 @@
     "require-dev": {
         "phpunit/phpunit": "^4.8"
     },
+    "autoload": {
+        "classmap": ["src/"]
+    },
     "bin": ["bin/oxid"]
 }

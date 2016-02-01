@@ -57,10 +57,7 @@ abstract class oxMigrationQuery
         $aMatches = array();
 
         if (!preg_match(static::REGEXP_FILE, $sFilename, $aMatches)) {
-            /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Wrong migration query file name');
-            throw $oEx;
+            throw new oxMigrationException('Wrong migration query file name');
         }
 
         $this->setFilename($sFilename);
@@ -78,10 +75,7 @@ abstract class oxMigrationQuery
     protected function _validateClassName()
     {
         if (strtolower(get_class($this)) != $this->getClassName()) {
-            /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Wrong migration class naming convention. Maybe you forgot to append "Migration"?');
-            throw $oEx;
+            throw new oxMigrationException('Wrong migration class naming convention. Maybe you forgot to append "Migration"?');
         }
     }
 
@@ -105,10 +99,7 @@ abstract class oxMigrationQuery
     public function setTimestamp($sTimestamp)
     {
         if (!static::isValidTimestamp($sTimestamp)) {
-            /** @var oxMigrationException $oEx */
-            $oEx = oxNew('oxMigrationException');
-            $oEx->setMessage('Wrong timestamp format passed');
-            throw $oEx;
+            throw new oxMigrationException('Wrong timestamp format passed');
         }
 
         $this->_sTimestamp = $sTimestamp;

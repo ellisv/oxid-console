@@ -57,11 +57,10 @@ class MigrateCommand extends oxConsoleCommand
 
         $oInput = $this->getInput();
         $oDebugOutput = $oInput->hasOption(array('n', 'no-debug'))
-            ? oxNew('oxNullOutput')
+            ? new oxNullOutput()
             : $oOutput;
 
-        /** @var oxMigrationHandler $oMigrationHandler */
-        $oMigrationHandler = oxRegistry::get('oxMigrationHandler');
+        $oMigrationHandler = new oxMigrationHandler();
         $oMigrationHandler->run($sTimestamp, $oDebugOutput);
 
         $oOutput->writeLn('Migration finished successfully');
@@ -85,10 +84,7 @@ class MigrateCommand extends oxConsoleCommand
                 if ($sTime = strtotime($sTimestamp)) {
                     $sTimestamp = date('YmdHis', $sTime);
                 } else {
-                    /** @var oxConsoleException $oEx */
-                    $oEx = oxNew('oxConsoleException');
-                    $oEx->setMessage('Invalid timestamp format, use YYYYMMDDhhmmss format');
-                    throw $oEx;
+                    throw new oxConsoleException('Invalid timestamp format, use YYYYMMDDhhmmss format');
                 }
             }
 

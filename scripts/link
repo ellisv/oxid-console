@@ -9,10 +9,3 @@ if [[ ! -L oxid/application/commands ]]; then
 fi
 
 mkdir -p oxid/migration
-
-for path in $(find copy_this/core/**); do
-    if [[ -f "$path" ]]; then
-        echo "Linking $path to oxid/${path#copy_this/}"
-        ln -sf "$PROJECTPATH/$path" "oxid/${path#copy_this/}"
-    fi
-done

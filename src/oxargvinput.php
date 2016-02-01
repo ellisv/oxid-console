@@ -220,7 +220,7 @@ class oxArgvInput implements oxIConsoleInput
     protected function _getConsoleOutput()
     {
         if (null === $this->_oConsoleOutput) {
-            $this->_oConsoleOutput = oxNew('oxConsoleOutput');
+            $this->_oConsoleOutput = new oxConsoleOutput();
         }
 
         return $this->_oConsoleOutput;

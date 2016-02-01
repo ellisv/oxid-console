@@ -17,9 +17,9 @@
  *  - [module_path]/commands
  *
  * Sample usage:
- *      $oMyInput = oxNew('myConsoleInput');
- *      $oConsole = oxNew('oxConsoleApplication');
- *      $oConsole->add(oxNew('myCustomCommand'));
+ *      $oMyInput = new myConsoleInput();
+ *      $oConsole = new oxConsoleApplication();
+ *      $oConsole->add(new myCustomCommand());
  *      $oConsole->run($oMyInput);
  */
 class oxConsoleApplication
@@ -72,13 +72,11 @@ class oxConsoleApplication
     public function run(oxIConsoleInput $oInput = null, oxIOutput $oOutput = null)
     {
         if ($oInput === null) {
-            /** @var oxArgvInput $oInput */
-            $oInput = oxNew('oxArgvInput');
+            $oInput = new oxArgvInput();
         }
 
         if ($oOutput === null) {
-            /** @var oxConsoleOutput $oOutput */
-            $oOutput = oxNew('oxConsoleOutput');
+            $oOutput = new oxConsoleOutput();
         }
 
         $sCommandName = $oInput->getFirstArgument();
@@ -163,10 +161,7 @@ class oxConsoleApplication
     {
         $sCommandName = $oCommand->getName();
         if (array_key_exists($sCommandName, $this->_aCommands)) {
-            /** @var oxConsoleException $oEx */
-            $oEx = oxNew('oxConsoleException');
-            $oEx->setMessage($sCommandName . ' has more then one definition');
-            throw $oEx;
+            throw new oxConsoleException($sCommandName . ' has more then one definition');
         }
 
         $this->_aCommands[$sCommandName] = $oCommand;
@@ -241,7 +236,7 @@ class oxConsoleApplication
             $sClassName = substr(basename($sFilePath), 0, -4);
 
             /** @var oxConsoleCommand $oCommand */
-            $oCommand = oxNew($sClassName);
+            $oCommand = new $sClassName();
             $this->add($oCommand);
         }
     }
