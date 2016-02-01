@@ -1,6 +1,6 @@
 # OXID Console
 
-[![Build Status](https://travis-ci.org/EllisV/oxid-console.svg)](https://travis-ci.org/EllisV/oxid-console)
+[![Build Status](https://travis-ci.org/EllisV/oxid-console.svg?branch=master)](https://travis-ci.org/EllisV/oxid-console)
 
 OXID Console is php console application for OXID Shop. It provides an API for writting various commands.
 
