@@ -1,0 +1,31 @@
+#!/usr/bin/php
+<?php
+
+/*
+ * This file is part of the OXID Console package.
+ *
+ * (c) Eligijus Vitkauskas <eligijusvitkauskas@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+set_time_limit(0);
+
+if (!file_exists(getcwd() . '/config.inc.php') || !file_exists(getcwd() . '/bootstrap.php')) {
+    echo 'OXID console must be ran against directory where OXID is placed.' . PHP_EOL;
+    exit(1);
+}
+
+(@require_once __DIR__ . '/../vendor/autoload.php') || @require_once __DIR__ . '/../../../autoload.php';
+require_once getcwd() . '/bootstrap.php';
+
+// OXID Bug: Smarty gets loaded only with oxUtils class
+// Invoking autoloader to load oxUtils class so Smarty class
+// gets loaded too.
+class_exists('oxUtils');
+
+use Ellis\Oxid\Console\Application;
+
+$app = new Application();
+$app->run();
