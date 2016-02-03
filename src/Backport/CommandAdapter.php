@@ -49,7 +49,8 @@ class CommandAdapter extends Command
     {
         $this
             ->setName($this->command->getName())
-            ->setDescription($this->command->getDescription());
+            ->setDescription($this->command->getDescription())
+            ->ignoreValidationErrors();
 
         $memoryOutput = new MemoryOutput();
         $this->command->help($memoryOutput);
@@ -66,10 +67,12 @@ class CommandAdapter extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // TODO: Implement this
-        //$inputAdapter = new InputAdapter($input);
-        //$outputAdapter = new OutputAdapter($output);
+        $outputAdapter = new OutputAdapter($output);
 
-        //return parent::execute($inputAdapter, $outputAdapter);
+        // TODO: Think of how to adapt Symfony Console InputInterface to legacy
+        // OXID Console oxIConsoleInput.
+        $this->command->setInput(new \oxArgvInput);
+
+        return $this->command->execute($outputAdapter);
     }
 }

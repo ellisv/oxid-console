@@ -22,8 +22,10 @@ require_once getcwd() . '/bootstrap.php';
 
 // OXID Bug: Smarty gets loaded only with oxUtils class
 // Invoking autoloader to load oxUtils class so Smarty class
-// gets loaded too
+// gets loaded too.
 class_exists('oxUtils');
 
-$console = new oxConsoleApplication;
-$console->run();
+use Ellis\Oxid\Console\Application;
+
+$app = new Application();
+$app->run();
