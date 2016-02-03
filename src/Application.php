@@ -26,6 +26,9 @@ class Application extends BaseApplication
     public function __construct()
     {
         parent::__construct('OXID Console', static::VERSION);
+
+        $this->loadCoreCommands();
+        $this->loadModuleCommands();
     }
 
     /**
@@ -42,5 +45,51 @@ class Application extends BaseApplication
         $commands[] = new Backport\CommandAdapter(new \MigrateCommand());
 
         return $commands;
+    }
+
+    private function loadCoreCommands()
+    {
+        $directory = OX_BASE_PATH . 'application/commands';
+        $this->loadCommandsFromDirectory($directory);
+    }
+
+    private function loadModuleCommands()
+    {
+        $config = \oxRegistry::getConfig();
+        $moduleDir = $config->getModulesDir();
+        $modulePaths = $config->getConfigParam('aModulePaths');
+
+        if (!is_array($modulePaths)) {
+            return;
+        }
+
+        foreach ($modulePaths as $modulePath) {
+            $commandDir = $moduleDir . $modulePath . '/commands';
+            $this->loadCommandsFromDirectory($commandDir);
+        }
+    }
+
+    private function loadCommandsFromDirectory($directory)
+    {
+        if (!is_dir($directory)) {
+            return;
+        }
+
+        $directoryIterator = new \RecursiveDirectoryIterator($directory);
+        $iterator = new \RecursiveIteratorIterator($directoryIterator);
+        $files = new \RegexIterator($iterator, '/.*command\.php$/');
+
+        foreach ($files as $file) {
+            require_once $file;
+
+            $class = substr(basename($file), 0, -4);
+            $command = new $class();
+
+            if ($command instanceof \oxConsoleCommand) {
+                $command = new Backport\CommandAdapter($command);
+            }
+
+            $this->add($command);
+        }
     }
 }
