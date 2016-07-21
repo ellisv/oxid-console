@@ -45,7 +45,10 @@ class DatabaseUpdateCommand extends oxConsoleCommand
     public function execute(oxIOutput $oOutput)
     {
         $oOutput->writeLn('Updating database views');
-
+        $config = oxRegistry::getConfig();
+        //avoid problems if views are already broken
+        $config->setConfigParam('blSkipViewUsage',true);
+        
         /** @var oxDbMetaDataHandler $oDbHandler */
         $oDbHandler = oxNew('oxDbMetaDataHandler');
 
