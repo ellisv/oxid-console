@@ -3,6 +3,9 @@
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.7...v1.1.8
 
+* 1.1.9 (2016-07-21)
+    * (7aacf25) Disable view usage when updating views
+
 * 1.1.8 (2016-01-06)
     * (2305f89) Sort migration queries by timestamp after adding one
 
