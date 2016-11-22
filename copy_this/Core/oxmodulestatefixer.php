@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use OxidEsales\EshopCommunity\Core\SettingsHandler;
+
 /**
  * Module state fixer
  */
@@ -40,7 +42,8 @@ class oxModuleStateFixer extends oxModuleInstaller
         $this->_addTemplateBlocks($oModule->getInfo("blocks"), $sModuleId);
         $this->_addModuleFiles($oModule->getInfo("files"), $sModuleId);
         $this->_addTemplateFiles($oModule->getInfo("templates"), $sModuleId);
-        $this->_addModuleSettings($oModule->getInfo("settings"), $sModuleId);
+        $settingsHandler = oxNew(SettingsHandler::class);
+        $settingsHandler->setModuleType('module')->run($oModule);
         $this->_addModuleVersion($oModule->getInfo("version"), $sModuleId);
         $this->_addModuleEvents($oModule->getInfo("events"), $sModuleId);
 

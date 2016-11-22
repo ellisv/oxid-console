@@ -7,9 +7,9 @@ echo "Copying copy_this/oxid to oxid/oxid"
 cp -f copy_this/oxid oxid/oxid
 chmod +x oxid/oxid
 
-if [[ ! -L oxid/application/commands ]]; then
-    echo "Linking copy_this/application/commands to oxid/application/commands"
-    ln -sf "$PROJECTPATH/copy_this/application/commands" oxid/application/commands
+if [[ ! -L oxid/Application/commands ]]; then
+    echo "Linking copy_this/Application/commands to oxid/Application/commands"
+    ln -sf "$PROJECTPATH/copy_this/Application/commands" oxid/Application/commands
 fi
 
 mkdir -p oxid/migration

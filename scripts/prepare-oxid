@@ -24,8 +24,8 @@ fi
 
 mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -e "DROP DATABASE IF EXISTS $MYSQL_DATABASE_NAME"
 mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE_NAME"
-mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < oxid/setup/sql/database.sql
-mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < oxid/setup/sql/latin1_to_utf8.sql
+mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < oxid/Setup/Sql/database_schema.sql
+mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < oxid/Setup/Sql/latin1_to_utf8.sql
 
 
 # =============================================================================
@@ -34,4 +34,4 @@ mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < oxid/
 # Credits: https://github.com/OXID-eSales/oxideshop_ce/blob/v4.9.4/.travis.yml#L43
 # =============================================================================
 
-sed -i 's|<dbHost_ce>|127.0.0.1|; s|<dbName_ce>|'$MYSQL_DATABASE_NAME'|; s|<dbUser_ce>|'$MYSQL_USER'|; s|<dbPwd_ce>|'$MYSQL_PASSWORD'|; s|<sShopURL_ce>|http://127.0.0.1|; s|<sShopDir_ce>|'$PROJECTPATH'/oxid|; s|<sCompileDir_ce>|'$PROJECTPATH'/oxid/tmp|; s|<iUtfMode>|1|' oxid/config.inc.php
+sed 's|<dbHost_ce>|127.0.0.1|; s|<dbName_ce>|'$MYSQL_DATABASE_NAME'|; s|<dbUser_ce>|'$MYSQL_USER'|; s|<dbPwd_ce>|'$MYSQL_PASSWORD'|; s|<sShopURL_ce>|http://127.0.0.1|; s|<sShopDir_ce>|'$PROJECTPATH'/oxid|; s|<sCompileDir_ce>|'$PROJECTPATH'/oxid/tmp|; s|<iUtfMode>|1|' oxid/config.inc.php.dist > oxid/config.inc.php

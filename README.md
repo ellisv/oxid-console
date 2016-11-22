@@ -22,6 +22,7 @@ This OXID Console repository has **Migration Handler** and **Module State Fixer*
 |------------------|----------------------|------------------|---------------|
 | <4.9.0, <5.2.0   | 1.1.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.1) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.1.zip) |
 | =>4.9.0, =>5.2.0 | 1.2.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.2) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.2.zip) |
+| =>6.0.0          | 1.3.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.3) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.3.zip) |
 
 ## Installation
 
