@@ -195,13 +195,16 @@ abstract class oxMigrationQuery
      */
     protected static function _tableExists($sTable)
     {
+        $oConfig = oxRegistry::getConfig();
+        $sDbName = $oConfig->getConfigParam('dbName');
         $sQuery = "
             SELECT 1
             FROM information_schema.tables
-            WHERE table_name = ?
+            WHERE table_schema = ?
+            AND table_name = ?
         ";
 
-        return (bool)oxDb::getDb()->getOne($sQuery, array($sTable));
+        return (bool)oxDb::getDb()->getOne($sQuery, array($sDbName, $sTable));
     }
 
     /**
