@@ -46,4 +46,4 @@ mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE_NAME < $OXID
 # Credits: https://github.com/OXID-eSales/oxideshop_ce/blob/v4.9.4/.travis.yml#L43
 # =============================================================================
 
-sed -i 's|<dbHost_ce>|127.0.0.1|; s|<dbName_ce>|'$MYSQL_DATABASE_NAME'|; s|<dbUser_ce>|'$MYSQL_USER'|; s|<dbPwd_ce>|'$MYSQL_PASSWORD'|; s|<sShopURL_ce>|http://127.0.0.1|; s|<sShopDir_ce>|'$OXID_SOURCE_PATH'|; s|<sCompileDir_ce>|'$OXID_SOURCE_PATH'/tmp|; s|<iUtfMode>|1|' oxid/config.inc.php
+sed -i 's|<dbHost_ce>|127.0.0.1|; s|<dbName_ce>|'$MYSQL_DATABASE_NAME'|; s|<dbUser_ce>|'$MYSQL_USER'|; s|<dbPwd_ce>|'$MYSQL_PASSWORD'|; s|<sShopURL_ce>|http://127.0.0.1|; s|<sShopDir_ce>|'$OXID_SOURCE_PATH'|; s|<sCompileDir_ce>|'$OXID_SOURCE_PATH'/tmp|; s|<iUtfMode>|1|' $OXID_SOURCE_PATH/config.inc.php
