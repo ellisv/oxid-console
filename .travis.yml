@@ -11,8 +11,10 @@ env:
     - MYSQL_DATABASE_NAME=oxid
     - MYSQL_USER=travis
   matrix:
+    - OXID_VERSION=4.8.0
+    - OXID_VERSION=4.8.12
     - OXID_VERSION=4.9.0
-    - OXID_VERSION=4.9.6
+    - OXID_VERSION=4.10.2
 
 php:
   - 5.3
