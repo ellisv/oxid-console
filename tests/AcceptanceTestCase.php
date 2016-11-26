@@ -11,7 +11,7 @@ class AcceptanceTestCase extends PHPUnit_Framework_TestCase
 
     protected static function getExecutablePath()
     {
-        return __DIR__ . '/../../bin/oxid';
+        return __DIR__ . '/../bin/oxid';
     }
 
     protected static function removeDirectory($dir)
