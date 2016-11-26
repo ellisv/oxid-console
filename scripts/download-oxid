@@ -1,7 +1,4 @@
-#!/bin/bash
-
-set -e
-cd $(dirname $0)/..
+#!/bin/bash -e
 
 # =============================================================================
 # Check if all necessary variables are set
@@ -16,10 +13,5 @@ fi
 # Download and and put oxid environment in place
 # =============================================================================
 
-rm -rf .tmp/ && mkdir .tmp
-cd .tmp
-wget https://github.com/OXID-eSales/oxideshop_ce/archive/v$OXID_VERSION.zip
-unzip v$OXID_VERSION.zip
-mv oxideshop_ce-$OXID_VERSION/source ../oxid
-cd ..
-rm -rf .tmp/
+mkdir oxid
+wget -O - https://github.com/OXID-eSales/oxideshop_ce/archive/v$OXID_VERSION.tar.gz | tar xzf - -C oxid --strip-components 1

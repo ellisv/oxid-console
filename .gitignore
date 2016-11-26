@@ -1,5 +1,4 @@
 .idea/
-.tmp/
 /oxid/
 /vendor/
 /composer.lock
