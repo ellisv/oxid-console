@@ -63,7 +63,11 @@ class FixStatesCommand extends oxConsoleCommand
             return;
         }
 
-        $blUseInstaller = class_exists('oxModuleInstaller');
+        try {
+            $blUseInstaller = class_exists('oxModuleInstaller');
+        } catch (oxSystemComponentException $oEx) {
+            $blUseInstaller = false;
+        }
 
         if (!$blUseInstaller) {
             $this->executePre49($oOutput, $aShopConfigs, $aModuleIds);
