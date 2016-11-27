@@ -63,9 +63,62 @@ class FixStatesCommand extends oxConsoleCommand
             return;
         }
 
-        $oModuleStateFixer = new oxModuleStateFixer();
+        $blUseInstaller = class_exists('oxModuleInstaller');
 
-        /** @var oxModule $oModule */
+        if (!$blUseInstaller) {
+            $this->executePre49($oOutput, $aShopConfigs, $aModuleIds);
+        } else {
+            $this->executePost49($oOutput, $aShopConfigs, $aModuleIds);
+        }
+
+        $oOutput->writeLn('Fixed module states successfully');
+    }
+
+    /**
+     * Fix module states for pre 4.9 (CE) versions of oxid.
+     *
+     * @param oxIOutput $oOutput
+     * @param array     $aShopConfigs
+     * @param array     $aModuleIds
+     */
+    private function executePre49(oxIOutput $oOutput, array $aShopConfigs, array $aModuleIds)
+    {
+        $oStateFixerModule = oxNew('oxStateFixerModule');
+
+        foreach ($aShopConfigs as $oConfig) {
+            $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
+
+            foreach ($aModuleIds as $sModuleId) {
+                if (!$oStateFixerModule->load($sModuleId)) {
+                    $oDebugOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
+                    continue;
+                }
+
+                $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
+                $oStateFixerModule->setConfig($oConfig);
+                $oStateFixerModule->fixVersion();
+                $oStateFixerModule->fixExtendGently();
+                $oStateFixerModule->fixFiles();
+                $oStateFixerModule->fixTemplates();
+                $oStateFixerModule->fixBlocks();
+                $oStateFixerModule->fixSettings();
+                $oStateFixerModule->fixEvents();
+            }
+
+            $oDebugOutput->writeLn();
+        }
+    }
+
+    /**
+     * Fix module states for greater or equal 4.9 (CE) versions of oxid.
+     *
+     * @param oxIOutput $oOutput
+     * @param array     $aShopConfigs
+     * @param array     $aModuleIds
+     */
+    private function executePost49(oxIOutput $oOutput, array $aShopConfigs, array $aModuleIds)
+    {
+        $oModuleStateFixer = new oxModuleStateFixer();
         $oModule = oxNew('oxModule');
 
         foreach ($aShopConfigs as $oConfig) {
@@ -84,8 +137,6 @@ class FixStatesCommand extends oxConsoleCommand
 
             $oDebugOutput->writeLn();
         }
-
-        $oOutput->writeLn('Fixed module states successfully');
     }
 
     /**
