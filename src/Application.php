@@ -37,7 +37,9 @@ class Application extends BaseApplication
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new Backport\CommandAdapter(new \CacheClearCommand());
+        $commands[] = new Command\CacheClearCommand();
+
+        // TODO: Port commands to a new api.
         $commands[] = new Backport\CommandAdapter(new \DatabaseUpdateCommand());
         $commands[] = new Backport\CommandAdapter(new \FixStatesCommand());
         $commands[] = new Backport\CommandAdapter(new \GenerateMigrationCommand());
