@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * oxConsoleCommand was an interface for commands which were written for 1.2 and
  * earlier releases of OXID Console. As some people might have had written their
- * own custom commands we want to support those and show deprecetion warnings
+ * own custom commands we want to support those and show deprecation warnings
  * to have easier migration path.
  */
 class CommandAdapter extends Command
