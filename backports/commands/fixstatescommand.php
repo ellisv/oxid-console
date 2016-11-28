@@ -70,9 +70,9 @@ class FixStatesCommand extends oxConsoleCommand
         }
 
         if (!$blUseInstaller) {
-            $this->executePre49($oOutput, $aShopConfigs, $aModuleIds);
+            $this->executePre49($oDebugOutput, $aShopConfigs, $aModuleIds);
         } else {
-            $this->executePost49($oOutput, $aShopConfigs, $aModuleIds);
+            $this->executePost49($oDebugOutput, $aShopConfigs, $aModuleIds);
         }
 
         $oOutput->writeLn('Fixed module states successfully');
@@ -90,7 +90,7 @@ class FixStatesCommand extends oxConsoleCommand
         $oStateFixerModule = oxNew('oxStateFixerModule');
 
         foreach ($aShopConfigs as $oConfig) {
-            $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
+            $oOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
 
             foreach ($aModuleIds as $sModuleId) {
                 if (!$oStateFixerModule->load($sModuleId)) {
@@ -98,7 +98,7 @@ class FixStatesCommand extends oxConsoleCommand
                     continue;
                 }
 
-                $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
+                $oOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
                 $oStateFixerModule->setConfig($oConfig);
                 $oStateFixerModule->fixVersion();
                 $oStateFixerModule->fixExtendGently();
@@ -109,7 +109,7 @@ class FixStatesCommand extends oxConsoleCommand
                 $oStateFixerModule->fixEvents();
             }
 
-            $oDebugOutput->writeLn();
+            $oOutput->writeLn();
         }
     }
 
@@ -127,19 +127,19 @@ class FixStatesCommand extends oxConsoleCommand
 
         foreach ($aShopConfigs as $oConfig) {
 
-            $oDebugOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
+            $oOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
 
             foreach ($aModuleIds as $sModuleId) {
                 if (!$oModule->load($sModuleId)) {
-                    $oDebugOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
+                    $oOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
                     continue;
                 }
 
-                $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
+                $oOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
                 $oModuleStateFixer->fix($oModule, $oConfig);
             }
 
-            $oDebugOutput->writeLn();
+            $oOutput->writeLn();
         }
     }
 
