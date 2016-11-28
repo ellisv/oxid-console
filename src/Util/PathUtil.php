@@ -47,7 +47,7 @@ class PathUtil
      * @param string   $path
      * @param string[] $keep
      */
-    public static function rmtree($path, $keep = [])
+    public static function rmtree($path, $keep = array())
     {
         $glob = self::join($path, '*');
 
