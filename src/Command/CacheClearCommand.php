@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Cache Clear command.
@@ -44,8 +45,9 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cacheDir = $this->fetchCacheDir();
-        $output->writeln('Clearing OXID cache...');
+        $io = new SymfonyStyle($input, $output);
+        $io->comment('Clearing OXID cache...');
+
         $all = !$input->getOption('smarty') && !$input->getOption('files') && !$input->getOption('oxcache');
 
         if (($all || $input->getOption('oxcache')) && class_exists('oxCache')) {
@@ -53,14 +55,14 @@ EOF
         }
 
         if ($all || $input->getOption('smarty')) {
-            PathUtil::rmtree(PathUtil::join($cacheDir, 'smarty'));
+            PathUtil::rmtree(PathUtil::join($this->fetchCacheDir(), 'smarty'));
         }
 
         if ($all || $input->getOption('files')) {
-            PathUtil::rmtree($cacheDir, array('.htaccess', 'smarty'));
+            PathUtil::rmtree($this->fetchCacheDir(), array('.htaccess', 'smarty'));
         }
 
-        $output->writeln('Cache cleared successfully');
+        $io->success('Cache cleared successfully');
     }
 
     /**
