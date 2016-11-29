@@ -87,14 +87,14 @@ class FixStatesCommand extends oxConsoleCommand
      */
     private function executePre49(oxIOutput $oOutput, array $aShopConfigs, array $aModuleIds)
     {
-        $oStateFixerModule = oxNew('oxStateFixerModule');
+        $oStateFixerModule = new oxStateFixerModule();
 
         foreach ($aShopConfigs as $oConfig) {
             $oOutput->writeLn('[DEBUG] Working on shop id ' . $oConfig->getShopId());
 
             foreach ($aModuleIds as $sModuleId) {
                 if (!$oStateFixerModule->load($sModuleId)) {
-                    $oDebugOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
+                    $oOutput->writeLn("[DEBUG] {$sModuleId} does not exist - skipping");
                     continue;
                 }
 
