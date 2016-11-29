@@ -53,6 +53,6 @@ class OutputAdapter implements \oxIOutput
      */
     public function writeLn($message = '')
     {
-        $this->write($message . PHP_EOL);
+        $this->output->writeln($message);
     }
 }
