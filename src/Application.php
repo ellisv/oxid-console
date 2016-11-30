@@ -40,10 +40,10 @@ class Application extends BaseApplication
         $commands[] = new Command\CacheClearCommand();
         $commands[] = new Command\DatabaseUpdateCommand();
         $commands[] = new Command\MigrateCommand();
+        $commands[] = new Command\GenerateMigrationCommand();
 
         // TODO: Port commands to a new api.
         $commands[] = new Backport\CommandAdapter(new \FixStatesCommand());
-        $commands[] = new Backport\CommandAdapter(new \GenerateMigrationCommand());
         $commands[] = new Backport\CommandAdapter(new \GenerateModuleCommand());
 
         return $commands;

@@ -87,4 +87,14 @@ class PathUtil
 
         rmdir($path);
     }
+
+    /**
+     * @param string $fileName
+     *
+     * @return string
+     */
+    public function resourcePath($fileName)
+    {
+        return self::join(dirname(dirname(__DIR__)), 'res', $fileName);
+    }
 }

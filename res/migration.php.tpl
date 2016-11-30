@@ -1,8 +1,7 @@
 <?php
 
-class [{$sMigrationName}]Migration extends oxMigrationQuery
+class [{$name}]Migration extends oxMigrationQuery
 {
-
     /**
      * {@inheritdoc}
      */
