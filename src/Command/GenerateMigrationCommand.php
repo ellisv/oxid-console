@@ -19,7 +19,7 @@ class GenerateMigrationCommand extends Command
         $this
             ->setName('generate:migration')
             ->setDefinition(array(
-                new InputArgument('words', InputArgument::IS_ARRAY, 'Description of a migration', []),
+                new InputArgument('words', InputArgument::IS_ARRAY, 'Description of a migration', array()),
             ))
             ->setAliases(array('g:migration'))
             ->setDescription('Generate new migration file')
