@@ -1,39 +1,45 @@
-# OXID Console
+OXID Console
+============
 
 [![Build Status](https://travis-ci.org/EllisV/oxid-console.svg?branch=master)](https://travis-ci.org/EllisV/oxid-console)
 
-OXID Console is php console application for OXID Shop. It provides an API for writting various commands.
+OXID Console is a PHP Console Application for OXID Shop. It provides an API for writting various commands.
 
 By default there are following commands included:
 
 * `cache:clear` - Clear OXID cache from tmp folder
-* `db:update` - Updates database views
+* `database:update` - Updates database views
 * `fix:states` - Fixes modules metadata states
-* `g:migration` - Generate new migration file
-* `g:module` - Generate new module scaffold
+* `generate:migration` - Generate new migration file
+* `generate:module` - Generate new module scaffold
+* `help` - Display a help text of specified command
 * `list` - *(default)* List of all available commands
 * `migrate` - Run migration scripts
 
 This OXID Console repository has **Migration Handler** and **Module State Fixer** included.
 
-## Which version to get?
+Which version to get?
+---------------------
 
 | OXID Version     | OXID Console version | Source Code link | Download link |
 |------------------|----------------------|------------------|---------------|
 | <4.9.0, <5.2.0   | 1.1.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.1) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.1.zip) |
 | =>4.9.0, =>5.2.0 | 1.2.X                | [Source Code](https://github.com/EllisV/oxid-console/tree/1.2) | [Download ZIP](https://github.com/EllisV/oxid-console/archive/1.2.zip) |
 
-## Installation
+Installation
+------------
 
 This package is following a structure which OXID introduced with their update packages.
 * Copy contents of `copy_this` to your OXID eShop project
 * Check the difference between your OXID eShop files and files which are in `changed_full` and update files according to the difference
 
-## Getting started
+Getting started
+---------------
 
 The entry point of console application is `php oxid`. It will execute default command which is `list`. To call a specific command run `php oxid [command]`. If you need help about specific command run `php oxid [command] -h` or `php oxid [command] --help`
 
-## Defining your own command
+Defining your own command
+-------------------------
 
 * Commands get autoloaded from `application/commands/` and `[module_path]/commands/` directories. But you can always add or remove commands with `add()` or `remove()` methods of console application
 * You can access console application `$this->getConsoleApplication()` and input object `$this->getInput()` in your command class
@@ -87,7 +93,8 @@ class MyOwnCommand extends oxConsoleCommand
 }
 ```
 
-## Working with arguments and options
+Working with arguments and options
+----------------------------------
 
 First of all You must know that `-abc` is the same as `-a -b -c` and it is a good practice to have long version of option too, e.g. `-a` is the same as `--all`.
 Console Input provides you with various methods to work with options. There is nothing better than a good example:
@@ -171,7 +178,8 @@ array(5) {
 string(4) "tree"
 ```
 
-## Migrations
+Migrations
+----------
 
 OXID Console project includes migration handling. Lets generate sample migration by running `php oxid g:migration add amount field to demo module`.
 
@@ -284,7 +292,8 @@ class AddDemoCulumnToOxUserMigration extends oxMigrationQuery
 
 *Note: It is better to use generator for migration queries creation*
 
-## Module state fixer
+Module state fixer
+------------------
 
 ### Current problem
 
@@ -296,6 +305,7 @@ oxModuleStateFixer which is an extension of oxModuleInstaller has method `fix()`
 
 We have provided you with `fix:states` command to work with oxModuleStateFixer. Type in `php oxid fix:states --help` for more information.
 
-## Credits
+Credits
+-------
 
 This project was inspired by [Symfony/Console](https://github.com/symfony/Console) component.
