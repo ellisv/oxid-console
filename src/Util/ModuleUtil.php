@@ -44,4 +44,19 @@ class ModuleUtil
             return $token ? PathUtil::join($path, strtolower($token)) : $path;
         }, PathUtil::join(OX_BASE_PATH, 'modules'));
     }
+
+    /**
+     * @return string[]
+     */
+    public static function getAvailableModuleIds()
+    {
+        $config = \oxRegistry::getConfig();
+
+        // We are calling getModulesFromDir() because we want to refresh
+        // the list of available modules. This is a workaround for OXID
+        // bug.
+        oxNew('oxModuleList')->getModulesFromDir($config->getModulesDir());
+
+        return array_keys($config->getConfigParam('aModulePaths'));
+    }
 }
