@@ -10,13 +10,15 @@
  */
 
 /**
- * Null output
+ * Null output.
  *
- * It is very useful for ignoring command output
+ * It is very useful for ignoring command output.
+ *
+ * @deprecated since version 1.3, to be removed in 2.0.
+ *             Use Symfony\Component\Console\Output\NullOutput instead.
  */
 class oxNullOutput implements oxIOutput
 {
-
     /**
      * {@inheritdoc}
      */

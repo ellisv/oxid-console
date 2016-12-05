@@ -18,6 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This is being used to support commands written for 1.2 and earlier releases.
  * See more at CommandAdapter.
+ *
+ * @deprecated to be removed in 2.0.
  */
 class OutputAdapter implements \oxIOutput
 {

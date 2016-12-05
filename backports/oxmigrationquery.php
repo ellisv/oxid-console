@@ -16,7 +16,6 @@
  */
 abstract class oxMigrationQuery
 {
-
     /**
      * Regexp used for regexp timestamp validation
      */

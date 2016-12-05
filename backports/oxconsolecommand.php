@@ -10,13 +10,15 @@
  */
 
 /**
- * Abstract Console Command class
+ * Abstract Console Command class.
  *
- * All console application commands must extend this class
+ * All console application commands must extend this class.
+ *
+ * @deprecated since version 1.3, to be removed in 2.0.
+ *             Use Symfony\Component\Console\Command\Command instead.
  */
 abstract class oxConsoleCommand
 {
-
     /**
      * @var string Command name
      */

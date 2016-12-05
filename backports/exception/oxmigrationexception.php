@@ -10,9 +10,8 @@
  */
 
 /**
- * Any exception thrown in migration process
+ * Any exception thrown in migration process.
  */
 class oxMigrationException extends oxException
 {
-
 }

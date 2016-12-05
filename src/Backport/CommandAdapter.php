@@ -22,6 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * earlier releases of OXID Console. As some people might have had written their
  * own custom commands we want to support those and show deprecation warnings
  * to have easier migration path.
+ *
+ * @deprecated to be removed in 2.0.
  */
 class CommandAdapter extends Command
 {

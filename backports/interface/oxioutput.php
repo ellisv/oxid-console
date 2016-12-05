@@ -11,10 +11,12 @@
 
 /**
  * Output interface implemented by any output class
+ *
+ * @deprecated since version 1.3, to be removed in 2.0.
+ *             Use Symfony\Component\Console\Output\OutputInterface instead.
  */
 interface oxIOutput
 {
-
     /**
      * Write message to an output
      *

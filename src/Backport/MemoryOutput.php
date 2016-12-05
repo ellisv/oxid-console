@@ -16,6 +16,8 @@ namespace Ellis\Oxid\Console\Backport;
  *
  * This is being used for bridging help() of legacy oxConsoleCommand to new
  * interface.
+ *
+ * @deprecated to be removed in 2.0.
  */
 class MemoryOutput implements \oxIOutput
 {

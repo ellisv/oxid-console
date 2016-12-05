@@ -10,17 +10,16 @@
  */
 
 /**
- * Migration handler for migration queries
+ * Migration handler for migration queries.
  *
- * Only one instance of this class is allowed
+ * Only one instance of this class is allowed.
  *
  * Sample usage:
  *      $oMigrationHandler = oxMigrationHandler::getInstance()
- *      $oMigrationHandler->run( '2014030709325468' );
+ *      $oMigrationHandler->run('2014030709325468');
  */
 class oxMigrationHandler
 {
-
     /**
      * @var bool Object already created?
      */

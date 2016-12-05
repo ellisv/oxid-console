@@ -10,10 +10,10 @@
  */
 
 /**
- * State fixer module
+ * State fixer module.
  *
  * Extension of regular module class to add module information
- * fixer features
+ * fixer features.
  */
 class oxStateFixerModule extends oxModule
 {

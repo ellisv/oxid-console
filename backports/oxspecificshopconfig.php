@@ -10,13 +10,12 @@
  */
 
 /**
- * Specific shop config class
+ * Specific shop config class.
  *
- * Helper class for generating oxConfig instance for specific shop
+ * Helper class for generating oxConfig instance for specific shop.
  */
 class oxSpecificShopConfig extends oxConfig
 {
-
     /**
      * @var int
      */

@@ -14,15 +14,17 @@
  */
 
 /**
- * Argv Input, based on Symfony\Component\Console\Input\ArgvInput
+ * Argv Input, based on Symfony\Component\Console\Input\ArgvInput.
  *
  * @author  Fabien Potencier <fabien@symfony.com>
  * @link    https://github.com/symfony/Console/blob/v2.6.0/Input/ArgvInput.php
  * @license https://github.com/symfony/Console/blob/v2.6.0/LICENSE
+ *
+ * @deprecated since version 1.3, to be removed in 2.0.
+ *             Use Symfony\Component\Console\Input\ArgvInput instead.
  */
 class oxArgvInput implements oxIConsoleInput
 {
-
     /**
      * @var array
      */

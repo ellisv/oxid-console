@@ -19,6 +19,9 @@
  * @author  Fabien Potencier <fabien@symfony.com>
  * @link    https://github.com/symfony/Console/blob/v2.6.0/Output/ConsoleOutput.php
  * @license https://github.com/symfony/Console/blob/v2.6.0/LICENSE
+ *
+ * @deprecated since version 1.3, to be removed in 2.0.
+ *             Use Symfony\Component\Console\Output\ConsoleOutput instead.
  */
 class oxConsoleOutput implements oxIOutput
 {

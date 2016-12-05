@@ -10,11 +10,13 @@
  */
 
 /**
- * Input interface is implemented by all console input classes
+ * Input interface is implemented by all console input classes.
+ *
+ * @deprecated since version 1.3, to be removed in 2.0.
+ *             Use Symfony\Component\Console\Input\InputInterface instead.
  */
 interface oxIConsoleInput
 {
-
     /**
      * Get first argument
      *
