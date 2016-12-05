@@ -1,6 +1,6 @@
 <?php
 
-class [{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Events
+class [{$scaffold->vendor}][{$scaffold->name}]Events
 {
     /**
      * On module activation callback

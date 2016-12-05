@@ -1,4 +1,4 @@
-# [{$oScaffold->sModuleTitle}]
+# [{$scaffold->title}]
 
 ## Requirements
 
@@ -14,6 +14,6 @@ Disable the module in administration area and delete module folder.
 
 ## Credits
 
-    * Author: [{$oScaffold->sAuthor}]
-    * URL: [{$oScaffold->sUrl}]
-    * Mail: [{$oScaffold->sEmail}]
+    * Author: [{$scaffold->author}]
+    * URL: [{$scaffold->url}]
+    * Mail: [{$scaffold->email}]

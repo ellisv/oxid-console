@@ -53,6 +53,10 @@ class GenerateModuleCommandTest extends AcceptanceTestCase
             array('pipe', 'w')
         );
 
+        // We enforce command to run in interactive mode.
+        // See: https://github.com/symfony/symfony/blob/v2.8.0/src/Symfony/Component/Console/Application.php#L800
+        putenv('SHELL_INTERACTIVE=true');
+
         $process = proc_open(static::getExecutablePath() . ' g:module', $descriptorspec, $pipes, OX_BASE_PATH);
         if (!is_resource($process)) {
             throw new Exception('Could not open console command');

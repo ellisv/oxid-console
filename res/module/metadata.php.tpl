@@ -9,19 +9,19 @@ $sMetadataVersion = '1.1';
  * Module information
  */
 $aModule = array(
-    'id'          => '[{$oScaffold->sModuleId}]',
-    'title'       => '[{$oScaffold->sVendor|upper}] :: [{$oScaffold->sModuleTitle}]',
+    'id'          => '[{$scaffold->id}]',
+    'title'       => '[{$scaffold->vendor|upper}] :: [{$scaffold->title}]',
     'description' => '',
     'thumbnail'   => 'out/pictures/picture.png',
     'version'     => '0.0.1-DEV',
-    'author'      => '[{$oScaffold->sAuthor}]',
-    'url'         => '[{$oScaffold->sUrl}]',
-    'email'       => '[{$oScaffold->sEmail}]',
+    'author'      => '[{$scaffold->author}]',
+    'url'         => '[{$scaffold->url}]',
+    'email'       => '[{$scaffold->email}]',
     'extend'      => array(
         // '<oxclass>'   => '<vendor/module/path_to_file>',
     ),
     'files'       => array(
-        '[{$oScaffold->sVendor}][{$oScaffold->sModuleName|lower}]events' => '[{if $oScaffold->sVendor}][{$oScaffold->sVendor}]/[{/if}][{$oScaffold->sModuleName|lower}]/core/[{$oScaffold->sVendor}][{$oScaffold->sModuleName|lower}]events.php',
+        '[{$scaffold->vendor}][{$scaffold->name|lower}]events' => '[{if $scaffold->vendor}][{$scaffold->vendor}]/[{/if}][{$scaffold->name|lower}]/core/[{$scaffold->vendor}][{$scaffold->name|lower}]events.php',
     ),
     'templates'   => array(
         // '<template.tpl>' => '<vendor/module/path_to_template.tpl>',
@@ -35,7 +35,7 @@ $aModule = array(
     ),
     'settings'    => array(),
     'events'      => array(
-        'onActivate'   => '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Events::onActivate',
-        'onDeactivate' => '[{$oScaffold->sVendor}][{$oScaffold->sModuleName}]Events::onDeactivate',
+        'onActivate'   => '[{$scaffold->vendor}][{$scaffold->name}]Events::onActivate',
+        'onDeactivate' => '[{$scaffold->vendor}][{$scaffold->name}]Events::onDeactivate',
     ),
 );
