@@ -3,6 +3,9 @@
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.1.9...v1.1.10
 
+* 1.1.11 (not released yet)
+    * (81cef1e) Support camel cased command file names
+
 * 1.1.10 (2016-11-25)
     * (c6af222) Fix for table exists method of migration query for not accounting for a database
 

@@ -234,7 +234,7 @@ class oxConsoleApplication
         $oDirectory = new RecursiveDirectoryIterator($sDirectory);
         $oFlattened = new RecursiveIteratorIterator($oDirectory);
 
-        $aFiles = new RegexIterator($oFlattened, '/.*command\.php$/');
+        $aFiles = new RegexIterator($oFlattened, '/.*command\.php$/i');
         foreach ($aFiles as $sFilePath) {
             require_once $sFilePath;
 
