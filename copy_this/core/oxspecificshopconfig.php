@@ -193,7 +193,7 @@ class oxSpecificShopConfig extends oxConfig
 
         foreach($oDb->getAll($sSql) as $aModuleSetting) {
             $oModuleSettings = $aModuleSetting['OXVARVALUE'];
-            if(in_array($aModuleSetting['OXVARTYPE'], ['arr','aarr'])) {
+            if(in_array($aModuleSetting['OXVARTYPE'], array('arr','aarr'))) {
                 $oModuleSettings = unserialize($oModuleSettings);
             }
             $this->aModuleSettings[$aModuleSetting['OXMODULE']][$aModuleSetting['OXVARNAME']] = $oModuleSettings;
