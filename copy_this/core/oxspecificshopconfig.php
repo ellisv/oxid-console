@@ -23,6 +23,11 @@ class oxSpecificShopConfig extends oxConfig
     protected $_iShopId;
 
     /**
+     * @var array
+     */
+    protected $aModuleSettings;
+
+    /**
      * Constructor
      *
      * @param $iShopId
@@ -60,6 +65,7 @@ class oxSpecificShopConfig extends oxConfig
      */
     public static function get($mShopId)
     {
+
         $sSQL = 'SELECT 1 FROM oxshops WHERE oxid = %s';
         $oDb = oxDb::getDb();
 
@@ -118,6 +124,9 @@ class oxSpecificShopConfig extends oxConfig
 
             $aOnlyMainShopVars = array('blMallUsers', 'aSerials', 'IMD', 'IMA', 'IMS');
             $this->_loadVarsFromDb($this->getBaseShopId(), $aOnlyMainShopVars);
+
+            $this->_loadModuleSettings($sShopID);
+
         } catch (oxConnectionException $oEx) {
             $oEx->debugOut();
             oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
@@ -133,4 +142,63 @@ class oxSpecificShopConfig extends oxConfig
     {
         return $this->_iShopId;
     }
+
+    /**
+     * Fix wrong config params for modules on key duplicates
+     *
+     * @param $sModuleId
+     */
+    public function fixWrongConfigParams($sModuleId) {
+
+        if($aModuleSettings = $this->_getModuleSettings($sModuleId)) {
+            foreach ($aModuleSettings as $sKey => $sValue) {
+                if(isset($this->_aConfigParams[$sKey])) {
+                    $this->_aConfigParams[$sKey] = $sValue;
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Get setting for modules
+     *
+     * @param $sModuleId
+     * @return array|null
+     */
+    private function _getModuleSettings($sModuleId) {
+        if(isset($this->aModuleSettings[$sModuleId])) {
+            return $this->aModuleSettings[$sModuleId];
+        }
+        return null;
+    }
+
+    /**
+     * Load Module settings
+     *
+     * @param $sShopID
+     */
+    private function _loadModuleSettings($sShopID) {
+
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+
+        $sSql = sprintf(
+            'SELECT REPLACE(OXMODULE, %s, "") AS OXMODULE, OXVARNAME, OXVARTYPE, %s AS OXVARVALUE FROM %s WHERE OXSHOPID = %s AND OXMODULE LIKE %s',
+            $oDb->quote(oxConfig::OXMODULE_MODULE_PREFIX),
+            oxRegistry::getConfig()->getDecodeValueQuery(),
+            'oxconfig',
+            $oDb->quote($sShopID),
+            $oDb->quote(oxConfig::OXMODULE_MODULE_PREFIX . '%')
+        );
+
+        foreach($oDb->getAll($sSql) as $aModuleSetting) {
+            $oModuleSettings = $aModuleSetting['OXVARVALUE'];
+            if(in_array($aModuleSetting['OXVARTYPE'], ['arr','aarr'])) {
+                $oModuleSettings = unserialize($oModuleSettings);
+            }
+            $this->aModuleSettings[$aModuleSetting['OXMODULE']][$aModuleSetting['OXVARNAME']] = $oModuleSettings;
+        }
+
+    }
+
 }
