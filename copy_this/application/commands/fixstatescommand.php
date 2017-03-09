@@ -39,10 +39,11 @@ class FixStatesCommand extends oxConsoleCommand
         $oOutput->writeLn('This command fixes information stored in database of modules');
         $oOutput->writeln();
         $oOutput->writeLn('Available options:');
-        $oOutput->writeLn('  -a, --all         Passes all modules');
-        $oOutput->writeLn('  -b, --base-shop   Fix only on base shop');
-        $oOutput->writeLn('  --shop=<shop_id>  Specifies in which shop to fix states');
-        $oOutput->writeLn('  -n, --no-debug    No debug output');
+        $oOutput->writeLn('  -a, --all              Passes all modules');
+        $oOutput->writeLn('  -b, --base-shop        Fix only on base shop');
+        $oOutput->writeLn('  --shop=<shop_id>       Specifies in which shop to fix states');
+        $oOutput->writeLn('  -n, --no-debug         No debug output');
+        $oOutput->writeLn('  -s, --skip-settings    Don\'t reset module settings');
     }
 
     /**
@@ -54,6 +55,8 @@ class FixStatesCommand extends oxConsoleCommand
         $oDebugOutput = $oInput->hasOption(array('n', 'no-debug'))
             ? oxNew('oxNullOutput')
             : $oOutput;
+
+        $resetSettings = !$oInput->hasOption(array('s', 'skip-settings'));
 
         try {
             $aModuleIds = $this->_parseModuleIds();
@@ -80,7 +83,7 @@ class FixStatesCommand extends oxConsoleCommand
                 }
 
                 $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
-                $oModuleStateFixer->fix($oModule, $oConfig);
+                $oModuleStateFixer->fix($oModule, $oConfig, $resetSettings);
             }
 
             $oDebugOutput->writeLn();

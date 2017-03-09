@@ -21,7 +21,7 @@ class oxModuleStateFixer extends oxModuleInstaller
      * @param oxModule      $oModule
      * @param oxConfig|null $oConfig If not passed uses default base shop config
      */
-    public function fix(oxModule $oModule, oxConfig $oConfig = null)
+    public function fix(oxModule $oModule, oxConfig $oConfig = null, $resetSettings = true)
     {
         if ($oConfig !== null) {
             $this->setConfig($oConfig);
@@ -40,7 +40,9 @@ class oxModuleStateFixer extends oxModuleInstaller
         $this->_addTemplateBlocks($oModule->getInfo("blocks"), $sModuleId);
         $this->_addModuleFiles($oModule->getInfo("files"), $sModuleId);
         $this->_addTemplateFiles($oModule->getInfo("templates"), $sModuleId);
-        $this->_addModuleSettings($oModule->getInfo("settings"), $sModuleId);
+        if ($resetSettings) {
+            $this->_addModuleSettings($oModule->getInfo("settings"), $sModuleId);
+        }
         $this->_addModuleVersion($oModule->getInfo("version"), $sModuleId);
         $this->_addModuleEvents($oModule->getInfo("events"), $sModuleId);
 

@@ -4,6 +4,7 @@ To get the diff for a specific change, go to https://github.com/EllisV/oxid-cons
 To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.4...v1.2.5
 
 * 1.2.6 (not released yet)
+    * added `-s` or `--skip-settings` flag to `fix:states` command
     * (9a94f32) Support camel cased command file names
 
 * 1.2.5 (2016-11-25)
