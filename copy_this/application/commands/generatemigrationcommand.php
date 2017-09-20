@@ -65,6 +65,7 @@ class GenerateMigrationCommand extends oxConsoleCommand
 
         /** @var Smarty $oSmarty */
         $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
+        $oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
         $oSmarty->assign('sMigrationName', $sMigrationName);
         $sContent = $oSmarty->fetch($sTemplatePath);
 

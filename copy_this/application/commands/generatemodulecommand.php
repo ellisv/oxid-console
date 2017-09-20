@@ -39,6 +39,7 @@ class GenerateModuleCommand extends oxConsoleCommand
         $this->setDescription('Generate new module scaffold');
 
         $this->_oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
+        $this->_oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
         $this->_sModuleDir = OX_BASE_PATH . 'modules' . DIRECTORY_SEPARATOR;
         $this->_sTemplatesDir = __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR
             . 'module' . DIRECTORY_SEPARATOR;
