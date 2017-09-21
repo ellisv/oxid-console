@@ -1,9 +1,9 @@
 # CHANGELOG
 
 To get the diff for a specific change, go to https://github.com/EllisV/oxid-console/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.4...v1.2.5
+To get the diff between two versions, go to https://github.com/EllisV/oxid-console/compare/v1.2.5...v1.2.6
 
-* 1.2.6 (not released yet)
+* 1.2.6 (2017-09-21)
     * (9a94f32) Support camel cased command file names
     * (80500c3) Set SMARTY_PHP_PASSTHRU for generate commands
 
