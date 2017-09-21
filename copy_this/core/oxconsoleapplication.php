@@ -28,7 +28,7 @@ class oxConsoleApplication
     /**
      * OXID Console application version
      */
-    const VERSION = 'v1.1.10';
+    const VERSION = 'v1.1.11';
 
     /**
      * @var oxConsoleCommand[] Available commands in console
