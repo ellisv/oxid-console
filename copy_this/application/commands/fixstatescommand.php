@@ -80,6 +80,9 @@ class FixStatesCommand extends oxConsoleCommand
                 }
 
                 $oDebugOutput->writeLn("[DEBUG] Fixing {$sModuleId} module");
+
+                $oConfig->fixWrongConfigParams($sModuleId);
+
                 $oModuleStateFixer->fix($oModule, $oConfig);
             }
 
