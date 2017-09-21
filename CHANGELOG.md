@@ -5,6 +5,7 @@ To get the diff between two versions, go to https://github.com/EllisV/oxid-conso
 
 * 1.1.11 (not released yet)
     * (81cef1e) Support camel cased command file names
+    * (a293347) Set php_handling to SMARTY_PHP_PASSTRHRU in generate commands
 
 * 1.1.10 (2016-11-25)
     * (c6af222) Fix for table exists method of migration query for not accounting for a database
