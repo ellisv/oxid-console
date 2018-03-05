@@ -78,7 +78,7 @@ class MyOwnCommand extends oxConsoleCommand
     public function execute(oxIOutput $oOutput)
     {
         $oInput = $this->getInput();
-        $oInput->hasOption(array('demo', 'd')) {
+        if($oInput->hasOption(array('demo', 'd'))) {
             $oOutput->writeLn('You typed in --demo or -d also');
         }
 
