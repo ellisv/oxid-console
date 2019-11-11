@@ -92,6 +92,7 @@ class oxMigrationHandler
         }
 
         foreach ($this->getQueries() as $oQuery) {
+            $oQuery->setOutput($oOutput);
             $oQuery->getTimestamp() < $sTimestamp
                 ? $this->_goUp($oQuery, $oOutput)
                 : $this->_goDown($oQuery, $oOutput);
